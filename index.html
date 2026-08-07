@@ -159,6 +159,7 @@
       overflow: hidden;
       border: 1px solid var(--soft-border);
       cursor: pointer;
+      position: relative;
       transition: transform 0.3s ease;
     }
 
@@ -178,6 +179,24 @@
       font-weight: 600;
       text-transform: uppercase;
     }
+
+    .fav-btn {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #D32F2F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+
+    .fav-btn:hover { transform: scale(1.1); }
 
     .card-content { padding: 1.5rem; }
 
@@ -234,41 +253,40 @@
 
     .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; color: var(--accent-brown); }
     .modal-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin: 1.5rem 0 0.5rem; }
-    .ingredient-list, .instruction-list { padding-left: 1.25rem; }
-    .ingredient-list li, .instruction-list li { margin-bottom: 0.5rem; }
 
-    /* Unit Switcher Notch (US vs M) */
-    .unit-switcher {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin: 1rem 0;
-    }
+    /* Interactive Checkbox List */
+    .ingredient-list { list-style: none; padding-left: 0; }
+    .ingredient-list li { margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
+    .ingredient-list input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent-brown); cursor: pointer; }
+    .ingredient-list input[type="checkbox"]:checked + span { text-decoration: line-through; color: var(--text-muted); }
 
-    .unit-switcher span {
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
+    .instruction-list { padding-left: 1.25rem; }
+    .instruction-list li { margin-bottom: 0.8rem; line-height: 1.5; }
 
-    .unit-toggle-btn {
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      border: 1px solid var(--soft-border);
-      background: var(--pill-bg);
-      color: var(--text-main);
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .unit-toggle-btn.active {
+    /* Bottom Back Button */
+    .bottom-back-btn {
+      display: block;
+      width: 100%;
+      margin-top: 2.5rem;
+      padding: 0.85rem;
       background: var(--accent-brown);
       color: #FFF;
-      border-color: var(--accent-brown);
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
     }
+
+    .bottom-back-btn:hover { background: #432B1E; }
+
+    /* Unit Switcher */
+    .unit-switcher { display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; }
+    .unit-switcher span { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); }
+    .unit-toggle-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--soft-border); background: var(--pill-bg); color: var(--text-main); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .unit-toggle-btn.active { background: var(--accent-brown); color: #FFF; border-color: var(--accent-brown); }
 
     .note-box {
       background: var(--pill-bg);
@@ -286,17 +304,8 @@
     .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); margin: 1rem 0; font-size: 1rem; }
     .vip-submit { background: var(--accent-brown); color: #FFF; width: 100%; padding: 0.8rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
-    /* In-Site Alert Message Box */
     .site-alert {
-      display: none;
-      background: #E8F5E9;
-      color: #2E7D32;
-      border: 1px solid #A5D6A7;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      font-weight: 500;
+      display: none; background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; padding: 1rem; border-radius: 8px; margin-top: 1rem; font-size: 0.9rem; font-weight: 500;
     }
 
     footer { text-align: center; padding: 3rem 1.5rem; border-top: 1px solid var(--soft-border); color: var(--text-muted); }
@@ -304,7 +313,6 @@
 </head>
 <body>
 
-  <!-- Hidden Background Frame to trap Mailchimp redirect -->
   <iframe name="hiddenFrame" id="hiddenFrame" style="display:none;"></iframe>
 
   <!-- Header -->
@@ -330,8 +338,9 @@
     <!-- Category Filters -->
     <div class="filters">
       <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
+      <button class="filter-btn" onclick="filterRecipes('fav')">Favorites ✦</button>
       <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
-      <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies & Bars</button>
+      <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies &amp; Bars</button>
       <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
     </div>
   </section>
@@ -349,19 +358,17 @@
     </div>
   </div>
 
-  <!-- Real Connected Mailchimp Email Signup Modal -->
+  <!-- Mailchimp Modal -->
   <div class="modal-overlay" id="emailModal">
     <div class="modal-content vip-box">
       <button class="close-btn" onclick="closeModal('emailModal')">&times;</button>
       <span>✦ SALLY'S SWEETS CLUB ✦</span>
       <h2>Get Exclusive Secret Recipes</h2>
-      <p style="color: var(--text-muted);">Sign up with your email to unlock Sally's unreleased notes app recipes & baking tips!</p>
+      <p style="color: var(--text-muted);">Sign up with your email to unlock Sally's unreleased notes app recipes &amp; baking tips!</p>
       
-      <!-- Fixed Seamless Form -->
       <form action="https://gmail.us9.list-manage.com/subscribe/post?u=f29204663a981ea536300a0b8&amp;id=03866f86f8&amp;f_id=00ff3de1f0" method="post" target="hiddenFrame" onsubmit="showInSiteAlert()">
         <input type="email" name="EMAIL" id="mce-EMAIL" class="vip-input" placeholder="Enter your email address..." required>
         
-        <!-- Spam Protection Bot Trap -->
         <div aria-hidden="true" style="position: absolute; left: -5000px;">
           <input type="text" name="b_f29204663a981ea536300a0b8_03866f86f8" tabindex="-1" value="">
         </div>
@@ -369,9 +376,8 @@
         <button type="submit" class="vip-submit">Unlock Recipes</button>
       </form>
 
-      <!-- Clean In-Site Success Banner -->
       <div id="siteAlert" class="site-alert">
-        ✦Check your inbox (and spam/promotions folder just in case!) for your secret welcome recipes :) 🍪
+        ✦ Check your inbox <i>(and spam/promotions folder just in case!)</i> for your secret welcome recipes! 🍪
       </div>
     </div>
   </div>
@@ -382,136 +388,48 @@
 
   <script>
     let activeUnitMode = 'US';
+    let favorites = JSON.parse(localStorage.getItem('sally_favs')) || [];
 
     const recipes = [
       {
-        id: 1,
-        category: 'brownies',
-        title: "Sally's Signature Brown Butter Espresso Brownies",
-        desc: 'Rich, ultra-fudgy brownies with paper-thin crinkle tops, bloomed espresso cocoa, and chocolate pools.',
-        time: '50 mins',
-        yield: '16 squares',
-        img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80',
-        note: 'Inspired by Broma Bakery\'s iconic brown butter technique, tweaked to bloom espresso powder and add extra dark chocolate chunks.',
+        id: 5,
+        category: 'macarons',
+        title: "Cookies 'n Cream Oreos Macarons",
+        desc: 'Delicate Swiss meringue macaron shells with scraped Oreo crumbs, filled with cookies & cream buttercream or white chocolate ganache.',
+        time: '1 hr 15 mins',
+        yield: '18 macarons',
+        img: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=800&q=80',
+        note: 'Swiss Meringue method ensures high stability and glossy feet. ALWAYS remove Oreo cream filling before crushing the cookies for the shell batter!',
         ingredientsUS: [
-          '3/4 cup (1.5 sticks) unsalted butter, browned',
-          '3/4 cup Dutch-process cocoa powder',
-          '1.5 - 2 tsp espresso powder',
-          '1 tsp pure vanilla extract',
-          '3 large eggs (room temperature)',
-          '1 3/4 cups light brown sugar',
-          '3/4 cup + 2 tbsp all-purpose flour',
-          '1/2 tsp sea salt',
-          '3.5 oz chopped Ghirardelli semisweet chocolate bar + 1/2 cup dark chocolate chips'
+          'Shells: 100g room temperature egg whites (~3 large)',
+          'Shells: 100g granulated sugar',
+          'Shells: 100g fine almond flour',
+          'Shells: 100g powdered sugar',
+          'Shells: 20g finely crushed Oreo cookie shells (CREAM REMOVED)',
+          'Shells: 1/4 tsp cream of tartar',
+          'Filling (Option 1): 1/2 cup softened butter, 1/2 cup powdered sugar, 5 ground Oreos, 1 tsp vanilla, pinch salt',
+          'Filling (Option 2 - White Chocolate Ganache): 100g white chocolate, 50g heavy whipping cream, 3 crushed Oreos'
         ],
         ingredientsM: [
-          '170g unsalted butter, browned',
-          '75g Dutch-process cocoa powder',
-          '1.5 - 2 tsp espresso powder',
-          '1 tsp pure vanilla extract',
-          '3 large eggs (room temperature)',
-          '350g light brown sugar',
-          '94g all-purpose flour',
-          '1/2 tsp sea salt',
-          '100g chopped Ghirardelli semisweet baking bar + 85g dark chocolate chips'
+          'Shells: 100g room temperature egg whites',
+          'Shells: 100g granulated sugar',
+          'Shells: 100g almond flour',
+          'Shells: 100g powdered sugar',
+          'Shells: 20g finely crushed Oreo cookies (cream scraped off)',
+          'Shells: 1g cream of tartar',
+          'Filling (Option 1): 113g butter, 50g powdered sugar, 5 ground Oreos, 1 tsp vanilla, pinch salt',
+          'Filling (Option 2 - White Chocolate Ganache): 100g white chocolate, 50g heavy whipping cream, 3 crushed Oreos'
         ],
         steps: [
-          'Preheat oven to 350°F (175°C) and line an 8x8-inch metal baking pan with parchment paper.',
-          'Melt butter in a saucepan over medium-low heat. Stir frequently as it foams until golden flecks appear and a rich nutty aroma develops. Cool for 4 minutes.',
-          'Whisk Dutch cocoa, espresso powder, and vanilla directly into warm brown butter to bloom the chocolate flavor.',
-          'In a stand mixer fitted with whisk attachment, beat eggs and light brown sugar on high speed for 4-5 minutes until pale, glossy, and voluminous.',
-          'Gently fold the brown butter mixture into the whipped eggs using a spatula.',
-          'Sift in flour and salt. Fold gently until just a few flour streaks remain.',
-          'Fold in chopped chocolate bar and chocolate chips. Spread into prepared pan.',
-          'Bake for 45-50 minutes until edges are set and center comes out with moist, fudgy crumbs on a toothpick.'
-        ]
-      },
-      {
-        id: 2,
-        category: 'cookies',
-        title: "Sally's Chewy Chocolate Chip Cookies",
-        desc: 'Super chewy bakery-style cookies with a signature two-temperature bake technique for crispy edges and a soft center.',
-        time: '35 mins (+ chilling)',
-        yield: '12 large (113g) cookies',
-        img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
-        note: 'Bake at 350°F for 13-16 mins, then kick heat up to 370°F for 2-3 mins for golden edges. Includes Air Fryer instructions!',
-        ingredientsUS: [
-          '3/4 cup + 1 tbsp unsalted butter (softened/partially melted)',
-          '2/3 cup granulated sugar',
-          '3/4 cup light brown sugar',
-          '2 large eggs (room temperature)',
-          '1 tsp vanilla extract',
-          '2 2/3 cups all-purpose flour',
-          '1 tsp baking soda',
-          '1 tsp fine salt',
-          '1 1/2 to 2 cups chocolate chips',
-          'Flaky sea salt (for finishing)'
-        ],
-        ingredientsM: [
-          '190g unsalted butter (softened/partially melted)',
-          '130g granulated sugar',
-          '165g light brown sugar',
-          '2 large eggs (room temperature)',
-          '1 tsp vanilla extract',
-          '330g all-purpose flour',
-          '1 tsp baking soda',
-          '1 tsp fine salt',
-          '250g - 300g chocolate chips',
-          'Flaky sea salt (for finishing)'
-        ],
-        steps: [
-          'Microwave butter in 10-15 second intervals until soft, but not fully liquid.',
-          'In a large bowl, whisk butter, granulated sugar, and light brown sugar for 2-3 minutes until fluffy and pale.',
-          'Add eggs and vanilla extract; mix until smooth and glossy.',
-          'Fold in flour, baking soda, and salt until no dry streaks remain.',
-          'Fold in chocolate chips until distributed.',
-          'Scoop dough into large 113g balls. Chill in refrigerator for 30-45 minutes (REQUIRED).',
-          'Standard Oven: Preheat to 350°F (175°C). Bake for 13-16 minutes, then raise temperature to 370°F (188°C) for the last 2-3 minutes until edges are golden brown.',
-          'Convection / Air Fryer Option: Preheat to 375°F, drop temp to 350°F and bake 60g-89g balls for 13-17 mins, lowering to 320°F halfway through.',
-          'Top with flaky sea salt while hot and let cool 10-15 minutes before moving to a cooling rack.'
-        ]
-      },
-      {
-        id: 3,
-        category: 'cookies',
-        title: "Sally's Brown Butter Toffee Espresso Cookies",
-        desc: 'Rich browned butter infused with bloomed espresso powder, packed with dark chocolate chunks and buttery toffee bits.',
-        time: '30 mins (+ chilling)',
-        yield: '14 cookies',
-        img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80',
-        note: 'Inspired by Broma Bakery. Sally\'s touch: 1-2 tsp espresso powder is bloomed directly into the hot browned butter right after pouring!',
-        ingredientsUS: [
-          '3/4 cup unsalted butter, browned',
-          '1 - 2 tsp instant espresso powder',
-          '1 cup light brown sugar',
-          '1/3 cup granulated sugar',
-          '1 large egg + 1 egg yolk (room temperature)',
-          '1 tbsp vanilla bean paste or extract',
-          '1 3/4 cups all-purpose flour',
-          '1/2 tsp baking soda',
-          '1/2 tsp salt',
-          '1 cup dark chocolate chunks + 1/2 cup toffee bits'
-        ],
-        ingredientsM: [
-          '170g unsalted butter, browned',
-          '1 - 2 tsp instant espresso powder',
-          '200g light brown sugar',
-          '65g granulated sugar',
-          '1 large egg + 1 egg yolk (room temperature)',
-          '1 tbsp vanilla bean paste or extract',
-          '220g all-purpose flour',
-          '1/2 tsp baking soda',
-          '1/2 tsp salt',
-          '170g dark chocolate chunks + 85g toffee bits'
-        ],
-        steps: [
-          'Brown butter in a saucepan until golden amber with nutty brown bits. Remove from heat.',
-          'Immediately stir 1-2 tsp instant espresso powder into hot brown butter so it blooms. Let cool for 10 minutes.',
-          'Whisk brown sugar, white sugar, and warm espresso brown butter until glossy.',
-          'Add egg, egg yolk, and vanilla; beat vigorously for 1 minute.',
-          'Fold in flour, baking soda, and salt. Gently toss in chocolate chunks and toffee bits.',
-          'Scoop dough balls and chill in fridge for at least 1 hour.',
-          'Bake at 350°F (175°C) for 11-14 minutes until edges are lightly browned.'
+          'Drying Oreo Shells: Scrape off and completely discard all cream filling from Oreos. Pulse the dry cookie shells in a food processor until fine. (IMPORTANT: Any residual fat/cream in the cookie crumbs will ruin shell rise).',
+          'Sifting Dry Mix: Sift almond flour, powdered sugar, and crushed Oreo crumbs together twice. Set aside.',
+          'Double Boiler Swiss Meringue: Separate room-temperature egg whites into a heatproof bowl. Add granulated sugar. Place bowl over a saucepan of SIMMERING water (not boiling, as boiling water will cook/scramble the egg whites). Whisk constantly for 3-4 mins until sugar is completely dissolved and mixture feels smooth between fingers.',
+          'Whipping Meringue: Remove bowl from heat. Beat on a stand mixer on Speed 4 for 1 minute, then add cream of tartar.',
+          'Increase speed to Speed 6 for 3 minutes until thick, then Speed 8 for the final 2 minutes until stiff, glossy peaks form. (Timing varies depending on humidity/temp).',
+          'Macaronage: Fold sifted dry mixture into Swiss meringue in 3 additions using a rubber spatula until batter flows off spatula in a smooth ribbon.',
+          'Piping & Resting: Pipe 1.5-inch rounds onto parchment-lined tray. Tap tray firmly 3 times on counter. Rest 30-45 mins until a skin forms and shells are dry to the touch.',
+          'Baking: Bake at 300°F - 325°F (325°F works best in my oven) for 15 minutes, rotating tray halfway through at the 7-8 minute mark for an even bake.',
+          'Ganache Filling: Heat heavy cream until hot, pour over chopped white chocolate. Stir until smooth, fold in crushed Oreos, let cool to pipeable texture, and sandwich shells together.'
         ]
       },
       {
@@ -521,90 +439,181 @@
         desc: 'Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.',
         time: '40 mins',
         yield: '12 large cookies',
-        img: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=800&q=80',
+        img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80',
         note: 'Pro-tip: If you don\'t have baking soda on hand, substitute with 1 1/2 tsp baking powder!',
         ingredientsUS: [
-          'Cookie Dough: 1/2 cup softened butter, 1/2 cup oil, 1 cup light brown sugar, 1 egg, 1 tsp vanilla, 2 tsp cinnamon, 2 1/2 cups flour, 1/2 tsp baking soda (or 1.5 tsp baking powder), 1/2 tsp salt.',
-          'Streusel: 1/4 cup softened butter, 1/4 cup light brown sugar, 1/3 to 1/2 cup flour, 1/2 tsp cinnamon, pinch of salt.',
-          'Cardamom Icing: 1/2 cup powdered sugar, 1 tbsp softened cream cheese, 1/4 tsp cardamom powder, 1/4 tsp vanilla, 1 tbsp milk.'
+          'Dough: 1/2 cup (1 stick) softened butter',
+          'Dough: 1/2 cup vegetable oil',
+          'Dough: 1 cup light brown sugar',
+          'Dough: 1 large egg',
+          'Dough: 1 tsp pure vanilla extract',
+          'Dough: 2 tsp ground cinnamon',
+          'Dough: 2 1/2 cups all-purpose flour',
+          'Dough: 1/2 tsp baking soda (or 1.5 tsp baking powder)',
+          'Dough: 1/2 tsp salt',
+          'Streusel: 1/4 cup softened butter',
+          'Streusel: 1/4 cup light brown sugar',
+          'Streusel: 1/3 to 1/2 cup flour',
+          'Streusel: 1/2 tsp cinnamon',
+          'Cardamom Icing: 1/2 cup powdered sugar',
+          'Cardamom Icing: 1 tbsp cream cheese',
+          'Cardamom Icing: 1/4 tsp ground cardamom',
+          'Cardamom Icing: 1 tbsp milk'
         ],
         ingredientsM: [
-          'Cookie Dough: 113g softened butter, 100g oil, 215g light brown sugar, 1 egg, 1 tsp vanilla, 2 tsp cinnamon, 325g AP flour, 1/2 tsp baking soda, 1/2 tsp salt.',
-          'Streusel: 56g softened butter, 54g light brown sugar, 46g-65g AP flour, 1/2 tsp cinnamon, pinch of salt.',
-          'Cardamom Icing: 56g powdered sugar, 1 tbsp softened cream cheese, 1/4 tsp cardamom, 1/4 tsp vanilla, 1 tbsp milk.'
+          'Dough: 113g softened butter',
+          'Dough: 100g oil',
+          'Dough: 215g light brown sugar',
+          'Dough: 1 large egg',
+          'Dough: 1 tsp vanilla',
+          'Dough: 2 tsp cinnamon',
+          'Dough: 325g AP flour',
+          'Dough: 1/2 tsp baking soda',
+          'Dough: 1/2 tsp salt',
+          'Streusel: 56g butter, 54g brown sugar, 50g flour, 1/2 tsp cinnamon',
+          'Cardamom Icing: 56g powdered sugar, 1 tbsp cream cheese, 1/4 tsp cardamom, 1 tbsp milk'
         ],
         steps: [
-          'Dough: Combine softened butter, oil, and brown sugar. Beat for 2 minutes until light and fluffy. Add egg and vanilla; mix well. Fold in cinnamon, flour, baking soda, and salt.',
-          'Streusel: Mix butter, brown sugar, cinnamon, salt, and start with 1/3 cup flour. Crumble with fingers. Add extra flour 1 tbsp at a time until it forms pea-sized crumbles.',
-          'Assembly: Scoop 1/4 cup dough balls onto lined baking sheet. Make a thumbprint indent on top and fill generous streusel into the center.',
+          'Beat butter, oil, and brown sugar for 2 minutes until light and fluffy.',
+          'Add egg and vanilla; fold in cinnamon, flour, baking soda, and salt.',
+          'Mix streusel ingredients until pea-sized crumbles form.',
+          'Scoop 1/4 cup dough balls, make a thumbprint indent, fill with streusel.',
           'Bake at 350°F (175°C) for 18-20 minutes.',
-          'Icing: Whisk powdered sugar and softened cream cheese until smooth, then whisk in milk, vanilla, and cardamom until runny.',
-          'Drizzle generously over slightly cooled cookies.'
+          'Whisk icing ingredients until smooth and drizzle over warm cookies.'
         ]
       },
       {
-        id: 5,
-        category: 'macarons',
-        title: "Cookies 'n Cream Oreos Macarons",
-        desc: 'Delicate French macaron shells studded with crushed Oreo crumbs and filled with a rich cookies & cream buttercream.',
-        time: '1 hr 15 mins',
-        yield: '18 macarons',
-        img: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=800&q=80',
-        note: 'Precision matters! Weighing almond flour and egg whites in grams ensures perfect macaron feet.',
+        id: 1,
+        category: 'brownies',
+        title: "Sally's Signature Brown Butter Espresso Brownies",
+        desc: 'Rich, ultra-fudgy brownies with paper-thin crinkle tops, bloomed espresso cocoa, and chocolate pools.',
+        time: '50 mins',
+        yield: '16 squares',
+        img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80',
+        note: 'Blooms espresso powder directly into warm browned butter for maximum chocolate depth.',
         ingredientsUS: [
-          'Shells: ~3 large egg whites, pinch salt, 1/2 cup granulated sugar, 1 cup almond flour, 1 cup powdered sugar, 3 tbsp crushed Oreos.',
-          'Filling: 1/2 cup softened butter, 1/2 cup powdered sugar, 5 ground Oreos, 1 tsp vanilla, pinch salt, splash of milk.'
+          '3/4 cup (1.5 sticks) unsalted butter, browned',
+          '3/4 cup Dutch-process cocoa powder',
+          '2 tsp espresso powder',
+          '1 tsp pure vanilla extract',
+          '3 large eggs (room temperature)',
+          '1 3/4 cups light brown sugar',
+          '3/4 cup + 2 tbsp all-purpose flour',
+          '1/2 tsp sea salt',
+          '3.5 oz chopped Ghirardelli semisweet chocolate bar',
+          '1/2 cup dark chocolate chips'
         ],
         ingredientsM: [
-          'Shells: 100g egg whites, pinch salt, 100g granulated sugar, 100g almond flour, 100g powdered sugar, 20g finely crushed Oreos.',
-          'Filling: 113g room temp butter, 50g powdered sugar, 5 ground Oreos (with filling), 1 capful vanilla, pinch salt, splash of milk.'
+          '170g unsalted butter, browned',
+          '75g Dutch-process cocoa powder',
+          '2 tsp espresso powder',
+          '1 tsp vanilla extract',
+          '3 large eggs',
+          '350g light brown sugar',
+          '94g all-purpose flour',
+          '1/2 tsp sea salt',
+          '100g chopped chocolate bar',
+          '85g dark chocolate chips'
         ],
         steps: [
-          'Shells Preparation: Sift almond flour and powdered sugar together. Whisk in finely crushed Oreos.',
-          'Meringue: Beat egg whites with a pinch of salt until foamy. Slowly add granulated sugar, beating on high until stiff, glossy peaks form.',
-          'Macaronage: Gently fold dry mixture into meringue in thirds using a rubber spatula until batter flows in a ribbon formation off spatula.',
-          'Pipe & Rest: Pipe 1.5-inch rounds onto parchment-lined baking sheets. Tap tray firmly on counter 3 times to release air bubbles. Let rest 30-45 mins until a skin forms and top is dry to touch.',
-          'Bake: Bake at 300°F (150°C) for 14-16 minutes until shells have set feet. Cool completely.',
-          'Filling: Beat room temp butter until creamy. Gradually mix in powdered sugar, vanilla, and salt.',
-          'Fold in ground Oreos and a splash of milk if needed until silky. Pipe onto shells and sandwich together.'
+          'Brown butter in a saucepan until golden flecks appear.',
+          'Whisk cocoa and espresso powder into hot butter.',
+          'Whip eggs and sugar for 5 mins until pale and voluminous.',
+          'Fold butter mixture, flour, salt, and chocolate chunks into batter.',
+          'Bake at 350°F (175°C) for 45-50 minutes in an 8x8 metal pan.'
+        ]
+      },
+      {
+        id: 2,
+        category: 'cookies',
+        title: "Sally's Chewy Chocolate Chip Cookies",
+        desc: 'Super chewy bakery-style cookies with a signature two-temperature bake technique.',
+        time: '35 mins (+ chilling)',
+        yield: '12 large cookies',
+        img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
+        note: 'Bake at 350°F then finish at 370°F for crispy edges.',
+        ingredientsUS: [
+          '3/4 cup + 1 tbsp unsalted butter',
+          '2/3 cup granulated sugar',
+          '3/4 cup light brown sugar',
+          '2 large eggs',
+          '1 tsp vanilla extract',
+          '2 2/3 cups all-purpose flour',
+          '1 tsp baking soda',
+          '1 tsp fine salt',
+          '1.5 cups chocolate chips',
+          'Flaky sea salt'
+        ],
+        ingredientsM: [
+          '190g butter',
+          '130g granulated sugar',
+          '165g brown sugar',
+          '2 eggs',
+          '1 tsp vanilla',
+          '330g AP flour',
+          '1 tsp baking soda',
+          '1 tsp salt',
+          '250g chocolate chips'
+        ],
+        steps: [
+          'Whisk softened butter and sugars for 3 mins until pale.',
+          'Add eggs and vanilla, then fold in flour, soda, salt, and chips.',
+          'Scoop 113g dough balls and chill for 45 mins.',
+          'Bake at 350°F for 14 mins, then 370°F for 2 mins.'
         ]
       }
     ];
 
     let currentCategory = 'all';
 
+    function toggleFav(e, id) {
+      e.stopPropagation();
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(f => f !== id);
+      } else {
+        favorites.push(id);
+      }
+      localStorage.setItem('sally_favs', JSON.stringify(favorites));
+      handleSearch();
+    }
+
     function renderRecipes(items) {
       const grid = document.getElementById('recipeGrid');
       if (items.length === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem;">No delicious bakes match your search! Try searching for 'brownie', 'espresso', or 'macaron'.</p>`;
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem;">No recipes found in this category!</p>`;
         return;
       }
-      grid.innerHTML = items.map(r => `
-        <div class="recipe-card" onclick="openRecipeModal(${r.id})">
-          <div class="card-img-wrapper">
-            <span class="card-tag">${r.category}</span>
-            <img src="${r.img}" alt="${r.title}">
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">${r.title}</h3>
-            <p class="card-desc">${r.desc}</p>
-            <div class="card-meta">
-              <span>⏱ ${r.time}</span>
-              <span>🍪 ${r.yield}</span>
+      grid.innerHTML = items.map(r => {
+        const isFav = favorites.includes(r.id);
+        return `
+          <div class="recipe-card" onclick="openRecipeModal(${r.id})">
+            <div class="card-img-wrapper">
+              <span class="card-tag">${r.category}</span>
+              <button class="fav-btn" onclick="toggleFav(event, ${r.id})">${isFav ? '♥' : '♡'}</button>
+              <img src="${r.img}" alt="${r.title}">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">${r.title}</h3>
+              <p class="card-desc">${r.desc}</p>
+              <div class="card-meta">
+                <span>⏱ ${r.time}</span>
+                <span>🍪 ${r.yield}</span>
+              </div>
             </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function handleSearch() {
       const query = document.getElementById('searchInput').value.toLowerCase();
       const filtered = recipes.filter(r => {
-        const matchesCategory = currentCategory === 'all' || r.category === currentCategory;
+        const matchesCat = currentCategory === 'all' || 
+                          (currentCategory === 'fav' && favorites.includes(r.id)) || 
+                          r.category === currentCategory;
         const matchesSearch = r.title.toLowerCase().includes(query) || 
-                              r.desc.toLowerCase().includes(query) ||
-                              r.ingredientsUS.some(i => i.toLowerCase().includes(query));
-        return matchesCategory && matchesSearch;
+                              r.desc.toLowerCase().includes(query);
+        return matchesCat && matchesSearch;
       });
       renderRecipes(filtered);
     }
@@ -637,13 +646,22 @@
         
         <h3 class="modal-section-title">Ingredients (${activeUnitMode === 'US' ? 'US Customary' : 'Metric Weights'})</h3>
         <ul class="ingredient-list">
-          ${ingredients.map(i => `<li>${i}</li>`).join('')}
+          ${ingredients.map(item => `
+            <li>
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                <input type="checkbox">
+                <span>${item}</span>
+              </label>
+            </li>
+          `).join('')}
         </ul>
 
         <h3 class="modal-section-title">Instructions</h3>
         <ol class="instruction-list">
           ${recipe.steps.map(s => `<li>${s}</li>`).join('')}
         </ol>
+
+        <button class="bottom-back-btn" onclick="closeModal('recipeModal')">← Back to Recipes</button>
       `;
       document.getElementById('recipeModal').style.display = 'flex';
     }
@@ -671,4 +689,3 @@
   </script>
 </body>
 </html>
-
