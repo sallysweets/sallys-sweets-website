@@ -50,7 +50,7 @@
       text-decoration: none;
     }
 
-    nav { display: flex; align-items: center; gap: 1.5rem; }
+    nav { display: flex; align-items: center; gap: 1.25rem; }
 
     nav a {
       color: var(--text-main);
@@ -71,6 +71,17 @@
       font-size: 0.85rem !important;
       cursor: pointer;
       border: none;
+    }
+
+    .order-btn {
+      background: var(--accent-gold);
+      color: #FFF !important;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem !important;
+      cursor: pointer;
+      border: none;
+      font-weight: 600;
     }
 
     /* Hero & Search */
@@ -242,6 +253,7 @@
       padding: 2.5rem;
       position: relative;
     }
+    <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
 
     .close-btn {
       position: absolute;
@@ -299,11 +311,11 @@
       color: var(--text-main);
     }
 
-    /* VIP Email Modal */
+    /* Form Styles */
     .vip-box { text-align: center; padding: 1rem; }
     .vip-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); margin-bottom: 0.5rem; }
-    .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); margin: 1rem 0; font-size: 1rem; }
-    .vip-submit { background: var(--accent-brown); color: #FFF; width: 100%; padding: 0.8rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); margin: 0.4rem 0 1rem; font-size: 1rem; font-family: inherit; }
+    .vip-submit { background: var(--accent-brown); color: #FFF; width: 100%; padding: 0.8rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem; }
 
     .site-alert {
       display: none; background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; padding: 1rem; border-radius: 8px; margin-top: 1rem; font-size: 0.9rem; font-weight: 500;
@@ -322,7 +334,9 @@
     <nav>
       <a href="#recipes">Recipes</a>
       <a onclick="openAboutModal()">About Sally</a>
-      <button class="vip-btn" onclick="openEmailModal()">Unlock Secret Recipes ✦</button>
+      <a onclick="openRequestModal('recipe')">Request a Recipe ✦</a>
+      <button class="order-btn" onclick="openRequestModal('order')">Custom Orders 🛍️</button>
+      <button class="vip-btn" onclick="openEmailModal()">Secret Recipes ✦</button>
     </nav>
   </header>
 
@@ -379,6 +393,39 @@
       </p>
 
       <button class="bottom-back-btn" onclick="closeModal('aboutModal')">← Back to Baking</button>
+    </div>
+  </div>
+
+  <!-- Custom Order & Recipe Request Portal Modal -->
+  <div class="modal-overlay" id="requestModal">
+    <div class="modal-content vip-box" style="text-align: left; max-width: 600px;">
+      <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">✦ SALLY'S SWEETS PORTAL ✦</span>
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Message / Request Sally</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Want to inquire about a custom bake order or request a new recipe for me to post? Send me a message directly!</p>
+      </div>
+
+      <!-- Replace 'your-email@gmail.com' with your real email address -->
+      <form action="https://formsubmit.co/your-email@gmail.com" method="POST">
+        <label style="font-weight: 600; font-size: 0.9rem; color: var(--accent-brown);">Select Message Type</label>
+        <select name="Type" id="requestTypeSelect" class="vip-input" style="background: #FFF; cursor: pointer;" required>
+          <option value="Custom Order Inquiry">🛍️ Custom Order Inquiry (Macarons, Boxes, Events)</option>
+          <option value="Recipe Suggestion">🍪 Recipe Suggestion / Request a Bake</option>
+          <option value="General Inquiry">💬 General Question / Greeting</option>
+        </select>
+
+        <label style="font-weight: 600; font-size: 0.9rem; color: var(--accent-brown);">Your Name</label>
+        <input type="text" name="Name" class="vip-input" placeholder="Enter your full name..." required>
+
+        <label style="font-weight: 600; font-size: 0.9rem; color: var(--accent-brown);">Your Email Address</label>
+        <input type="email" name="Email" class="vip-input" placeholder="Enter your email address..." required>
+
+        <label style="font-weight: 600; font-size: 0.9rem; color: var(--accent-brown);">Your Message / Order Details</label>
+        <textarea name="Message_Details" class="vip-input" style="height: 110px; resize: vertical;" placeholder="Describe your request, flavor ideas, event date, or custom order quantities..." required></textarea>
+
+        <button type="submit" class="vip-submit" style="margin-top: 0.5rem; background: var(--accent-gold);">Send Message to Sally ✦</button>
+      </form>
     </div>
   </div>
 
@@ -750,6 +797,16 @@
 
     function openAboutModal() {
       document.getElementById('aboutModal').style.display = 'flex';
+    }
+
+    function openRequestModal(mode) {
+      const select = document.getElementById('requestTypeSelect');
+      if (mode === 'recipe') {
+        select.value = 'Recipe Suggestion';
+      } else if (mode === 'order') {
+        select.value = 'Custom Order Inquiry';
+      }
+      document.getElementById('requestModal').style.display = 'flex';
     }
 
     function openEmailModal() {
