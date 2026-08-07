@@ -57,6 +57,7 @@
       text-decoration: none;
       font-size: 0.95rem;
       font-weight: 500;
+      cursor: pointer;
       transition: color 0.2s ease;
     }
 
@@ -165,8 +166,8 @@
 
     .recipe-card:hover { transform: translateY(-5px); }
 
-    .card-img-wrapper { height: 240px; position: relative; }
-    .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+    .card-img-wrapper { height: 260px; position: relative; width: 100%; overflow: hidden; }
+    .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 
     .card-tag {
       position: absolute;
@@ -319,8 +320,8 @@
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
-      <a href="#">Recipes</a>
-      <a href="#">About Sally</a>
+      <a href="#recipes">Recipes</a>
+      <a onclick="openAboutModal()">About Sally</a>
       <button class="vip-btn" onclick="openEmailModal()">Unlock Secret Recipes ✦</button>
     </nav>
   </header>
@@ -336,7 +337,7 @@
     </div>
 
     <!-- Category Filters -->
-    <div class="filters">
+    <div class="filters" id="recipes">
       <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
       <button class="filter-btn" onclick="filterRecipes('fav')">Favorites ✦</button>
       <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
@@ -355,6 +356,29 @@
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal('recipeModal')">&times;</button>
       <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- About Sally Modal -->
+  <div class="modal-overlay" id="aboutModal">
+    <div class="modal-content" style="text-align: center; max-width: 650px;">
+      <button class="close-btn" onclick="closeModal('aboutModal')">&times;</button>
+      <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">✦ MEET THE BAKER ✦</span>
+      <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; color: var(--accent-brown); margin: 0.5rem 0 1.5rem;">About Sally</h2>
+      
+      <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
+        Hi there! I’m <strong>Sally</strong>. I’m 20 years old, born in <strong>Baghdad, Iraq</strong>, and moved to the United States when I was 7 years old. I’m currently a junior majoring in <strong>Biomedical Sciences</strong> with aspirations of becoming an <strong>Anesthesiologist</strong>! Outside the kitchen and lecture halls, I love playing soccer whenever I get the chance. ⚽✨
+      </p>
+
+      <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
+        My baking journey started during winter break of my sophomore year in high school. I decided to challenge myself by creating my own business—<strong>Sally’s Sweets</strong>. Instead of starting small, I jumped straight into one of the most notoriously technical desserts in the pastry world: <strong>French Macarons</strong>.
+      </p>
+
+      <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.7;">
+        In just 3 intense weeks, I perfected the macaron process from start to finish, developing my own signature recipes along the way. Every single recipe on this site has been meticulously tested, refined, and crafted with love. Thank you for being here—and remember, this is only the start! 🤎
+      </p>
+
+      <button class="bottom-back-btn" onclick="closeModal('aboutModal')">← Back to Baking</button>
     </div>
   </div>
 
@@ -395,10 +419,10 @@
         id: 1,
         category: 'brownies',
         title: "Sally's Signature Brown Butter Espresso Brownies",
-        desc: 'Rich, ultra-fudgy brownies with paper-thin crinkle tops, bloomed espresso cocoa, and dark chocolate pools.',
+        desc: 'Rich, ultra-fudgy brownies topped with Oreo cookies, paper-thin crinkle tops, bloomed espresso cocoa, and dark chocolate pools.',
         time: '50 mins',
         yield: '16 squares',
-        img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80',
+        img: 'Signature Brownies Espresso Pic.jpg',
         note: 'Blooms espresso powder directly into warm browned butter for maximum chocolate depth.',
         ingredientsUS: [
           '3/4 cup (1.5 sticks) unsalted butter, browned',
@@ -410,7 +434,8 @@
           '3/4 cup + 2 tbsp all-purpose flour',
           '1/2 tsp sea salt',
           '3.5 oz chopped Ghirardelli semisweet chocolate bar',
-          '1/2 cup dark chocolate chips'
+          '1/2 cup dark chocolate chips',
+          'Whole Oreo cookies (for topping)'
         ],
         ingredientsM: [
           '170g unsalted butter, browned',
@@ -422,7 +447,8 @@
           '94g all-purpose flour',
           '1/2 tsp sea salt',
           '100g chopped chocolate bar',
-          '85g dark chocolate chips'
+          '85g dark chocolate chips',
+          'Whole Oreo cookies (for topping)'
         ],
         steps: [
           'Brown butter in a saucepan over medium heat until nutty and golden flecks appear.',
@@ -430,6 +456,7 @@
           'In a stand mixer, whip eggs and light brown sugar for 4-5 minutes until pale, thick, and voluminous.',
           'Gently fold the warm brown butter mixture into the whipped eggs.',
           'Sift in flour and salt. Fold in chopped chocolate bar and chocolate chips until just combined.',
+          'Press whole Oreo cookies into the top of the batter before baking.',
           'Bake at 350°F (175°C) for 45-50 minutes in an 8x8 parchment-lined metal pan.'
         ]
       },
@@ -479,12 +506,12 @@
       {
         id: 3,
         category: 'cookies',
-        title: "Sally's Brown Butter Toffee Espresso Cookies",
-        desc: 'Rich browned butter infused with bloomed espresso powder, packed with dark chocolate chunks and crunchy toffee bits.',
+        title: "Sally's Brown Butter Chocolate Chip Cookies",
+        desc: 'Rich browned butter infused with bloomed espresso powder, packed with melted dark chocolate chunks and finished with edible gold leaf.',
         time: '30 mins (+ chilling)',
         yield: '14 cookies',
-        img: 'https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?auto=format&fit=crop&w=800&q=80',
-        note: 'Inspired by Broma Bakery. Sally\'s touch: 1-2 tsp espresso powder is bloomed directly into the hot browned butter!',
+        img: 'Brown Butter Choc Chip.jpg',
+        note: 'Rich brown butter base with pools of warm melted chocolate and luxurious gold leaf finishing touches.',
         ingredientsUS: [
           '3/4 cup unsalted butter, browned',
           '1 - 2 tsp instant espresso powder',
@@ -495,8 +522,8 @@
           '1 3/4 cups all-purpose flour',
           '1/2 tsp baking soda',
           '1/2 tsp salt',
-          '1 cup dark chocolate chunks',
-          '1/2 cup buttery toffee bits'
+          '1 1/2 cups dark chocolate chunks',
+          'Edible gold leaf flakes & flaky sea salt (for finishing)'
         ],
         ingredientsM: [
           '170g unsalted butter, browned',
@@ -508,16 +535,17 @@
           '220g all-purpose flour',
           '1/2 tsp baking soda',
           '1/2 tsp salt',
-          '170g dark chocolate chunks',
-          '85g toffee bits'
+          '220g dark chocolate chunks',
+          'Edible gold leaf flakes & flaky sea salt'
         ],
         steps: [
           'Brown butter in a saucepan until golden amber. Immediately stir in instant espresso powder to bloom.',
           'Whisk brown sugar, white sugar, and warm espresso brown butter until glossy.',
           'Add egg, egg yolk, and vanilla; beat vigorously for 1 minute.',
-          'Fold in flour, baking soda, and salt. Gently fold in chocolate chunks and toffee bits.',
+          'Fold in flour, baking soda, and salt. Gently fold in dark chocolate chunks.',
           'Chill dough balls in the fridge for at least 1 hour.',
-          'Bake at 350°F (175°C) for 11-14 minutes until golden.'
+          'Bake at 350°F (175°C) for 11-14 minutes until golden.',
+          'Garnish with flaky sea salt and delicate edible gold leaf flakes while warm.'
         ]
       },
       {
@@ -527,7 +555,7 @@
         desc: 'Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.',
         time: '40 mins',
         yield: '12 large cookies',
-        img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80',
+        img: 'Coffee Cake Pic.jpg',
         note: 'Pro-tip: If you don\'t have baking soda on hand, substitute with 1 1/2 tsp baking powder!',
         ingredientsUS: [
           'Dough: 1/2 cup (1 stick) softened butter',
@@ -577,7 +605,7 @@
         desc: 'Delicate Swiss meringue macaron shells with scraped Oreo crumbs, filled with cookies & cream buttercream or white chocolate ganache.',
         time: '1 hr 15 mins',
         yield: '18 macarons',
-        img: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=800&q=80',
+        img: 'Cookie n Cream Macaron Pic.jpg',
         note: 'Swiss Meringue method ensures high stability and glossy feet. ALWAYS remove Oreo cream filling before crushing the cookies for the shell batter!',
         ingredientsUS: [
           'Shells: 100g room temperature egg whites (~3 large)',
@@ -691,7 +719,7 @@
 
         ${recipe.note ? `<div class="note-box">✦ <strong>Sally's Baker Note:</strong> ${recipe.note}</div>` : ''}
 
-        <img src="${recipe.img}" style="width:100%; height:280px; object-fit:cover; border-radius:12px; margin: 1rem 0;" alt="${recipe.title}">
+        <img src="${recipe.img}" style="width:100%; height:320px; object-fit:cover; border-radius:12px; margin: 1rem 0;" alt="${recipe.title}">
         
         <h3 class="modal-section-title">Ingredients (${activeUnitMode === 'US' ? 'US Customary' : 'Metric Weights'})</h3>
         <ul class="ingredient-list">
@@ -718,6 +746,10 @@
     function switchUnits(recipeId, unit) {
       activeUnitMode = unit;
       openRecipeModal(recipeId);
+    }
+
+    function openAboutModal() {
+      document.getElementById('aboutModal').style.display = 'flex';
     }
 
     function openEmailModal() {
