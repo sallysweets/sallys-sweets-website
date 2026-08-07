@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sally's Sweets | Decadent Cookie, Brownie & Macaron Recipes</title>
-  <link rel="icon" type="image/jpeg" href="sweetsbysally%20logo.jpg">
+  <link rel="icon" type="image/png" href="logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -254,7 +254,6 @@
       padding: 2.5rem;
       position: relative;
     }
-    <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
 
     .close-btn {
       position: absolute;
@@ -348,13 +347,14 @@
     
     <!-- Search Bar -->
     <div class="search-container">
-      <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by ingredient or bake (e.g., espresso, macaron, cookies)..." oninput="handleSearch()">
+      <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by ingredient or bake (e.g., espresso, macaron, creami)..." oninput="handleSearch()">
     </div>
 
     <!-- Category Filters -->
     <div class="filters" id="recipes">
       <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
       <button class="filter-btn" onclick="filterRecipes('fav')">Favorites ✦</button>
+      <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami 🍦</button>
       <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
       <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies &amp; Bars</button>
       <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
@@ -407,8 +407,7 @@
         <p style="color: var(--text-muted); font-size: 0.95rem;">Want to inquire about a custom bake order or request a new recipe for me to post? Send me a message directly!</p>
       </div>
 
-      <!-- Replace 'your-email@gmail.com' with your real email address -->
-      <form action="https://formsubmit.co/your-email@gmail.com" method="POST">
+      <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
         <label style="font-weight: 600; font-size: 0.9rem; color: var(--accent-brown);">Select Message Type</label>
         <select name="Type" id="requestTypeSelect" class="vip-input" style="background: #FFF; cursor: pointer;" required>
           <option value="Custom Order Inquiry">🛍️ Custom Order Inquiry (Macarons, Boxes, Events)</option>
@@ -685,6 +684,47 @@
           'Piping & Resting: Pipe 1.5-inch rounds onto parchment-lined tray. Tap tray firmly 3 times on counter. Rest 30-45 mins until a skin forms and shells are dry to the touch.',
           'Baking: Bake at 300°F - 325°F (325°F works best in my oven) for 15 minutes, rotating tray halfway through at the 7-8 minute mark for an even bake.',
           'Ganache Filling: Heat heavy cream until hot, pour over chopped white chocolate. Stir until smooth, fold in crushed Oreos, let cool to pipeable texture, and sandwich shells together.'
+        ]
+      },
+      {
+        id: 6,
+        category: 'creami',
+        title: "High-Protein Dark Chocolate Oreo Creami 🍫🍪",
+        desc: "A thick, ultra-creamy protein pint packed with rich cocoa and crunchy Oreo cookies—without the guilt!",
+        time: "5 mins prep (+ 24hr freeze)",
+        yield: "1 full Ninja Creami pint",
+        img: "oreo-creami.jpg",
+        note: "After the first spin, scrape down the icy sides with a butter knife. If it looks chalky on spin 2, don't add liquid—just hit RESPIN!",
+        ingredientsUS: [
+          "Base: 1.5 cups (approx. 360-400ml) Fairlife milk (skim, 2%, or whole)",
+          "Protein Option: 1 Fairlife Core Power Chocolate Shake (instead of milk)",
+          "Optional Protein Boost: 1 scoop chocolate whey protein (Drop milk to 1.25 cups so it stays under MAX FILL!)",
+          "2 tbsp unsweetened 100% Dutch-process cocoa powder (Ghirardelli recommended)",
+          "2 to 3 tbsp (35-45g) monk fruit sweetener (adjust to taste)",
+          "1/4 tsp (a small pinch) xanthan gum (Don't over-add or it gets gummy!)",
+          "1/2 tsp vanilla bean paste or pure extract",
+          "Pinch of fine salt",
+          "Mix-in: 3 Oreo cookies (CREAM REMOVED, cookie wafers only)"
+        ],
+        ingredientsM: [
+          "Base: 360ml - 400ml Fairlife milk",
+          "Protein Option: 1 Fairlife Core Power Chocolate Shake",
+          "Optional Protein Boost: 1 scoop chocolate whey (use 300ml milk instead)",
+          "15g Dutch-process cocoa powder",
+          "35g - 45g monk fruit sweetener",
+          "1g (small pinch) xanthan gum",
+          "1/2 tsp vanilla bean paste",
+          "Pinch of salt",
+          "Mix-in: 3 Oreo cookies (cream scraped off)"
+        ],
+        steps: [
+          "Whisk all base ingredients together directly in your Ninja Creami pint until smooth.",
+          "Freeze on a level surface in your freezer for 24 hours.",
+          "Remove frozen pint and run the outer plastic sides under warm/hot tap water for 60 seconds.",
+          "Place pint into the Ninja Creami outer bowl and process on the LITE ICE CREAM setting (Full Pint).",
+          "Remove outer lid and use a butter knife to scrape down any thin ice crystals around the inner rim.",
+          "If the texture looks chalky or powdery, do NOT add liquid—simply place it back in and run a RESPIN cycle.",
+          "Once smooth, dig a small hole down the center of the pint, drop in your 3 crushed cream-less Oreos, and run the MIX-IN setting. Enjoy!"
         ]
       }
     ];
