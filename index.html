@@ -30,6 +30,16 @@
       line-height: 1.6;
     }
 
+    /* Custom SVG Brand Icon Styling */
+    .sally-mark {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 4px;
+      color: var(--accent-gold);
+    }
+
     /* Header */
     header {
       background: var(--bg-main);
@@ -72,6 +82,9 @@
       font-size: 0.85rem !important;
       cursor: pointer;
       border: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .order-btn {
@@ -267,6 +280,16 @@
     .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; color: var(--accent-brown); }
     .modal-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin: 1.5rem 0 0.5rem; }
 
+    /* Sub-category Header for Ingredient Groups */
+    .ingredient-category-title {
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-gold);
+      margin: 1.2rem 0 0.4rem;
+    }
+
     /* Interactive Checkbox List */
     .ingredient-list { list-style: none; padding-left: 0; }
     .ingredient-list li { margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
@@ -334,9 +357,12 @@
     <nav>
       <a href="#recipes">Recipes</a>
       <a onclick="openAboutModal()">About Sally</a>
-      <a onclick="openRequestModal('recipe')">Request a Recipe ✦</a>
-      <button class="order-btn" onclick="openRequestModal('order')">Custom Orders 🛍️</button>
-      <button class="vip-btn" onclick="openEmailModal()">Secret Recipes ✦</button>
+      <a onclick="openRequestModal('recipe')">Request a Recipe</a>
+      <button class="order-btn" onclick="openRequestModal('order')">Custom Orders</button>
+      <button class="vip-btn" onclick="openEmailModal()">
+        Secret Recipes
+        <svg class="sally-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8c0-2.2 2.2-4 5-4s5 1.8 5 4H7z" fill="var(--accent-gold)" opacity="0.3"/><rect x="6" y="8" width="12" height="3" rx="1.5" fill="#FFF"/><rect x="6" y="13" width="12" height="3" rx="1.5" fill="#FFF"/></svg>
+      </button>
     </nav>
   </header>
 
@@ -353,8 +379,8 @@
     <!-- Category Filters -->
     <div class="filters" id="recipes">
       <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
-      <button class="filter-btn" onclick="filterRecipes('fav')">Favorites ✦</button>
-      <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami 🍦</button>
+      <button class="filter-btn" onclick="filterRecipes('fav')">Favorites ♥</button>
+      <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami</button>
       <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
       <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies &amp; Bars</button>
       <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
@@ -378,7 +404,7 @@
   <div class="modal-overlay" id="aboutModal">
     <div class="modal-content" style="text-align: center; max-width: 650px;">
       <button class="close-btn" onclick="closeModal('aboutModal')">&times;</button>
-      <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">✦ MEET THE BAKER ✦</span>
+      <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">MEET THE BAKER</span>
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; color: var(--accent-brown); margin: 0.5rem 0 1.5rem;">About Sally</h2>
       
       <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
@@ -402,7 +428,7 @@
     <div class="modal-content vip-box" style="text-align: left; max-width: 600px;">
       <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
       <div style="text-align: center; margin-bottom: 1.2rem;">
-        <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">✦ SALLY'S SWEETS PORTAL ✦</span>
+        <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS PORTAL</span>
         <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Message / Request Sally</h2>
         <p style="color: var(--text-muted); font-size: 0.95rem;">Want to inquire about a custom bake order or request a new recipe for me to post? Send me a message directly!</p>
       </div>
@@ -410,9 +436,9 @@
       <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
         <label style="font-weight: 600; font-size: 0.9rem; color: var(--accent-brown);">Select Message Type</label>
         <select name="Type" id="requestTypeSelect" class="vip-input" style="background: #FFF; cursor: pointer;" required>
-          <option value="Custom Order Inquiry">🛍️ Custom Order Inquiry (Macarons, Boxes, Events)</option>
-          <option value="Recipe Suggestion">🍪 Recipe Suggestion / Request a Bake</option>
-          <option value="General Inquiry">💬 General Question / Greeting</option>
+          <option value="Custom Order Inquiry">Custom Order Inquiry (Macarons, Boxes, Events)</option>
+          <option value="Recipe Suggestion">Recipe Suggestion / Request a Bake</option>
+          <option value="General Inquiry">General Question / Greeting</option>
         </select>
 
         <label style="font-weight: 600; font-size: 0.9rem; color: var(--accent-brown);">Your Name</label>
@@ -424,7 +450,7 @@
         <label style="font-weight: 600; font-size: 0.9rem; color: var(--accent-brown);">Your Message / Order Details</label>
         <textarea name="Message_Details" class="vip-input" style="height: 110px; resize: vertical;" placeholder="Describe your request, flavor ideas, event date, or custom order quantities..." required></textarea>
 
-        <button type="submit" class="vip-submit" style="margin-top: 0.5rem; background: var(--accent-gold);">Send Message to Sally ✦</button>
+        <button type="submit" class="vip-submit" style="margin-top: 0.5rem; background: var(--accent-gold);">Send Message to Sally</button>
       </form>
     </div>
   </div>
@@ -433,7 +459,7 @@
   <div class="modal-overlay" id="emailModal">
     <div class="modal-content vip-box">
       <button class="close-btn" onclick="closeModal('emailModal')">&times;</button>
-      <span>✦ SALLY'S SWEETS CLUB ✦</span>
+      <span>SALLY'S SWEETS CLUB</span>
       <h2>Get Exclusive Secret Recipes</h2>
       <p style="color: var(--text-muted);">Sign up with your email to unlock Sally's unreleased notes app recipes &amp; baking tips!</p>
       
@@ -448,13 +474,13 @@
       </form>
 
       <div id="siteAlert" class="site-alert">
-        ✦ Check your inbox <i>(and spam/promotions folder just in case!)</i> for your secret welcome recipes! 🍪
+        Check your inbox <i>(and spam/promotions folder just in case!)</i> for your secret welcome recipes!
       </div>
     </div>
   </div>
 
   <footer>
-    <p>&copy; 2026 <strong>Sally's Sweets</strong>. Crafted with love. <span>✦</span></p>
+    <p>&copy; 2026 <strong>Sally's Sweets</strong>. Crafted with love in Arizona.</p>
   </footer>
 
   <script>
@@ -605,36 +631,48 @@
         img: 'Coffee Cake Pic.jpg',
         note: 'Pro-tip: If you don\'t have baking soda on hand, substitute with 1 1/2 tsp baking powder!',
         ingredientsUS: [
-          'Dough: 1/2 cup (1 stick) softened butter',
-          'Dough: 1/2 cup vegetable oil',
-          'Dough: 1 cup light brown sugar',
-          'Dough: 1 large egg',
-          'Dough: 1 tsp pure vanilla extract',
-          'Dough: 2 tsp ground cinnamon',
-          'Dough: 2 1/2 cups all-purpose flour',
-          'Dough: 1/2 tsp baking soda (or 1.5 tsp baking powder)',
-          'Dough: 1/2 tsp salt',
-          'Streusel: 1/4 cup softened butter',
-          'Streusel: 1/4 cup light brown sugar',
-          'Streusel: 1/3 to 1/2 cup flour',
-          'Streusel: 1/2 tsp cinnamon',
-          'Cardamom Icing: 1/2 cup powdered sugar',
-          'Cardamom Icing: 1 tbsp cream cheese',
-          'Cardamom Icing: 1/4 tsp ground cardamom',
-          'Cardamom Icing: 1 tbsp milk'
+          'CATEGORY_HEADER:For the Dough',
+          '1/2 cup (1 stick) softened butter',
+          '1/2 cup vegetable oil',
+          '1 cup light brown sugar',
+          '1 large egg',
+          '1 tsp pure vanilla extract',
+          '2 tsp ground cinnamon',
+          '2 1/2 cups all-purpose flour',
+          '1/2 tsp baking soda (or 1.5 tsp baking powder)',
+          '1/2 tsp salt',
+          'CATEGORY_HEADER:For the Streusel Crumble',
+          '1/4 cup softened butter',
+          '1/4 cup light brown sugar',
+          '1/3 to 1/2 cup flour',
+          '1/2 tsp cinnamon',
+          'CATEGORY_HEADER:For the Cardamom Icing',
+          '1/2 cup powdered sugar',
+          '1 tbsp cream cheese',
+          '1/4 tsp ground cardamom',
+          '1 tbsp milk'
         ],
         ingredientsM: [
-          'Dough: 113g softened butter',
-          'Dough: 100g oil',
-          'Dough: 215g light brown sugar',
-          'Dough: 1 large egg',
-          'Dough: 1 tsp vanilla',
-          'Dough: 2 tsp cinnamon',
-          'Dough: 325g AP flour',
-          'Dough: 1/2 tsp baking soda',
-          'Dough: 1/2 tsp salt',
-          'Streusel: 56g butter, 54g brown sugar, 50g flour, 1/2 tsp cinnamon',
-          'Cardamom Icing: 56g powdered sugar, 1 tbsp cream cheese, 1/4 tsp cardamom, 1 tbsp milk'
+          'CATEGORY_HEADER:For the Dough',
+          '113g softened butter',
+          '100g oil',
+          '215g light brown sugar',
+          '1 large egg',
+          '1 tsp vanilla',
+          '2 tsp cinnamon',
+          '325g AP flour',
+          '1/2 tsp baking soda',
+          '1/2 tsp salt',
+          'CATEGORY_HEADER:For the Streusel Crumble',
+          '56g butter',
+          '54g brown sugar',
+          '50g flour',
+          '1/2 tsp cinnamon',
+          'CATEGORY_HEADER:For the Cardamom Icing',
+          '56g powdered sugar',
+          '1 tbsp cream cheese',
+          '1/4 tsp ground cardamom',
+          '1 tbsp milk'
         ],
         steps: [
           'Beat butter, oil, and brown sugar for 2 minutes until light and fluffy.',
@@ -655,24 +693,42 @@
         img: 'Cookie n Cream Macaron Pic.jpg',
         note: 'Swiss Meringue method ensures high stability and glossy feet. ALWAYS remove Oreo cream filling before crushing the cookies for the shell batter!',
         ingredientsUS: [
-          'Shells: 100g room temperature egg whites (~3 large)',
-          'Shells: 100g granulated sugar',
-          'Shells: 100g fine almond flour',
-          'Shells: 100g powdered sugar',
-          'Shells: 20g finely crushed Oreo cookie shells (CREAM REMOVED)',
-          'Shells: 1/4 tsp cream of tartar',
-          'Filling (Option 1): 1/2 cup softened butter, 1/2 cup powdered sugar, 5 ground Oreos, 1 tsp vanilla, pinch salt',
-          'Filling (Option 2 - White Chocolate Ganache): 100g white chocolate, 50g heavy whipping cream, 3 crushed Oreos'
+          'CATEGORY_HEADER:For the Shells',
+          '100g room temperature egg whites (~3 large)',
+          '100g granulated sugar',
+          '100g fine almond flour',
+          '100g powdered sugar',
+          '20g finely crushed Oreo cookie shells (CREAM REMOVED)',
+          '1/4 tsp cream of tartar',
+          'CATEGORY_HEADER:Option 1: Buttercream Filling',
+          '1/2 cup softened butter',
+          '1/2 cup powdered sugar',
+          '5 ground Oreos',
+          '1 tsp vanilla',
+          'Pinch salt',
+          'CATEGORY_HEADER:Option 2: White Chocolate Ganache',
+          '100g white chocolate',
+          '50g heavy whipping cream',
+          '3 crushed Oreos'
         ],
         ingredientsM: [
-          'Shells: 100g room temperature egg whites',
-          'Shells: 100g granulated sugar',
-          'Shells: 100g almond flour',
-          'Shells: 100g powdered sugar',
-          'Shells: 20g finely crushed Oreo cookies (cream scraped off)',
-          'Shells: 1g cream of tartar',
-          'Filling (Option 1): 113g butter, 50g powdered sugar, 5 ground Oreos, 1 tsp vanilla, pinch salt',
-          'Filling (Option 2 - White Chocolate Ganache): 100g white chocolate, 50g heavy whipping cream, 3 crushed Oreos'
+          'CATEGORY_HEADER:For the Shells',
+          '100g room temperature egg whites',
+          '100g granulated sugar',
+          '100g almond flour',
+          '100g powdered sugar',
+          '20g finely crushed Oreo cookies (cream scraped off)',
+          '1g cream of tartar',
+          'CATEGORY_HEADER:Option 1: Buttercream Filling',
+          '113g butter',
+          '50g powdered sugar',
+          '5 ground Oreos',
+          '1 tsp vanilla',
+          'Pinch salt',
+          'CATEGORY_HEADER:Option 2: White Chocolate Ganache',
+          '100g white chocolate',
+          '50g heavy whipping cream',
+          '3 crushed Oreos'
         ],
         steps: [
           'Drying Oreo Shells: Scrape off and completely discard all cream filling from Oreos. Pulse dry cookie shells in a food processor until fine. (IMPORTANT: Any residual fat/cream in the cookie crumbs will ruin shell rise).',
@@ -797,7 +853,7 @@
 
       modalBody.innerHTML = `
         <h2 class="modal-title">${recipe.title}</h2>
-        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">⏱ ${recipe.time} &nbsp;|&nbsp; 🍪 Yield: ${recipe.yield}</p>
+        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">⏱ ${recipe.time} &nbsp;|&nbsp; Yield: ${recipe.yield}</p>
         
         <div class="unit-switcher">
           <span>Units:</span>
@@ -805,20 +861,26 @@
           <button class="unit-toggle-btn ${activeUnitMode === 'M' ? 'active' : ''}" onclick="switchUnits(${recipe.id}, 'M')">M</button>
         </div>
 
-        ${recipe.note ? `<div class="note-box">✦ <strong>Sally's Baker Note:</strong> ${recipe.note}</div>` : ''}
+        ${recipe.note ? `<div class="note-box"><svg class="sally-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8c0-2.2 2.2-4 5-4s5 1.8 5 4H7z" fill="var(--accent-gold)" opacity="0.3"/><rect x="6" y="8" width="12" height="3" rx="1.5" fill="var(--accent-brown)"/><rect x="6" y="13" width="12" height="3" rx="1.5" fill="var(--accent-brown)"/></svg> <strong>Sally's Baker Note:</strong> ${recipe.note}</div>` : ''}
 
         <img src="${recipe.img}" style="width:100%; height:320px; object-fit:cover; border-radius:12px; margin: 1rem 0;" alt="${recipe.title}">
         
         <h3 class="modal-section-title">Ingredients (${activeUnitMode === 'US' ? 'US Customary' : 'Metric Weights'})</h3>
         <ul class="ingredient-list">
-          ${ingredients.map(item => `
-            <li>
-              <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-                <input type="checkbox">
-                <span>${item}</span>
-              </label>
-            </li>
-          `).join('')}
+          ${ingredients.map(item => {
+            if (item.startsWith('CATEGORY_HEADER:')) {
+              const headerText = item.replace('CATEGORY_HEADER:', '');
+              return `<div class="ingredient-category-title">${headerText}</div>`;
+            }
+            return `
+              <li>
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                  <input type="checkbox">
+                  <span>${item}</span>
+                </label>
+              </li>
+            `;
+          }).join('')}
         </ul>
 
         <h3 class="modal-section-title">Instructions</h3>
