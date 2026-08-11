@@ -622,7 +622,7 @@
       <!-- Clean In-Modal Phone Login View -->
       <div id="phoneAuthView" style="display: none;">
         <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your phone number:</p>
-        <input type="tel" id="authPhone" class="vip-input" placeholder="+1 234 567 8900" style="margin-bottom: 1rem;">
+        <input type="tel" id="authPhone" class="vip-input" placeholder="(555) 123-4567" style="margin-bottom: 1rem;">
         <button class="app-download-btn" id="sendSmsBtn" style="width: 100%; margin-top: 0;" onclick="sendSmsCode()">Send SMS Code</button>
         
         <div id="smsCodeSection" style="display: none; margin-top: 1.5rem;">
@@ -779,8 +779,17 @@
     window.confirmationResultObj = null;
 
     window.sendSmsCode = async () => {
-      const phoneNumber = document.getElementById('authPhone').value;
-      if (!phoneNumber || phoneNumber.length < 10) return alert("Please enter a valid phone number with country code.");
+      let rawInput = document.getElementById('authPhone').value.trim();
+      let phoneNumber = rawInput.replace(/[\s-()]/g, ''); // Strip spaces and dashes
+      
+      // Auto-add +1 for US numbers if they just typed 10 digits
+      if (phoneNumber.length === 10 && !phoneNumber.startsWith('+')) {
+        phoneNumber = '+1' + phoneNumber;
+      }
+
+      if (!phoneNumber || phoneNumber.length < 11) {
+        return alert("Please enter a valid 10-digit phone number.");
+      }
 
       if (!window.recaptchaVerifier) {
         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
@@ -794,9 +803,13 @@
         document.getElementById('smsCodeSection').style.display = 'block';
       } catch (error) {
         alert("Phone Login Error: " + error.message);
+        // Reset the verifier without destroying it so they can try again safely!
         if (window.recaptchaVerifier) {
-          window.recaptchaVerifier.clear();
-          window.recaptchaVerifier = null;
+          window.recaptchaVerifier.render().then(widgetId => {
+            if (typeof grecaptcha !== 'undefined') {
+              grecaptcha.reset(widgetId);
+            }
+          }).catch(() => {});
         }
       }
     };
