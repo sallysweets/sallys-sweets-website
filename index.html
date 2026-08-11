@@ -286,6 +286,7 @@
       padding-top: 1rem;
       font-size: 0.85rem;
       color: var(--text-muted);
+      font-weight: 500;
     }
 
     /* Modals */
@@ -473,21 +474,59 @@
       padding: 0.8rem;
       border-radius: 8px;
       border: 1px solid var(--soft-border);
-      margin: 0.4rem 0 1rem;
       font-size: 1rem;
       font-family: inherit;
     }
-    .vip-submit {
-      background: var(--accent-brown);
-      color: #FFF;
+    
+    .social-btn {
       width: 100%;
       padding: 0.8rem;
-      border: none;
       border-radius: 8px;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 0.5rem;
+      border: 1px solid var(--soft-border);
+      background: #FFF;
+      color: var(--text-main);
+      transition: background 0.2s;
     }
+    
+    .social-btn:hover {
+      background: var(--pill-bg);
+    }
+    
+    .social-btn.apple {
+      background: #000;
+      color: #FFF;
+      border: none;
+    }
+    
+    .social-btn.apple:hover {
+      background: #333;
+    }
+    
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin: 1.5rem 0;
+    }
+    
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--soft-border);
+    }
+    
+    .divider:not(:empty)::before { margin-right: .5em; }
+    .divider:not(:empty)::after { margin-left: .5em; }
 
     footer {
       text-align: center;
@@ -556,20 +595,25 @@
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-brown); margin: 0.5rem 0 1rem;">Unlock the Full Experience</h2>
       
       <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
-        Log in or download the free Sally's Sweets app to view full step-by-step instructions and access exclusive digital kitchen features!
+        Log in or download the free app to view full step-by-step instructions and access exclusive digital kitchen features!
       </p>
 
-      <div style="text-align: left; background: var(--bg-main); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
-        <h4 style="color: var(--accent-brown); margin-bottom: 10px;">App-Exclusive Features:</h4>
-        <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: var(--text-main);">
-          <li style="margin-bottom: 8px;">👩‍🍳 <strong>Sally's AI Assistant:</strong> Ask questions live while baking!</li>
-          <li style="margin-bottom: 8px;">👥 <strong>Bake Together:</strong> Live sync rooms to bake long-distance.</li>
-          <li style="margin-bottom: 8px;">📱 <strong>Baking Mode:</strong> Screen-lock and smart timers.</li>
-        </ul>
-      </div>
+      <button class="social-btn apple"> Continue with Apple</button>
+      <button class="social-btn">
+        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Continue with Google
+      </button>
+      <button class="social-btn">📱 Continue with Phone Number</button>
 
-      <input type="email" class="vip-input" placeholder="Email address...">
-      <input type="password" class="vip-input" placeholder="Password...">
+      <div class="divider">OR</div>
+
+      <input type="email" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
+      <input type="password" class="vip-input" placeholder="Password..." style="margin-bottom: 1rem;">
       <button class="app-download-btn" style="width: 100%; margin-top: 0;">Log In / Create Account</button>
     </div>
   </div>
@@ -599,14 +643,14 @@
       </div>
       <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
         <label style="font-weight: 600; font-size: 0.9rem;">Select Message Type</label>
-        <select name="Type" class="vip-input" style="background: #FFF;" required>
+        <select name="Type" class="vip-input" style="background: #FFF; margin-bottom: 1rem;" required>
           <option value="Custom Order Inquiry">Custom Order Inquiry</option>
           <option value="General Inquiry">General Question</option>
         </select>
         <label style="font-weight: 600; font-size: 0.9rem;">Your Name</label>
-        <input type="text" name="Name" class="vip-input" required>
+        <input type="text" name="Name" class="vip-input" style="margin-bottom: 1rem;" required>
         <label style="font-weight: 600; font-size: 0.9rem;">Your Email</label>
-        <input type="email" name="Email" class="vip-input" required>
+        <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
         <button type="submit" class="vip-submit" style="background: var(--accent-gold);">Send Message</button>
       </form>
     </div>
@@ -814,15 +858,15 @@
             <p class="card-desc">${r.desc}</p>
             
             <div class="macro-row">
-              <span class="macro-pill">🔥 ${r.macros.cal} kcal</span>
-              <span class="macro-pill">💪 ${r.macros.pro}g Protein</span>
-              <span class="macro-pill">🌾 ${r.macros.carb}g Carbs</span>
-              <span class="macro-pill">🥑 ${r.macros.fat}g Fat</span>
+              <span class="macro-pill">${r.macros.cal} kcal</span>
+              <span class="macro-pill">${r.macros.pro}g Protein</span>
+              <span class="macro-pill">${r.macros.carb}g Carbs</span>
+              <span class="macro-pill">${r.macros.fat}g Fat</span>
             </div>
 
             <div class="card-meta">
-              <span>⏱ ${r.time}</span>
-              <span>🍪 ${r.yield}</span>
+              <span>Prep: ${r.time}</span>
+              <span>Yield: ${r.yield}</span>
             </div>
           </div>
         </div>
@@ -853,13 +897,13 @@
 
       modalBody.innerHTML = `
         <h2 class="modal-title">${recipe.title}</h2>
-        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">⏱ ${recipe.time} &nbsp;|&nbsp; Yield: ${recipe.yield}</p>
+        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Prep: ${recipe.time} &nbsp;|&nbsp; Yield: ${recipe.yield}</p>
         
         <div class="macro-row" style="margin-top: 10px;">
-          <span class="macro-pill" style="font-size: 0.9rem;">🔥 ${recipe.macros.cal} kcal</span>
-          <span class="macro-pill" style="font-size: 0.9rem;">💪 ${recipe.macros.pro}g Protein</span>
-          <span class="macro-pill" style="font-size: 0.9rem;">🌾 ${recipe.macros.carb}g Carbs</span>
-          <span class="macro-pill" style="font-size: 0.9rem;">🥑 ${recipe.macros.fat}g Fat</span>
+          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.cal} kcal</span>
+          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.pro}g Protein</span>
+          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.carb}g Carbs</span>
+          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.fat}g Fat</span>
         </div>
         
         <div class="controls-row">
