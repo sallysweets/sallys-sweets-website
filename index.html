@@ -598,23 +598,41 @@
         Log in or download the free app to view full step-by-step instructions and access exclusive digital kitchen features!
       </p>
 
-      <button class="social-btn apple" onclick="handleAppleLogin()"> Continue with Apple</button>
-      <button class="social-btn" onclick="handleGoogleLogin()">
-        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-        </svg>
-        Continue with Google
-      </button>
-      <button class="social-btn" onclick="handlePhoneLogin()">📱 Continue with Phone Number</button>
+      <!-- Main Login View (Email & Social) -->
+      <div id="mainAuthView">
+        <button class="social-btn apple" onclick="handleAppleLogin()"> Continue with Apple</button>
+        <button class="social-btn" onclick="handleGoogleLogin()">
+          <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Continue with Google
+        </button>
+        <button class="social-btn" onclick="showPhoneAuthView()">📱 Continue with Phone Number</button>
 
-      <div class="divider">OR</div>
+        <div class="divider">OR</div>
 
-      <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
-      <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 1rem;">
-      <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="handleEmailAuth()">Log In / Create Account</button>
+        <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
+        <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 1rem;">
+        <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="handleEmailAuth()">Log In / Create Account</button>
+      </div>
+
+      <!-- Clean In-Modal Phone Login View -->
+      <div id="phoneAuthView" style="display: none;">
+        <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your phone number:</p>
+        <input type="tel" id="authPhone" class="vip-input" placeholder="+1 234 567 8900" style="margin-bottom: 1rem;">
+        <button class="app-download-btn" id="sendSmsBtn" style="width: 100%; margin-top: 0;" onclick="sendSmsCode()">Send SMS Code</button>
+        
+        <div id="smsCodeSection" style="display: none; margin-top: 1.5rem;">
+          <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter the 6-digit code:</p>
+          <input type="text" id="authCode" class="vip-input" placeholder="123456" style="margin-bottom: 1rem; text-align: center; letter-spacing: 4px; font-size: 1.2rem;">
+          <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="verifySmsCode()">Verify & Log In</button>
+        </div>
+
+        <button class="login-btn" style="width: 100%; margin-top: 1.5rem; border: none; background: var(--pill-bg);" onclick="showMainAuthView()">← Back to Email / Social</button>
+      </div>
       
       <!-- Hidden container required by Firebase for SMS verification -->
       <div id="recaptcha-container" style="margin-top: 10px;"></div>
@@ -665,7 +683,6 @@
 
   <!-- MODULE SCRIPT FOR FIREBASE INTEGRATION -->
   <script type="module">
-    // Import Firebase SDKs
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { 
       getAuth, 
@@ -680,7 +697,6 @@
       signOut
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // Your exact Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyC2NAV9FP1Ac8EizCyLZW8Oap-AxjdpYQo",
       authDomain: "sallys-sweets.firebaseapp.com",
@@ -691,25 +707,20 @@
       measurementId: "G-5GK0F3D3MW"
     };
 
-    // Initialize Firebase and Auth
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Track global login state
     window.currentUser = null;
 
-    // Listen for Auth changes
     onAuthStateChanged(auth, (user) => {
       window.currentUser = user;
       const mainLoginBtn = document.getElementById('mainLoginBtn');
       
       if (user) {
-        // User is logged in! Update button and close login modal
         mainLoginBtn.innerText = "Log Out";
         mainLoginBtn.onclick = () => signOut(auth);
         window.closeModal('loginModal');
         
-        // If a recipe is currently open, instantly re-render it to remove the lock!
         if (document.getElementById('recipeModal').style.display === 'flex') {
           const titleElem = document.querySelector('.modal-title');
           if (titleElem) {
@@ -718,11 +729,9 @@
           }
         }
       } else {
-        // User is logged out
         mainLoginBtn.innerText = "Login / Sign Up";
         mainLoginBtn.onclick = () => window.openLoginModal();
         
-        // If a recipe is currently open, lock it back up
         if (document.getElementById('recipeModal').style.display === 'flex') {
           const titleElem = document.querySelector('.modal-title');
           if (titleElem) {
@@ -733,8 +742,22 @@
       }
     });
 
-    // --- Authentication Functions ---
+    // --- Authentication UI Toggles ---
+    window.showPhoneAuthView = function() {
+      document.getElementById('mainAuthView').style.display = 'none';
+      document.getElementById('phoneAuthView').style.display = 'block';
+      document.getElementById('smsCodeSection').style.display = 'none';
+      document.getElementById('sendSmsBtn').style.display = 'block';
+      document.getElementById('authPhone').value = '';
+      document.getElementById('authCode').value = '';
+    };
 
+    window.showMainAuthView = function() {
+      document.getElementById('phoneAuthView').style.display = 'none';
+      document.getElementById('mainAuthView').style.display = 'block';
+    };
+
+    // --- Authentication Functions ---
     window.handleGoogleLogin = async () => {
       const provider = new GoogleAuthProvider();
       try {
@@ -753,10 +776,11 @@
       }
     };
 
-    window.handlePhoneLogin = async () => {
-      // You can enter your number like +14802425583 here!
-      const phoneNumber = window.prompt("Enter your phone number with country code (e.g., +14802425583):");
-      if (!phoneNumber) return;
+    window.confirmationResultObj = null;
+
+    window.sendSmsCode = async () => {
+      const phoneNumber = document.getElementById('authPhone').value;
+      if (!phoneNumber || phoneNumber.length < 10) return alert("Please enter a valid phone number with country code.");
 
       if (!window.recaptchaVerifier) {
         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
@@ -765,11 +789,9 @@
       }
 
       try {
-        const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
-        const code = window.prompt("Success! Enter the 6-digit SMS code sent to your phone:");
-        if (code) {
-          await confirmationResult.confirm(code);
-        }
+        window.confirmationResultObj = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+        document.getElementById('sendSmsBtn').style.display = 'none';
+        document.getElementById('smsCodeSection').style.display = 'block';
       } catch (error) {
         alert("Phone Login Error: " + error.message);
         if (window.recaptchaVerifier) {
@@ -779,16 +801,26 @@
       }
     };
 
+    window.verifySmsCode = async () => {
+      const code = document.getElementById('authCode').value;
+      if (!code) return alert("Please enter the 6-digit code.");
+      if (!window.confirmationResultObj) return;
+
+      try {
+        await window.confirmationResultObj.confirm(code);
+      } catch (error) {
+        alert("Invalid code: " + error.message);
+      }
+    };
+
     window.handleEmailAuth = async () => {
       const email = document.getElementById('authEmail').value;
       const pass = document.getElementById('authPass').value;
       if (!email || !pass) return alert("Please enter both an email and password.");
 
       try {
-        // Try logging in first
         await signInWithEmailAndPassword(auth, email, pass);
       } catch(error) {
-        // If the account doesn't exist, create it automatically!
         if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
           try {
             await createUserWithEmailAndPassword(auth, email, pass);
@@ -802,7 +834,6 @@
     };
 
     // --- Legacy Site Logic ---
-
     window.activeUnitMode = 'US';
     window.currentCategory = 'all';
 
@@ -1091,7 +1122,6 @@
 
       let instructionsHtml = "";
       
-      // If NOT logged in, show the App Wall
       if (!window.currentUser) {
         instructionsHtml = `
           <div class="locked-container">
@@ -1119,7 +1149,6 @@
           </div>
         `;
       } else {
-        // If LOGGED IN, show the real instructions!
         instructionsHtml = `
           <ol style="padding-left: 1.5rem; line-height: 2; margin-top: 1rem; color: var(--text-main);">
             ${recipe.steps.map(step => `<li style="margin-bottom: 0.8rem;">${step}</li>`).join('')}
@@ -1174,7 +1203,8 @@
     window.openRequestModal = function() { document.getElementById('requestModal').style.display = 'flex'; };
     window.openLoginModal = function() { 
       document.getElementById('recipeModal').style.display = 'none';
-      document.getElementById('loginModal').style.display = 'flex'; 
+      document.getElementById('loginModal').style.display = 'flex';
+      window.showMainAuthView(); // Always start on the main auth view
     };
     
     window.closeModal = function(modalId) {
