@@ -547,7 +547,7 @@
       <a href="#recipes">Recipes</a>
       <a onclick="openAboutModal()">About Sally</a>
       <a onclick="openRequestModal('order')">Custom Orders</a>
-      <button class="login-btn" onclick="openLoginModal()">Login / Sign Up</button>
+      <button class="login-btn" id="mainLoginBtn" onclick="openLoginModal()">Login / Sign Up</button>
       
       <div class="social-links">
         <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="social-icon" title="Instagram">📸</a>
@@ -598,8 +598,8 @@
         Log in or download the free app to view full step-by-step instructions and access exclusive digital kitchen features!
       </p>
 
-      <button class="social-btn apple" onclick="handleAuthClick('Apple')"> Continue with Apple</button>
-      <button class="social-btn" onclick="handleAuthClick('Google')">
+      <button class="social-btn apple" onclick="handleAppleLogin()"> Continue with Apple</button>
+      <button class="social-btn" onclick="handleGoogleLogin()">
         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
           <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -608,13 +608,16 @@
         </svg>
         Continue with Google
       </button>
-      <button class="social-btn" onclick="handleAuthClick('Phone Number')">📱 Continue with Phone Number</button>
+      <button class="social-btn" onclick="handlePhoneLogin()">📱 Continue with Phone Number</button>
 
       <div class="divider">OR</div>
 
-      <input type="email" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
-      <input type="password" class="vip-input" placeholder="Password..." style="margin-bottom: 1rem;">
-      <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="handleAuthClick('Email')">Log In / Create Account</button>
+      <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
+      <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 1rem;">
+      <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="handleEmailAuth()">Log In / Create Account</button>
+      
+      <!-- Hidden container required by Firebase for SMS verification -->
+      <div id="recaptcha-container" style="margin-top: 10px;"></div>
     </div>
   </div>
 
@@ -660,11 +663,150 @@
     <p>&copy; 2026 <strong>Sally's Sweets</strong>. Crafted with love in Arizona. 🌵</p>
   </footer>
 
-  <script>
-    let activeUnitMode = 'US';
-    let currentCategory = 'all';
+  <!-- MODULE SCRIPT FOR FIREBASE INTEGRATION -->
+  <script type="module">
+    // Import Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged, 
+      GoogleAuthProvider, 
+      OAuthProvider,
+      signInWithPopup,
+      RecaptchaVerifier,
+      signInWithPhoneNumber,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    const recipes = [
+    // Your exact Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2NAV9FP1Ac8EizCyLZW8Oap-AxjdpYQo",
+      authDomain: "sallys-sweets.firebaseapp.com",
+      projectId: "sallys-sweets",
+      storageBucket: "sallys-sweets.firebasestorage.app",
+      messagingSenderId: "294297383937",
+      appId: "1:294297383937:web:a66acf8031233517adfc00",
+      measurementId: "G-5GK0F3D3MW"
+    };
+
+    // Initialize Firebase and Auth
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Track global login state
+    window.currentUser = null;
+
+    // Listen for Auth changes
+    onAuthStateChanged(auth, (user) => {
+      window.currentUser = user;
+      const mainLoginBtn = document.getElementById('mainLoginBtn');
+      
+      if (user) {
+        // User is logged in! Update button and close login modal
+        mainLoginBtn.innerText = "Log Out";
+        mainLoginBtn.onclick = () => signOut(auth);
+        window.closeModal('loginModal');
+        
+        // If a recipe is currently open, instantly re-render it to remove the lock!
+        if (document.getElementById('recipeModal').style.display === 'flex') {
+          const titleElem = document.querySelector('.modal-title');
+          if (titleElem) {
+            const openRecipe = window.recipes.find(r => r.title === titleElem.innerText);
+            if (openRecipe) window.openRecipeModal(openRecipe.id);
+          }
+        }
+      } else {
+        // User is logged out
+        mainLoginBtn.innerText = "Login / Sign Up";
+        mainLoginBtn.onclick = () => window.openLoginModal();
+        
+        // If a recipe is currently open, lock it back up
+        if (document.getElementById('recipeModal').style.display === 'flex') {
+          const titleElem = document.querySelector('.modal-title');
+          if (titleElem) {
+            const openRecipe = window.recipes.find(r => r.title === titleElem.innerText);
+            if (openRecipe) window.openRecipeModal(openRecipe.id);
+          }
+        }
+      }
+    });
+
+    // --- Authentication Functions ---
+
+    window.handleGoogleLogin = async () => {
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+      } catch(error) {
+        alert("Google Login Error: " + error.message);
+      }
+    };
+
+    window.handleAppleLogin = async () => {
+      const provider = new OAuthProvider('apple.com');
+      try {
+        await signInWithPopup(auth, provider);
+      } catch(error) {
+        alert("Apple Sign-In requires an active Apple Developer account to be configured first. Error: " + error.message);
+      }
+    };
+
+    window.handlePhoneLogin = async () => {
+      // You can enter your number like +14802425583 here!
+      const phoneNumber = window.prompt("Enter your phone number with country code (e.g., +14802425583):");
+      if (!phoneNumber) return;
+
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+          'size': 'invisible'
+        });
+      }
+
+      try {
+        const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+        const code = window.prompt("Success! Enter the 6-digit SMS code sent to your phone:");
+        if (code) {
+          await confirmationResult.confirm(code);
+        }
+      } catch (error) {
+        alert("Phone Login Error: " + error.message);
+        if (window.recaptchaVerifier) {
+          window.recaptchaVerifier.clear();
+          window.recaptchaVerifier = null;
+        }
+      }
+    };
+
+    window.handleEmailAuth = async () => {
+      const email = document.getElementById('authEmail').value;
+      const pass = document.getElementById('authPass').value;
+      if (!email || !pass) return alert("Please enter both an email and password.");
+
+      try {
+        // Try logging in first
+        await signInWithEmailAndPassword(auth, email, pass);
+      } catch(error) {
+        // If the account doesn't exist, create it automatically!
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+          try {
+            await createUserWithEmailAndPassword(auth, email, pass);
+          } catch(createError) {
+            alert("Error creating account: " + createError.message);
+          }
+        } else {
+          alert("Login Error: " + error.message);
+        }
+      }
+    };
+
+    // --- Legacy Site Logic ---
+
+    window.activeUnitMode = 'US';
+    window.currentCategory = 'all';
+
+    window.recipes = [
       {
         id: 1,
         category: 'brownies',
@@ -697,6 +839,15 @@
           '1/2 tsp sea salt',
           '100g chopped chocolate bar',
           '85g dark chocolate chips'
+        ],
+        steps: [
+          'Brown the butter in a saucepan over medium heat until nutty and golden brown milk solids appear at the bottom. Remove from heat.',
+          'Let the browned butter cool until it is warm but not hot (around 120°F or 50°C), then whisk in the cocoa powder and instant espresso until smooth.',
+          'In a stand mixer with a whisk attachment, beat the eggs and light brown sugar on medium-high speed for a full 4-5 minutes until pale, thick, and doubled in volume.',
+          'Using a rubber spatula, gently fold the warm cocoa-butter mixture into the whipped eggs until just combined. Do not overmix.',
+          'Sift in the flour and salt, folding gently. Once mostly combined, fold in the chopped chocolate bar and chocolate chips.',
+          'Pour the batter into a parchment-lined 8x8 metal pan. Press whole Oreo cookies evenly into the top of the batter.',
+          'Bake at 350°F (175°C) for 45-50 minutes. Let cool completely in the pan before slicing into 16 equal squares.'
         ]
       },
       {
@@ -729,6 +880,14 @@
           '1 tsp baking soda',
           '1 tsp fine salt',
           '250g chocolate chips'
+        ],
+        steps: [
+          'In a large bowl, whisk the softened butter, granulated sugar, and light brown sugar vigorously for 2-3 minutes until smooth and slightly pale.',
+          'Add the eggs one at a time, followed by the vanilla extract, whisking until the mixture is glossy and well emulsified.',
+          'Switch to a rubber spatula. Fold in the flour, baking soda, and salt just until no dry streaks of flour remain.',
+          'Portion the dough into large 3-tablespoon (approx 55g) balls. Place on a baking sheet and chill in the fridge for exactly 30 minutes.',
+          'Place chilled dough balls on a parchment-lined baking sheet spaced 2 inches apart. Bake at 350°F (175°C) for 14 minutes.',
+          'Increase oven temperature to 370°F (185°C) and bake for a final 2 minutes to crisp the edges. Top with flaky sea salt immediately after removing from the oven.'
         ]
       },
       {
@@ -759,6 +918,15 @@
           '1 tbsp vanilla bean paste',
           '220g all-purpose flour',
           '220g dark chocolate chunks'
+        ],
+        steps: [
+          'Melt butter in a saucepan over medium or medium-low heat until it foams, browns, and releases a nutty aroma. Remove from heat.',
+          'Let the browned butter cool for 2-4 minutes, then stir in the instant espresso powder until dissolved.',
+          'In a large bowl, vigorously whisk the granulated sugar, light brown sugar, and warm browned butter together for 1-2 minutes until glossy.',
+          'Add the egg, egg yolk, and vanilla bean paste, whisking until the mixture is completely smooth and falls in ribbons off the whisk.',
+          'Gently fold in the flour, baking soda, and salt with a spatula. Fold in the dark chocolate chunks until evenly distributed.',
+          'Portion into 2.5-tablespoon (approx 45g) balls using a cookie scoop. Chill the dough in the fridge for 1 hour.',
+          'Bake at 350°F (175°C) for 12 minutes on a parchment-lined baking sheet. Once slightly cooled, decorate with edible gold leaf flakes and flaky sea salt.'
         ]
       },
       {
@@ -789,6 +957,14 @@
           '2 tsp cinnamon',
           '56g powdered sugar',
           '1/4 tsp ground cardamom'
+        ],
+        steps: [
+          'In a stand mixer, beat the softened butter, oil, and light brown sugar on medium speed for 2 full minutes until light and fluffy.',
+          'Add the egg and vanilla, mixing until just combined. Switch to a spatula and gently fold in the cinnamon, flour, baking soda, and salt to form a soft dough.',
+          'In a separate small bowl, mix the streusel butter, brown sugar, flour, and cinnamon with a fork until pea-sized crumbles form.',
+          'Use a 2.5-tablespoon cookie scoop (approx 45g) to portion the dough. Press your thumb firmly into the center of each ball to make a deep indent, and generously fill the hole with streusel.',
+          'Bake at 350°F (175°C) for 18 minutes on a parchment-lined baking sheet. Let cool completely on the pan.',
+          'Whisk the powdered sugar, cream cheese, cardamom, and milk in a bowl until completely smooth. Drizzle over the cookies once cooled.'
         ]
       },
       {
@@ -815,6 +991,15 @@
           '100g powdered sugar',
           '20g crushed Oreo cookie shells',
           '1g cream of tartar'
+        ],
+        steps: [
+          'Carefully scrape all the cream filling off the Oreos. Pulse the dry cookie wafers in a food processor until they are fine powder crumbs.',
+          'Sift the almond flour, powdered sugar, and Oreo crumbs through a fine-mesh sieve twice. Discard any large chunks left behind.',
+          'In a heat-proof bowl set over a pot of simmering water (double boiler), whisk the egg whites and granulated sugar until the sugar is completely dissolved (test by rubbing between your fingers).',
+          'Transfer to a stand mixer and whip on medium-high speed until you achieve stiff, glossy peaks that stand straight up.',
+          'Add the sifted dry ingredients into the meringue. Gently fold with a spatula by scraping the bowl edges and pressing through the center until the batter flows off the spatula in a continuous thick ribbon (figure-8 test).',
+          'Transfer to a piping bag with a medium round tip. Pipe 1.5-inch circles onto a silicone mat. Tap the tray firmly on the counter 3 times to release air bubbles. Let rest at room temperature for 30-40 minutes until a dry skin forms.',
+          'Bake at 325°F (160°C) for 15 minutes. Let cool completely before filling with your choice of buttercream or ganache.'
         ]
       },
       {
@@ -841,11 +1026,20 @@
           "1g xanthan gum",
           "1/2 tsp vanilla bean paste",
           "Mix-in: 3 Oreo cookies"
+        ],
+        steps: [
+          'Pour the Fairlife milk into your Ninja Creami pint container. Add the cocoa powder, monk fruit sweetener, xanthan gum, vanilla bean paste, and salt.',
+          'Use a milk frother or small whisk to vigorously blend the ingredients directly in the pint until completely smooth and no cocoa lumps remain.',
+          'Place the lid on the pint and freeze on a completely level surface in your freezer for a full 24 hours.',
+          'Remove from the freezer and run the sides of the pint under hot tap water for 60 seconds to loosen the icy edges.',
+          'Place the pint in the Ninja Creami machine and process on the LITE ICE CREAM setting.',
+          'Remove the pint, scrape down the icy sides with a butter knife, and if the mixture looks powdery, run it on the RESPIN setting until perfectly creamy.',
+          'Use a spoon to hollow out a 1-inch hole in the center of the ice cream. Add the crushed cream-less Oreos into the hole and run the MIX-IN setting.'
         ]
       }
     ];
 
-    function renderRecipes(items) {
+    window.renderRecipes = function(items) {
       const grid = document.getElementById('recipeGrid');
       grid.innerHTML = items.map(r => `
         <div class="recipe-card" onclick="openRecipeModal(${r.id})">
@@ -871,29 +1065,67 @@
           </div>
         </div>
       `).join('');
-    }
+    };
 
-    function handleSearch() {
+    window.handleSearch = function() {
       const query = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = recipes.filter(r => {
-        const matchesCat = currentCategory === 'all' || r.category === currentCategory;
+      const filtered = window.recipes.filter(r => {
+        const matchesCat = window.currentCategory === 'all' || r.category === window.currentCategory;
         const matchesSearch = r.title.toLowerCase().includes(query) || r.desc.toLowerCase().includes(query);
         return matchesCat && matchesSearch;
       });
-      renderRecipes(filtered);
-    }
+      window.renderRecipes(filtered);
+    };
 
-    function filterRecipes(cat) {
-      currentCategory = cat;
+    window.filterRecipes = function(cat) {
+      window.currentCategory = cat;
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
-      handleSearch();
-    }
+      window.handleSearch();
+    };
 
-    function openRecipeModal(id) {
-      const recipe = recipes.find(r => r.id === id);
+    window.openRecipeModal = function(id) {
+      const recipe = window.recipes.find(r => r.id === id);
       const modalBody = document.getElementById('modalBody');
-      const baseIngredients = activeUnitMode === 'US' ? recipe.ingredientsUS : recipe.ingredientsM;
+      const baseIngredients = window.activeUnitMode === 'US' ? recipe.ingredientsUS : recipe.ingredientsM;
+
+      let instructionsHtml = "";
+      
+      // If NOT logged in, show the App Wall
+      if (!window.currentUser) {
+        instructionsHtml = `
+          <div class="locked-container">
+            <div class="blurred-text">
+              <ol style="padding-left: 1.5rem; line-height: 2;">
+                <li>Preheat oven and prepare your baking pans with parchment paper.</li>
+                <li>In a large bowl, whisk together the dry ingredients until fully combined.</li>
+                <li>Carefully fold the wet ingredients into the dry. Do not overmix the batter.</li>
+                <li>Bake for the specified time. Let cool completely before serving.</li>
+              </ol>
+            </div>
+            
+            <div class="unlock-overlay">
+              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-brown); margin-bottom: 5px;">Unlock the Full Recipe</h3>
+              <p style="color: var(--text-main); font-weight: 500; font-size: 0.95rem; margin-bottom: 5px;">Get the step-by-step instructions in the app!</p>
+              
+              <div class="app-features-grid">
+                <span class="feature-item">✨ AI Assistant</span>
+                <span class="feature-item">👥 Bake Together Co-Op</span>
+                <span class="feature-item">⏱️ Smart Timers</span>
+              </div>
+
+              <button class="app-download-btn" onclick="openLoginModal()">Login / Download App</button>
+            </div>
+          </div>
+        `;
+      } else {
+        // If LOGGED IN, show the real instructions!
+        instructionsHtml = `
+          <ol style="padding-left: 1.5rem; line-height: 2; margin-top: 1rem; color: var(--text-main);">
+            ${recipe.steps.map(step => `<li style="margin-bottom: 0.8rem;">${step}</li>`).join('')}
+          </ol>
+        `;
+      }
 
       modalBody.innerHTML = `
         <h2 class="modal-title">${recipe.title}</h2>
@@ -909,14 +1141,14 @@
         <div class="controls-row">
           <div class="unit-switcher">
             <span class="control-label">Units:</span>
-            <button class="btn-toggle ${activeUnitMode === 'US' ? 'active' : ''}" onclick="switchUnits(${recipe.id}, 'US')">US</button>
-            <button class="btn-toggle ${activeUnitMode === 'M' ? 'active' : ''}" onclick="switchUnits(${recipe.id}, 'M')">Metric</button>
+            <button class="btn-toggle ${window.activeUnitMode === 'US' ? 'active' : ''}" onclick="switchUnits(${recipe.id}, 'US')">US</button>
+            <button class="btn-toggle ${window.activeUnitMode === 'M' ? 'active' : ''}" onclick="switchUnits(${recipe.id}, 'M')">Metric</button>
           </div>
         </div>
 
         <img src="${recipe.img}" style="width:100%; height:320px; object-fit:cover; border-radius:12px; margin: 1rem 0;" alt="${recipe.title}">
         
-        <h3 class="modal-section-title">Ingredients (${activeUnitMode === 'US' ? 'US Customary' : 'Metric Weights'})</h3>
+        <h3 class="modal-section-title">Ingredients (${window.activeUnitMode === 'US' ? 'US Customary' : 'Metric Weights'})</h3>
         <ul class="ingredient-list">
           ${baseIngredients.map(item => `
             <li>
@@ -927,56 +1159,30 @@
           `).join('')}
         </ul>
 
-        <!-- The App Wall / Locked Instructions -->
         <h3 class="modal-section-title">Instructions</h3>
-        <div class="locked-container">
-          <div class="blurred-text">
-            <ol style="padding-left: 1.5rem; line-height: 2;">
-              <li>Preheat oven and prepare your baking pans with parchment paper.</li>
-              <li>In a large bowl, whisk together the dry ingredients until fully combined.</li>
-              <li>Carefully fold the wet ingredients into the dry. Do not overmix the batter.</li>
-              <li>Bake for the specified time. Let cool completely before serving.</li>
-            </ol>
-          </div>
-          
-          <div class="unlock-overlay">
-            <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-brown); margin-bottom: 5px;">Unlock the Full Recipe</h3>
-            <p style="color: var(--text-main); font-weight: 500; font-size: 0.95rem; margin-bottom: 5px;">Get the step-by-step instructions in the app!</p>
-            
-            <div class="app-features-grid">
-              <span class="feature-item">✨ AI Assistant</span>
-              <span class="feature-item">👥 Bake Together Co-Op</span>
-              <span class="feature-item">⏱️ Smart Timers</span>
-            </div>
-
-            <button class="app-download-btn" onclick="openLoginModal()">Login / Download App</button>
-          </div>
-        </div>
+        ${instructionsHtml}
       `;
       document.getElementById('recipeModal').style.display = 'flex';
-    }
+    };
 
-    function switchUnits(recipeId, unit) {
-      activeUnitMode = unit;
-      openRecipeModal(recipeId);
-    }
-    
-    function handleAuthClick(provider) {
-      alert(`To sign in with ${provider}, please download the Sally's Sweets mobile app!`);
-    }
+    window.switchUnits = function(recipeId, unit) {
+      window.activeUnitMode = unit;
+      window.openRecipeModal(recipeId);
+    };
 
-    function openAboutModal() { document.getElementById('aboutModal').style.display = 'flex'; }
-    function openRequestModal() { document.getElementById('requestModal').style.display = 'flex'; }
-    function openLoginModal() { 
+    window.openAboutModal = function() { document.getElementById('aboutModal').style.display = 'flex'; };
+    window.openRequestModal = function() { document.getElementById('requestModal').style.display = 'flex'; };
+    window.openLoginModal = function() { 
       document.getElementById('recipeModal').style.display = 'none';
       document.getElementById('loginModal').style.display = 'flex'; 
-    }
+    };
     
-    function closeModal(modalId) {
+    window.closeModal = function(modalId) {
       document.getElementById(modalId).style.display = 'none';
-    }
+    };
 
-    renderRecipes(recipes);
+    // Initial render
+    window.renderRecipes(window.recipes);
   </script>
 </body>
 </html>
