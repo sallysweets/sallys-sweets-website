@@ -1,653 +1,1683 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sally's Sweets | Decadent Cookie, Brownie & Macaron Recipes</title>
-  <link rel="icon" type="image/jpeg" href="sweetsbysally%20logo.jpg?v=2">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import * as Google from 'expo-auth-session/providers/google';
+import * as Haptics from 'expo-haptics';
+import * as WebBrowser from 'expo-web-browser';
+import { 
+  onAuthStateChanged, 
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  OAuthProvider,
+  signInWithCredential,
+  signInAnonymously,
+  GoogleAuthProvider,
+  signInWithPopup,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  sendEmailVerification
+} from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  Image,
+  Keyboard,
+  Modal,
+  Platform,
+  ScrollView,
+  Share,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import { auth } from '../../firebaseConfig';
+
+WebBrowser.maybeCompleteAuthSession();
+
+const THEME_KEY = '@sally_sweets_theme';
+const ACTIVE_BAKE_KEY = '@sally_sweets_active_bake';
+const MEMBER_SESSION_KEY = '@sally_sweets_member_session';
+const LANG_KEY = '@sally_sweets_lang';
+
+interface Recipe {
+  id: string;
+  category: 'Cookies' | 'Brownies' | 'Macarons' | 'Creami';
+  imageUrl: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
   
-  <style>
-    :root {
-      --bg-main: #FAF7F2;
-      --card-bg: #FFFFFF;
-      --text-main: #2C2523;
-      --text-muted: #7A6F6B;
-      --accent-brown: #5C3D2E;
-      --accent-gold: #C8963E;
-      --soft-border: #E8E2D9;
-      --pill-bg: #EFEAE1;
+  title_en: string;
+  prepTime_en: string;
+  yield_en: string;
+  description_en: string;
+  note_en?: string;
+  ingredientsUS_en: string[];
+  ingredientsM_en: string[];
+  instructions_en: { step: string; timerSeconds?: number; timerLabel?: string }[];
+
+  title_ar: string;
+  prepTime_ar: string;
+  yield_ar: string;
+  description_ar: string;
+  note_ar?: string;
+  ingredientsUS_ar: string[];
+  ingredientsM_ar: string[];
+  instructions_ar: { step: string; timerSeconds?: number; timerLabel?: string }[];
+}
+
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/sallysweets/sallys-sweets-website/main/';
+
+const SALLY_RECIPES: Recipe[] = [
+  {
+    id: '1',
+    category: 'Brownies',
+    imageUrl: `${GITHUB_RAW_BASE}Signature%20Brownies%20Espresso%20Pic.jpg`,
+    calories: 340,
+    protein: 4,
+    carbs: 42,
+    fat: 18,
+    title_en: "Sally's Signature Brown Butter Espresso Brownies",
+    prepTime_en: '50 mins',
+    yield_en: '16 squares',
+    description_en: 'Rich, ultra-fudgy brownies topped with Oreo cookies, paper-thin crinkle tops, bloomed espresso cocoa, and dark chocolate pools.',
+    note_en: 'Blooms espresso powder directly into warm browned butter for maximum chocolate depth.',
+    ingredientsUS_en: [
+      '3/4 cup (1.5 sticks) unsalted butter, browned',
+      '3/4 cup Dutch-process cocoa powder',
+      '2 tsp instant espresso powder',
+      '1 tsp pure vanilla extract',
+      '3 large eggs (room temperature)',
+      '1 3/4 cups light brown sugar',
+      '3/4 cup + 2 tbsp all-purpose flour',
+      '1/2 tsp sea salt',
+      '3.5 oz chopped Ghirardelli semisweet chocolate bar',
+      '1/2 cup dark chocolate chips',
+      'Whole Oreo cookies (for topping)'
+    ],
+    ingredientsM_en: [
+      '170g unsalted butter, browned',
+      '75g Dutch-process cocoa powder',
+      '2 tsp instant espresso powder',
+      '1 tsp vanilla extract',
+      '3 large eggs',
+      '350g light brown sugar',
+      '94g all-purpose flour',
+      '1/2 tsp sea salt',
+      '100g chopped chocolate bar',
+      '85g dark chocolate chips',
+      'Whole Oreo cookies (for topping)'
+    ],
+    instructions_en: [
+      { step: 'Brown the butter in a saucepan over medium heat until nutty and golden brown milk solids appear at the bottom. Remove from heat.' },
+      { step: 'Let the browned butter cool until it is warm but not hot (around 120°F or 50°C), then whisk in the cocoa powder and instant espresso until smooth.' },
+      { step: 'In a stand mixer with a whisk attachment, beat the eggs and light brown sugar on medium-high speed for a full 4-5 minutes until pale, thick, and doubled in volume.', timerSeconds: 300, timerLabel: 'Whip Eggs & Sugar' },
+      { step: 'Using a rubber spatula, gently fold the warm cocoa-butter mixture into the whipped eggs until just combined. Do not overmix.' },
+      { step: 'Sift in the flour and salt, folding gently. Once mostly combined, fold in the chopped chocolate bar and chocolate chips.' },
+      { step: 'Pour the batter into a parchment-lined 8x8 metal pan. Press whole Oreo cookies evenly into the top of the batter.' },
+      { step: 'Bake at 350°F (175°C) for 45-50 minutes. Let cool completely in the pan before slicing into 16 equal squares.', timerSeconds: 2700, timerLabel: 'Bake Brownies' }
+    ],
+    title_ar: "براونيز الزبدة البنية والإسبريسو من سالي",
+    prepTime_ar: '٥٠ دقيقة',
+    yield_ar: '١٦ قطعة',
+    description_ar: 'براونيز غنية جداً مع طبقة علوية من الأوريو، قشرة رقيقة، كاكاو الإسبريسو، وقطع الشوكولاتة الداكنة.',
+    note_ar: 'تذويب بودرة الإسبريسو مباشرة في الزبدة البنية الدافئة يعطي أقصى نكهة للشوكولاتة.',
+    ingredientsUS_ar: [
+      '٣/٤ كوب زبدة غير مملحة (بنية)',
+      '٣/٤ كوب بودرة كاكاو',
+      '٢ ملعقة صغيرة بودرة إسبريسو',
+      '١ ملعقة صغيرة فانيليا',
+      '٣ بيضات كبيرة',
+      '١ ٣/٤ كوب سكر بني فاتح',
+      '٣/٤ كوب + ٢ ملعقة كبيرة دقيق',
+      '١/٢ ملعقة صغيرة ملح بحري',
+      'شوكولاتة جيرارديلي مقطعة',
+      '١/٢ كوب رقائق شوكولاتة داكنة',
+      'بسكويت أوريو كامل (للتزيين)'
+    ],
+    ingredientsM_ar: [
+      '١٧٠ جرام زبدة غير مملحة (بنية)',
+      '٧٥ جرام بودرة كاكاو',
+      '٢ ملعقة صغيرة بودرة إسبريسو',
+      '١ ملعقة صغيرة فانيليا',
+      '٣ بيضات كبيرة',
+      '٣٥٠ جرام سكر بني فاتح',
+      '٩٤ جرام دقيق',
+      '١/٢ ملعقة صغيرة ملح بحري',
+      '١٠٠ جرام شوكولاتة مقطعة',
+      '٨٥ جرام رقائق شوكولاتة داكنة',
+      'بسكويت أوريو كامل'
+    ],
+    instructions_ar: [
+      { step: 'تُحمر الزبدة في قدر على نار متوسطة حتى تظهر بقع صلبة بنية ذهبية في القاع وتفوح رائحة البندق. تُرفع عن النار.' },
+      { step: 'تُترك الزبدة البنية لتبرد حتى تصبح دافئة وليست ساخنة (حوالي ١٢٠ فهرنهايت أو ٥٠ مئوية)، ثم يُخفق الكاكاو والإسبريسو الفوري بداخلها حتى يصبح المزيج ناعماً.' },
+      { step: 'في العجانة باستخدام مضرب الخفق، يُخفق البيض والسكر البني على سرعة متوسطة-عالية لمدة ٤-٥ دقائق كاملة حتى يصبح فاتح اللون، كثيفاً، ويتضاعف حجمه.', timerSeconds: 300, timerLabel: 'خفق البيض' },
+      { step: 'باستخدام ملعقة مسطحة (سباتولا)، يُقلب خليط الكاكاو والزبدة الدافئ برفق في البيض المخفوق حتى يندمج فقط. لا تبالغ في الخلط.' },
+      { step: 'يُنخل الدقيق والملح ويقلب برفق. عندما يندمج تقريباً، تُضاف الشوكولاتة المقطعة ورقائق الشوكولاتة.' },
+      { step: 'يُسكب الخليط في صينية معدنية مقاس ٨×٨ مبطنة بورق زبدة. يُضغط بسكويت الأوريو الكامل بالتساوي على سطح الخليط.' },
+      { step: 'تُخبز على حرارة ٣٥٠ فهرنهايت (١٧٥ مئوية) لمدة ٤٥-٥٠ دقيقة. تُترك لتبرد تماماً في الصينية قبل تقطيعها إلى ١٦ مربعاً متساوياً.', timerSeconds: 2700, timerLabel: 'خبز البراونيز' }
+    ]
+  },
+  {
+    id: '2',
+    category: 'Cookies',
+    imageUrl: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
+    calories: 280,
+    protein: 3,
+    carbs: 38,
+    fat: 14,
+    title_en: "Sally's Chewy Chocolate Chip Cookies",
+    prepTime_en: '35 mins (+ chilling)',
+    yield_en: '12 large cookies',
+    description_en: 'Super chewy bakery-style cookies with a signature two-temperature bake technique for golden crispy edges.',
+    note_en: 'Bake at 350°F then finish at 370°F for 2 mins for those perfect golden edges!',
+    ingredientsUS_en: [
+      '3/4 cup unsalted butter (softened)',
+      '2/3 cup granulated sugar',
+      '3/4 cup light brown sugar',
+      '2 large eggs (room temperature)',
+      '1 tsp pure vanilla extract',
+      '2 2/3 cups all-purpose flour',
+      '1 tsp baking soda',
+      '1 tsp fine salt',
+      '1.5 cups chocolate chips',
+      'Flaky sea salt (for finishing)'
+    ],
+    ingredientsM_en: [
+      '190g unsalted butter',
+      '130g granulated sugar',
+      '165g light brown sugar',
+      '2 large eggs',
+      '1 tsp vanilla extract',
+      '330g all-purpose flour',
+      '1 tsp baking soda',
+      '1 tsp fine salt',
+      '250g chocolate chips',
+      'Flaky sea salt'
+    ],
+    instructions_en: [
+      { step: 'In a large bowl, whisk the softened butter, granulated sugar, and light brown sugar vigorously for 2-3 minutes until smooth and slightly pale.' },
+      { step: 'Add the eggs one at a time, followed by the vanilla extract, whisking until the mixture is glossy and well emulsified.' },
+      { step: 'Switch to a rubber spatula. Fold in the flour, baking soda, and salt just until no dry streaks of flour remain.' },
+      { step: 'Portion the dough into large 3-tablespoon (approx 55g) balls. Place on a baking sheet and chill in the fridge for exactly 30 minutes.', timerSeconds: 1800, timerLabel: 'Chill Cookie Dough' },
+      { step: 'Place chilled dough balls on a parchment-lined baking sheet spaced 2 inches apart. Bake at 350°F (175°C) for 14 minutes.', timerSeconds: 840, timerLabel: 'Bake Cookies' },
+      { step: 'Increase oven temperature to 370°F (185°C) and bake for a final 2 minutes to crisp the edges. Top with flaky sea salt immediately after removing from the oven.', timerSeconds: 120, timerLabel: 'Crisp Edges' }
+    ],
+    title_ar: "كوكيز رقائق الشوكولاتة الطرية من سالي",
+    prepTime_ar: '٣٥ دقيقة (+ تبريد)',
+    yield_ar: '١٢ كوكيز كبيرة',
+    description_ar: 'كوكيز طرية جداً بنمط المخابز مع تقنية الخبز بحرارتين للحصول على حواف ذهبية مقرمشة.',
+    note_ar: 'اخبزيها على ٣٥٠ فهرنهايت ثم ارفعي الحرارة إلى ٣٧٠ لمدة دقيقتين لحواف مثالية!',
+    ingredientsUS_ar: [
+      '٣/٤ كوب زبدة غير مملحة (لينة)',
+      '٢/٣ كوب سكر أبيض',
+      '٣/٤ كوب سكر بني فاتح',
+      '٢ بيضة كبيرة (بدرجة حرارة الغرفة)',
+      '١ ملعقة صغيرة فانيليا',
+      '٢ ٢/٣ كوب دقيق',
+      '١ ملعقة صغيرة بيكنج صودا',
+      '١ ملعقة صغيرة ملح ناعم',
+      '١.٥ كوب رقائق شوكولاتة',
+      'ملح بحري خشن (للتزيين)'
+    ],
+    ingredientsM_ar: [
+      '١٩٠ جرام زبدة غير مملحة',
+      '١٣٠ جرام سكر أبيض',
+      '١٦٥ جرام سكر بني فاتح',
+      '٢ بيضة كبيرة',
+      '١ ملعقة صغيرة فانيليا',
+      '٣٣٠ جرام دقيق',
+      '١ ملعقة صغيرة بيكنج صودا',
+      '١ ملعقة صغيرة ملح ناعم',
+      '٢٥٠ جرام رقائق شوكولاتة',
+      'ملح بحري خشن'
+    ],
+    instructions_ar: [
+      { step: 'في وعاء كبير، تُخفق الزبدة اللينة مع السكر الأبيض والبني بقوة لمدة ٢-٣ دقائق حتى يصبح المزيج ناعماً وفاتحاً قليلاً.' },
+      { step: 'يُضاف البيض واحدة تلو الأخرى، ثم الفانيليا، ويُخفق المزيج حتى يصبح لامعاً ومتجانساً تماماً.' },
+      { step: 'باستخدام ملعقة مسطحة، يُضاف الدقيق، البيكنج صودا، والملح ويقلب فقط حتى تختفي الخطوط الجافة للدقيق.' },
+      { step: 'تُشكل العجينة إلى كرات كبيرة بمقدار ٣ ملاعق كبيرة (حوالي ٥٥ جرام). تُوضع في صينية وتُبرد في الثلاجة لمدة ٣٠ دقيقة بالضبط.', timerSeconds: 1800, timerLabel: 'تبريد العجينة' },
+      { step: 'تُوضع كرات العجين المبردة في صينية مبطنة بورق زبدة بمسافة ٢ بوصة بين كل حبة. تُخبز على ٣٥٠ فهرنهايت (١٧٥ مئوية) لمدة ١٤ دقيقة.', timerSeconds: 840, timerLabel: 'خبز الكوكيز' },
+      { step: 'تُرفع حرارة الفرن إلى ٣٧٠ فهرنهايت (١٨٥ مئوية) وتُخبز لمدة دقيقتين أخيرتين لقرمشة الحواف. تُرش بملح بحري خشن فور إخراجها من الفرن.', timerSeconds: 120, timerLabel: 'قرمشة الحواف' }
+    ]
+  },
+  {
+    id: '3',
+    category: 'Cookies',
+    imageUrl: `${GITHUB_RAW_BASE}Brown%20Butter%20Choc%20Chip.jpg`,
+    calories: 310,
+    protein: 3,
+    carbs: 40,
+    fat: 16,
+    title_en: "Sally's Brown Butter Chocolate Chip Cookies",
+    prepTime_en: '30 mins (+ chilling)',
+    yield_en: '14 cookies',
+    description_en: 'Rich browned butter infused with bloomed espresso powder, packed with dark chocolate chunks and edible gold leaf.',
+    note_en: 'Rich brown butter base with pools of warm melted chocolate and gold leaf finishing touches.',
+    ingredientsUS_en: [
+      '3/4 cup unsalted butter, browned',
+      '2 tsp instant espresso powder',
+      '1 cup light brown sugar',
+      '1/3 cup granulated sugar',
+      '1 large egg + 1 egg yolk',
+      '1 tbsp vanilla bean paste',
+      '1 3/4 cups all-purpose flour',
+      '1/2 tsp baking soda',
+      '1/2 tsp salt',
+      '1.5 cups dark chocolate chunks',
+      'Edible gold leaf flakes & flaky sea salt'
+    ],
+    ingredientsM_en: [
+      '170g unsalted butter, browned',
+      '2 tsp instant espresso powder',
+      '200g light brown sugar',
+      '65g granulated sugar',
+      '1 large egg + 1 egg yolk',
+      '1 tbsp vanilla bean paste',
+      '220g all-purpose flour',
+      '1/2 tsp baking soda',
+      '1/2 tsp salt',
+      '220g dark chocolate chunks',
+      'Edible gold leaf flakes & flaky sea salt'
+    ],
+    instructions_en: [
+      { step: 'Melt butter in a saucepan over medium or medium-low heat until it foams, browns, and releases a nutty aroma. Remove from heat.' },
+      { step: 'Let the browned butter cool for 2-4 minutes, then stir in the instant espresso powder until dissolved.' },
+      { step: 'In a large bowl, vigorously whisk the granulated sugar, light brown sugar, and warm browned butter together for 1-2 minutes until glossy.' },
+      { step: 'Add the egg, egg yolk, and vanilla bean paste, whisking until the mixture is completely smooth and falls in ribbons off the whisk.' },
+      { step: 'Gently fold in the flour, baking soda, and salt with a spatula. Fold in the dark chocolate chunks until evenly distributed.' },
+      { step: 'Portion into 2.5-tablespoon (approx 45g) balls using a cookie scoop. Chill the dough in the fridge for 1 hour.', timerSeconds: 3600, timerLabel: 'Chill Dough' },
+      { step: 'Bake at 350°F (175°C) for 12 minutes on a parchment-lined baking sheet. Once slightly cooled, decorate with edible gold leaf flakes and flaky sea salt.', timerSeconds: 720, timerLabel: 'Bake Cookies' }
+    ],
+    title_ar: "كوكيز الزبدة البنية ورقائق الشوكولاتة من سالي",
+    prepTime_ar: '٣٠ دقيقة (+ تبريد)',
+    yield_ar: '١٤ كوكيز',
+    description_ar: 'زبدة بنية غنية مع الإسبريسو وقطع الشوكولاتة الداكنة المزينة بورق الذهب الصالح للأكل.',
+    note_ar: 'قاعدة زبدة بنية غنية مع قطع الشوكولاتة الذائبة وورق الذهب للتزيين.',
+    ingredientsUS_ar: [
+      '٣/٤ كوب زبدة غير مملحة (بنية)',
+      '٢ ملعقة صغيرة بودرة إسبريسو',
+      '١ كوب سكر بني فاتح',
+      '١/٣ كوب سكر أبيض',
+      '١ بيضة كبيرة + ١ صفار بيض',
+      '١ ملعقة كبيرة معجون الفانيليا',
+      '١ ٣/٤ كوب دقيق',
+      '١/٢ ملعقة صغيرة بيكنج صودا',
+      '١/٢ ملعقة صغيرة ملح',
+      '١.٥ كوب قطع شوكولاتة داكنة',
+      'ورق ذهب قابل للأكل وملح بحري'
+    ],
+    ingredientsM_ar: [
+      '١٧٠ جرام زبدة غير مملحة (بنية)',
+      '٢ ملعقة صغيرة بودرة إسبريسو',
+      '٢٠٠ جرام سكر بني فاتح',
+      '٦٥ جرام سكر أبيض',
+      '١ بيضة كبيرة + ١ صفار بيض',
+      '١ ملعقة كبيرة معجون الفانيليا',
+      '٢٢٠ جرام دقيق',
+      '١/٢ ملعقة صغيرة بيكنج صودا',
+      '١/٢ ملعقة صغيرة ملح',
+      '٢٢٠ جرام قطع شوكولاتة داكنة',
+      'ورق ذهب قابل للأكل وملح بحري'
+    ],
+    instructions_ar: [
+      { step: 'تُذوب الزبدة في قدر على حرارة متوسطة أو متوسطة-منخفضة حتى تفور وتصبح بنية وتفوح منها رائحة البندق. تُرفع عن النار.' },
+      { step: 'تُترك الزبدة البنية لتبرد لمدة ٢-٤ دقائق، ثم تُضاف بودرة الإسبريسو الفورية وتُقلب حتى تذوب.' },
+      { step: 'في وعاء كبير، يُخفق السكر الأبيض والسكر البني مع الزبدة البنية الدافئة بقوة لمدة دقيقة إلى دقيقتين حتى يصبح الخليط لامعاً.' },
+      { step: 'يُضاف البيض، صفار البيض، ومعجون الفانيليا، ويُخفق حتى يصبح المزيج ناعماً تماماً وينزل بشكل شريطي من الخفاقة.' },
+      { step: 'باستخدام ملعقة مسطحة، يُضاف الدقيق، البيكنج صودا، والملح ويقلب برفق. تُضاف قطع الشوكولاتة الداكنة وتُوزع بالتساوي.' },
+      { step: 'تُشكل العجينة إلى كرات بمقدار ٢.٥ ملعقة كبيرة (حوالي ٤٥ جرام) باستخدام مغرفة الكوكيز. تُبرد العجينة في الثلاجة لمدة ساعة.', timerSeconds: 3600, timerLabel: 'تبريد العجينة' },
+      { step: 'تُخبز على ٣٥٠ فهرنهايت (١٧٥ مئوية) لمدة ١٢ دقيقة في صينية مبطنة. بعد أن تبرد قليلاً، تُزين بورق الذهب القابل للأكل والملح البحري الخشن.', timerSeconds: 720, timerLabel: 'خبز الكوكيز' }
+    ]
+  },
+  {
+    id: '4',
+    category: 'Cookies',
+    imageUrl: `${GITHUB_RAW_BASE}Coffee%20Cake%20Pic.jpg`,
+    calories: 320,
+    protein: 4,
+    carbs: 45,
+    fat: 15,
+    title_en: 'Coffee Cake Cookies with Cardamom Icing',
+    prepTime_en: '40 mins',
+    yield_en: '12 large cookies',
+    description_en: 'Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.',
+    note_en: 'Pro-tip: Substitute with 1.5 tsp baking powder if out of baking soda!',
+    ingredientsUS_en: [
+      'For Dough: 1/2 cup softened butter, 1/2 cup oil, 1 cup light brown sugar, 1 egg, 1 tsp vanilla, 2 tsp cinnamon, 2.5 cups flour, 1/2 tsp baking soda, 1/2 tsp salt',
+      'For Streusel: 1/4 cup softened butter, 1/4 cup light brown sugar, 1/3 cup flour, 1/2 tsp cinnamon',
+      'For Icing: 1/2 cup powdered sugar, 1 tbsp cream cheese, 1/4 tsp cardamom, 1 tbsp milk'
+    ],
+    ingredientsM_en: [
+      'For Dough: 113g softened butter, 100g oil, 215g light brown sugar, 1 egg, 1 tsp vanilla, 2 tsp cinnamon, 325g AP flour, 1/2 tsp baking soda, 1/2 tsp salt',
+      'For Streusel: 56g butter, 54g brown sugar, 50g flour, 1/2 tsp cinnamon',
+      'For Icing: 56g powdered sugar, 1 tbsp cream cheese, 1/4 tsp cardamom, 1 tbsp milk'
+    ],
+    instructions_en: [
+      { step: 'In a stand mixer, beat the softened butter, oil, and light brown sugar on medium speed for 2 full minutes until light and fluffy.' },
+      { step: 'Add the egg and vanilla, mixing until just combined. Switch to a spatula and gently fold in the cinnamon, flour, baking soda, and salt to form a soft dough.' },
+      { step: 'In a separate small bowl, mix the streusel butter, brown sugar, flour, and cinnamon with a fork until pea-sized crumbles form.' },
+      { step: 'Use a 2.5-tablespoon cookie scoop (approx 45g) to portion the dough. Press your thumb firmly into the center of each ball to make a deep indent, and generously fill the hole with streusel.' },
+      { step: 'Bake at 350°F (175°C) for 18 minutes on a parchment-lined baking sheet. Let cool completely on the pan.', timerSeconds: 1080, timerLabel: 'Bake Coffee Cake Cookies' },
+      { step: 'Whisk the powdered sugar, cream cheese, cardamom, and milk in a bowl until completely smooth. Drizzle over the cookies once cooled.' }
+    ],
+    title_ar: "كوكيز كعكة القهوة مع تغطية الهيل",
+    prepTime_ar: '٤٠ دقيقة',
+    yield_ar: '١٢ كوكيز كبيرة',
+    description_ar: 'كوكيز القرفة والسكر البني مغطاة بطبقة مقرمشة بالزبدة وكريمة الهيل والجبن.',
+    note_ar: 'نصيحة: يمكنك استبدال البيكنج صودا بـ ١.٥ ملعقة صغيرة من البيكنج بودر إذا لم يتوفر!',
+    ingredientsUS_ar: [
+      'للعجينة: ١/٢ كوب زبدة لينة، ١/٢ كوب زيت، ١ كوب سكر بني، ١ بيضة، ١ م.ص فانيليا، ٢ م.ص قرفة، ٢.٥ كوب دقيق، ١/٢ م.ص بيكنج صودا، ١/٢ م.ص ملح',
+      'للطبقة المقرمشة: ١/٤ كوب زبدة لينة، ١/٤ كوب سكر بني، ١/٣ كوب دقيق، ١/٢ م.ص قرفة',
+      'للتغطية: ١/٢ كوب سكر بودرة، ١ م.ك جبن كريمي، ١/٤ م.ص هيل، ١ م.ك حليب'
+    ],
+    ingredientsM_ar: [
+      'للعجينة: ١١٣ج زبدة لينة، ١٠٠ج زيت، ٢١٥ج سكر بني، ١ بيضة، ١ م.ص فانيليا، ٢ م.ص قرفة، ٣٢٥ج دقيق، ١/٢ م.ص بيكنج صودا، ١/٢ م.ص ملح',
+      'للطبقة المقرمشة: ٥٦ج زبدة لينة، ٥٤ج سكر بني، ٥٠ج دقيق، ١/٢ م.ص قرفة',
+      'للتغطية: ٥٦ج سكر بودرة، ١ م.ك جبن كريمي، ١/٤ م.ص هيل، ١ م.ك حليب'
+    ],
+    instructions_ar: [
+      { step: 'في العجانة، تُخفق الزبدة اللينة، الزيت، والسكر البني على سرعة متوسطة لمدة دقيقتين كاملتين حتى يصبح المزيج خفيفاً وهشاً.' },
+      { step: 'يُضاف البيض والفانيليا ويُخلط حتى يندمج فقط. باستخدام ملعقة مسطحة، تُضاف القرفة، الدقيق، البيكنج صودا، والملح برفق لتشكيل عجينة طرية.' },
+      { step: 'في وعاء صغير منفصل، تُخلط زبدة الطبقة المقرمشة مع السكر البني، الدقيق، والقرفة باستخدام شوكة حتى تتشكل كتل بحجم حبة البازلاء.' },
+      { step: 'تُستخدم مغرفة كوكيز بمقدار ٢.٥ ملعقة كبيرة (حوالي ٤٥ جرام) لتشكيل العجينة. يُضغط بالإبهام بقوة في منتصف كل كرة لعمل حفرة عميقة، وتُحشى بسخاء بالطبقة المقرمشة.' },
+      { step: 'تُخبز على ٣٥٠ فهرنهايت (١٧٥ مئوية) لمدة ١٨ دقيقة في صينية مبطنة بورق زبدة. تُترك لتبرد تماماً في الصينية.', timerSeconds: 1080, timerLabel: 'خبز الكوكيز' },
+      { step: 'يُخفق السكر البودرة، الجبن الكريمي، الهيل، والحليب في وعاء حتى يصبح المزيج ناعماً تماماً. تُرش فوق الكوكيز بعد أن تبرد.' }
+    ]
+  },
+  {
+    id: '5',
+    category: 'Macarons',
+    imageUrl: `${GITHUB_RAW_BASE}Cookie%20n%20Cream%20Macaron%20Pic.jpg`,
+    calories: 150,
+    protein: 3,
+    carbs: 22,
+    fat: 7,
+    title_en: "Cookies 'n Cream Oreos Macarons",
+    prepTime_en: '1 hr 15 mins',
+    yield_en: '18 macarons',
+    description_en: 'Delicate Swiss meringue macaron shells with scraped Oreo crumbs, filled with cookies & cream buttercream or white chocolate ganache.',
+    note_en: 'ALWAYS remove Oreo cream filling before crushing cookies for the shell batter!',
+    ingredientsUS_en: [
+      'For Shells: 100g egg whites, 100g sugar, 100g almond flour, 100g powdered sugar, 20g crushed Oreo cookie shells, 1/4 tsp cream of tartar',
+      'Option 1 Buttercream: 1/2 cup butter, 1/2 cup powdered sugar, 5 ground Oreos, 1 tsp vanilla',
+      'Option 2 Ganache: 100g white chocolate, 50g heavy whipping cream, 3 crushed Oreos'
+    ],
+    ingredientsM_en: [
+      'For Shells: 100g egg whites, 100g sugar, 100g almond flour, 100g powdered sugar, 20g crushed Oreo shells, 1g cream of tartar',
+      'Option 1 Buttercream: 113g butter, 50g powdered sugar, 5 ground Oreos, 1 tsp vanilla',
+      'Option 2 Ganache: 100g white chocolate, 50g heavy cream, 3 crushed Oreos'
+    ],
+    instructions_en: [
+      { step: 'Carefully scrape all the cream filling off the Oreos. Pulse the dry cookie wafers in a food processor until they are fine powder crumbs.' },
+      { step: 'Sift the almond flour, powdered sugar, and Oreo crumbs through a fine-mesh sieve twice. Discard any large chunks left behind.' },
+      { step: 'In a heat-proof bowl set over a pot of simmering water (double boiler), whisk the egg whites and granulated sugar until the sugar is completely dissolved (test by rubbing between your fingers).' },
+      { step: 'Transfer to a stand mixer and whip on medium-high speed until you achieve stiff, glossy peaks that stand straight up.', timerSeconds: 300, timerLabel: 'Whip Meringue' },
+      { step: 'Add the sifted dry ingredients into the meringue. Gently fold with a spatula by scraping the bowl edges and pressing through the center until the batter flows off the spatula in a continuous thick ribbon (figure-8 test).' },
+      { step: 'Transfer to a piping bag with a medium round tip. Pipe 1.5-inch circles onto a silicone mat. Tap the tray firmly on the counter 3 times to release air bubbles. Let rest at room temperature for 30-40 minutes until a dry skin forms (it should not stick to your finger when lightly touched).', timerSeconds: 2100, timerLabel: 'Rest Macaron Shells' },
+      { step: 'Bake at 325°F (160°C) for 15 minutes. Let cool completely before filling with your choice of buttercream or ganache.', timerSeconds: 900, timerLabel: 'Bake Shells' }
+    ],
+    title_ar: "ماكارون الأوريو (كوكيز أند كريم)",
+    prepTime_ar: 'ساعة و ١٥ دقيقة',
+    yield_ar: '١٨ ماكارون',
+    description_ar: 'أصداف الماكرون الهشة مع فتات الأوريو، محشوة بكريمة الزبدة أو جناش الشوكولاتة البيضاء.',
+    note_ar: 'يجب دائماً إزالة كريمة الأوريو قبل طحن البسكويت لخليط الماكارون!',
+    ingredientsUS_ar: [
+      'للمكرون: ١٠٠ج بياض بيض، ١٠٠ج سكر، ١٠٠ج دقيق لوز، ١٠٠ج سكر بودرة، ٢٠ج بسكويت أوريو مطحون، ١/٤ م.ص كريمة الترتار',
+      'خيار ١ كريمة الزبدة: ١/٢ كوب زبدة، ١/٢ كوب سكر بودرة، ٥ حبات أوريو مطحونة، ١ م.ص فانيليا',
+      'خيار ٢ جناش: ١٠٠ج شوكولاتة بيضاء، ٥٠ج كريمة خفق، ٣ حبات أوريو مطحونة'
+    ],
+    ingredientsM_ar: [
+      'للمكرون: ١٠٠ج بياض بيض، ١٠٠ج سكر، ١٠٠ج دقيق لوز، ١٠٠ج سكر بودرة، ٢٠ج بسكويت أوريو مطحون، ١ج كريمة الترتار',
+      'خيار ١ كريمة الزبدة: ١١٣ج زبدة، ٥٠ج سكر بودرة، ٥ حبات أوريو مطحونة، ١ م.ص فانيليا',
+      'خيار ٢ جناش: ١٠٠ج شوكولاتة بيضاء، ٥٠ج كريمة خفق، ٣ حبات أوريو مطحونة'
+    ],
+    instructions_ar: [
+      { step: 'تُزال الكريمة من الأوريو بعناية. يُطحن البسكويت الجاف في محضرة الطعام حتى يتحول إلى بودرة ناعمة.' },
+      { step: 'يُنخل دقيق اللوز، السكر البودرة، وفتات الأوريو من خلال منخل ناعم مرتين. تُتخلص من أي قطع كبيرة متبقية.' },
+      { step: 'في وعاء مقاوم للحرارة فوق قدر به ماء يغلي ببطء (حمام مائي)، يُخفق بياض البيض والسكر حتى يذوب السكر تماماً (اختبر ذلك بفرك الخليط بين أصابعك).' },
+      { step: 'يُنقل الخليط إلى العجانة ويُخفق على سرعة متوسطة-عالية حتى تحصل على قمم صلبة ولامعة تقف بشكل مستقيم.', timerSeconds: 300, timerLabel: 'خفق المارينج' },
+      { step: 'تُضاف المكونات الجافة المنخولة إلى المارينج. تُقلب برفق باستخدام ملعقة مسطحة بكشط حواف الوعاء والضغط عبر المنتصف حتى يتدفق الخليط من الملعقة في شريط سميك ومستمر (اختبار الرقم 8).' },
+      { step: 'يُنقل الخليط إلى كيس حلواني بفتحة دائرية متوسطة. يُشكل دوائر بحجم ١.٥ بوصة على حصيرة سيليكون. تُضرب الصينية بقوة على الطاولة ٣ مرات لإخراج فقاعات الهواء. تُترك لترتاح في درجة حرارة الغرفة لمدة ٣٠-٤٠ دقيقة حتى تتكون قشرة جافة (لا ينبغي أن تلتصق بإصبعك عند لمسها بخفة).', timerSeconds: 2100, timerLabel: 'إراحة الماكرون' },
+      { step: 'تُخبز على ٣٢٥ فهرنهايت (١٦٠ مئوية) لمدة ١٥ دقيقة. تُترك لتبرد تماماً قبل حشوها بكريمة الزبدة أو الجناش حسب اختيارك.', timerSeconds: 900, timerLabel: 'خبز الماكرون' }
+    ]
+  },
+  {
+    id: '6',
+    category: 'Creami',
+    imageUrl: `${GITHUB_RAW_BASE}oreo-creami.jpg`,
+    calories: 250,
+    protein: 26,
+    carbs: 18,
+    fat: 6,
+    title_en: 'High-Protein Dark Chocolate Oreo Creami 🍫🍪',
+    prepTime_en: '5 mins prep (+ 24hr freeze)',
+    yield_en: '1 Ninja Creami pint',
+    description_en: 'A thick, ultra-creamy protein pint packed with rich cocoa and crunchy Oreo cookies—without the guilt!',
+    note_en: 'Scrape icy sides with a butter knife after spin 1. Hit RESPIN if chalky!',
+    ingredientsUS_en: [
+      '1.5 cups Fairlife milk',
+      '2 tbsp Dutch-process cocoa powder',
+      '3 tbsp monk fruit sweetener',
+      '1/4 tsp xanthan gum',
+      '1/2 tsp vanilla bean paste',
+      'Pinch of salt',
+      'Mix-in: 3 Oreo cookies (cream removed)'
+    ],
+    ingredientsM_en: [
+      '360ml Fairlife milk',
+      '15g Dutch-process cocoa powder',
+      '35g monk fruit sweetener',
+      '1g xanthan gum',
+      '1/2 tsp vanilla bean paste',
+      'Pinch of salt',
+      'Mix-in: 3 Oreo cookies'
+    ],
+    instructions_en: [
+      { step: 'Pour the Fairlife milk into your Ninja Creami pint container. Add the cocoa powder, monk fruit sweetener, xanthan gum, vanilla bean paste, and salt.' },
+      { step: 'Use a milk frother or small whisk to vigorously blend the ingredients directly in the pint until completely smooth and no cocoa lumps remain.' },
+      { step: 'Place the lid on the pint and freeze on a completely level surface in your freezer for a full 24 hours.' },
+      { step: 'Remove from the freezer and run the sides of the pint under hot tap water for 60 seconds to loosen the icy edges.' },
+      { step: 'Place the pint in the Ninja Creami machine and process on the LITE ICE CREAM setting.' },
+      { step: 'Remove the pint, scrape down the icy sides with a butter knife, and if the mixture looks powdery, run it on the RESPIN setting until perfectly creamy.' },
+      { step: 'Use a spoon to hollow out a 1-inch hole in the center of the ice cream. Add the crushed cream-less Oreos into the hole and run the MIX-IN setting.' }
+    ],
+    title_ar: 'آيس كريم الأوريو والشوكولاتة الداكنة عالي البروتين 🍫🍪',
+    prepTime_ar: '٥ دقائق تحضير (+ ٢٤ ساعة تجميد)',
+    yield_ar: 'علبة نينجا كريمي',
+    description_ar: 'آيس كريم كريمي جداً وعالي البروتين مليء بالكاكاو وقطع الأوريو المقرمشة!',
+    note_ar: 'اكشطي الجوانب المثلجة بسكين بعد الدورة الأولى. اضغطي RESPIN إذا كان القوام بودرة!',
+    ingredientsUS_ar: [
+      '١.٥ كوب حليب فيرلايف',
+      '٢ ملعقة كبيرة بودرة كاكاو',
+      '٣ ملاعق كبيرة مُحلي فاكهة الراهب',
+      '١/٤ ملعقة صغيرة صمغ الزانثان',
+      '١/٢ ملعقة صغيرة فانيليا',
+      'رشة ملح',
+      'للإضافة: ٣ بسكويت أوريو (بدون الكريمة)'
+    ],
+    ingredientsM_ar: [
+      '٣٦٠ مل حليب فيرلايف',
+      '١٥ جرام بودرة كاكاو',
+      '٣٥ جرام مُحلي فاكهة الراهب',
+      '١ جرام صمغ الزانثان',
+      '١/٢ ملعقة صغيرة فانيليا',
+      'رشة ملح',
+      'للإضافة: ٣ بسكويت أوريو'
+    ],
+    instructions_ar: [
+      { step: 'يُسكب حليب فيرلايف في علبة النينجا كريمي. تُضاف بودرة الكاكاو، مُحلي فاكهة الراهب، صمغ الزانثان، معجون الفانيليا، والملح.' },
+      { step: 'تُستخدم خفاقة حليب أو خفاقة صغيرة لمزج المكونات بقوة مباشرة في العلبة حتى تصبح ناعمة تماماً ولا تتبقى أي كتل كاكاو.' },
+      { step: 'يُوضع الغطاء على العلبة وتُجمد على سطح مستوٍ تماماً في الفريزر لمدة ٢٤ ساعة كاملة.' },
+      { step: 'تُخرج العلبة من الفريزر وتُمرر جوانبها تحت ماء الصنبور الساخن لمدة ٦٠ ثانية لتفكيك الحواف الجليدية.' },
+      { step: 'تُوضع العلبة في آلة النينجا كريمي وتُعالج على إعداد LITE ICE CREAM.' },
+      { step: 'تُخرج العلبة، وتُكشط الجوانب الجليدية بسكين زبدة، وإذا كان المزيج يبدو كالبودرة، يُشغل على إعداد RESPIN حتى يصبح كريمياً تماماً.' },
+      { step: 'تُستخدم ملعقة لعمل حفرة بعرض بوصة واحدة في وسط الآيس كريم. تُضاف قطع الأوريو المطحونة (بدون كريمة) في الحفرة ويُشغل إعداد MIX-IN.' }
+    ]
+  }
+];
+
+const t = {
+  en: {
+    header: "Recipe Book",
+    subHeader: "Sally's Sweets",
+    search: "Search recipes...",
+    membersOnly: "Members Only",
+    unlock: "Unlock Recipe 🔒",
+    view: "View Recipe",
+    prep: "Prep:",
+    yield: "Yield:",
+    startSolo: "Start Solo 👩‍🍳",
+    bakeTogether: "Bake Together 👥",
+    bakerNote: "Sally's Baker Note: ",
+    ingredients: "Ingredients (Tap to cross off)",
+    instructions: "Instructions & Timers",
+    startTimer: "Start Timer",
+    stopTimer: "Stop Timer",
+    nutritionalValue: "Nutritional Value",
+    calories: "Calories",
+    protein: "Protein",
+    carbs: "Carbs",
+    fat: "Fat",
+    categories: { All: 'All', Cookies: 'Cookies', Brownies: 'Brownies', Macarons: 'Macarons', Creami: 'Creami' }
+  },
+  ar: {
+    header: "كتاب الوصفات",
+    subHeader: "حلويات سالي",
+    search: "البحث عن الوصفات...",
+    membersOnly: "للأعضاء فقط",
+    unlock: "افتح الوصفة 🔒",
+    view: "عرض الوصفة",
+    prep: "التحضير:",
+    yield: "الكمية:",
+    startSolo: "اخبز لوحدك 👩‍🍳",
+    bakeTogether: "اخبزوا معاً 👥",
+    bakerNote: "ملاحظة سالي: ",
+    ingredients: "المكونات (اضغط للشطب)",
+    instructions: "التعليمات والمؤقت",
+    startTimer: "بدء المؤقت",
+    stopTimer: "إيقاف المؤقت",
+    nutritionalValue: "القيمة الغذائية",
+    calories: "السعرات",
+    protein: "بروتين",
+    carbs: "كربوهيدرات",
+    fat: "دهون",
+    categories: { All: 'الكل', Cookies: 'كوكيز', Brownies: 'براونيز', Macarons: 'ماكارون', Creami: 'كريمي' }
+  }
+};
+
+export default function ExploreScreen() {
+  const [lang, setLang] = useState<'en' | 'ar'>('en');
+  const d = t[lang]; 
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [activeRecipe, setActiveRecipe] = useState<Recipe | null>(null);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [unitMode, setUnitMode] = useState<'US' | 'Metric'>('US');
+
+  const [checkedIngredients, setCheckedIngredients] = useState<number[]>([]);
+  const [checkedSteps, setCheckedSteps] = useState<number[]>([]);
+  const [showNutrition, setShowNutrition] = useState(false);
+
+  const [activeTimerLabel, setActiveTimerLabel] = useState<string | null>(null);
+  const [timerSecondsLeft, setTimerSecondsLeft] = useState<number>(0);
+
+  const [activeBakeRecipe, setActiveBakeRecipe] = useState<Recipe | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isLoggedInMember, setIsLoggedInMember] = useState(!!auth.currentUser);
+
+  const [authModalVisible, setAuthModalVisible] = useState(false);
+  const [authView, setAuthView] = useState<'menu' | 'email' | 'phone'>('menu');
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [smsCode, setSmsCode] = useState('');
+  const [codeSent, setCodeSent] = useState(false);
+  const [resendTimer, setResendTimer] = useState(60);
+  const [loadingAuth, setLoadingAuth] = useState(false);
+
+  const [aiModalVisible, setAiModalVisible] = useState(false);
+  const [aiInput, setAiInput] = useState('');
+  const [chatMessages, setChatMessages] = useState<{ sender: 'user' | 'ai'; text: string }[]>([]);
+
+  const [coOpModalVisible, setCoOpModalVisible] = useState(false);
+  const [coOpRoomCode, setCoOpRoomCode] = useState<string>('');
+  const [coOpSyncMode, setCoOpSyncMode] = useState<'Synced' | 'Flexible'>('Synced');
+  const [partnerReady, setPartnerReady] = useState(false);
+  const [myReadyStatus, setMyReadyStatus] = useState(false);
+  const [partnerCurrentStep, setPartnerCurrentStep] = useState<number>(1);
+  const [liveReaction, setLiveReaction] = useState<string | null>(null);
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    webClientId: '294297383937-4noc9cvobe00na3k9ldacp4jvre5lkhl.apps.googleusercontent.com',
+    iosClientId: '294297383937-pldtnsu5cfg7arg8e8v7iio66bnmd23f.apps.googleusercontent.com',
+  });
+
+  const checkAuthState = async () => {
+    const savedTheme = await AsyncStorage.getItem(THEME_KEY);
+    if (savedTheme !== null) setIsDarkMode(savedTheme === 'dark');
+
+    const savedLang = await AsyncStorage.getItem(LANG_KEY);
+    if (savedLang === 'ar' || savedLang === 'en') setLang(savedLang);
+
+    const activeBakeStr = await AsyncStorage.getItem(ACTIVE_BAKE_KEY);
+    if (activeBakeStr) setActiveBakeRecipe(JSON.parse(activeBakeStr));
+    else setActiveBakeRecipe(null);
+
+    const session = await AsyncStorage.getItem(MEMBER_SESSION_KEY);
+    if (session === 'active') {
+      setIsLoggedInMember(true);
+    } else {
+      setIsLoggedInMember(!!auth.currentUser);
     }
+  };
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  useEffect(() => {
+    checkAuthState();
 
-    body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      line-height: 1.6;
-    }
-
-    #customToast {
-      position: fixed; top: 20px; right: 20px;
-      background: var(--accent-brown); color: #FFF;
-      padding: 1rem 1.5rem; border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      z-index: 2000; display: none; align-items: center; gap: 12px; font-weight: 500;
-    }
-
-    #customConfirmModal {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(44, 37, 35, 0.6); backdrop-filter: blur(4px);
-      display: none; justify-content: center; align-items: center; z-index: 2500;
-    }
-    .confirm-card { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; }
-    .confirm-btns { display: flex; gap: 10px; margin-top: 1.5rem; }
-
-    header {
-      background: var(--bg-main); border-bottom: 1px solid var(--soft-border);
-      position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
-    }
-
-    .brand-logo { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--accent-brown); text-decoration: none; }
-    nav { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
-    nav a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 500; cursor: pointer; }
-    nav a:hover { color: var(--accent-gold); }
-
-    .login-btn {
-      background: transparent; color: var(--accent-brown); border: 1px solid var(--accent-brown);
-      padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 600;
-    }
-    .login-btn:hover { background: var(--accent-brown); color: #FFF; }
-
-    .hero { text-align: center; padding: 3.5rem 1.5rem 2rem; max-width: 800px; margin: 0 auto; }
-    .hero-subtitle { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.75rem; }
-    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 400; color: var(--accent-brown); line-height: 1.15; margin-bottom: 1rem; }
-
-    .search-container { margin: 2rem auto 1.5rem; max-width: 500px; }
-    .search-input { width: 100%; padding: 0.85rem 1.25rem; border-radius: 30px; border: 1px solid var(--soft-border); background: #FFF; font-size: 0.95rem; outline: none; }
-
-    .filters { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 3rem; flex-wrap: wrap; }
-    .filter-btn { background: var(--pill-bg); border: 1px solid transparent; color: var(--text-main); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.9rem; cursor: pointer; }
-    .filter-btn.active, .filter-btn:hover { background: var(--accent-brown); color: #FFF; }
-
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 5rem; }
-    .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
-    .recipe-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); cursor: pointer; transition: transform 0.3s ease; }
-    .recipe-card:hover { transform: translateY(-5px); }
-    .card-img-wrapper { height: 260px; position: relative; width: 100%; overflow: hidden; }
-    .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-    .card-tag { position: absolute; top: 1rem; left: 1rem; background: rgba(255,255,255,0.92); color: var(--accent-brown); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
-    .card-content { padding: 1.5rem; }
-    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--accent-brown); margin-bottom: 0.5rem; }
-    .card-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
-    
-    .macro-row { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
-    .macro-pill { background: rgba(200, 150, 62, 0.1); color: var(--accent-gold); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; }
-    .card-meta { display: flex; justify-content: space-between; border-top: 1px solid var(--soft-border); padding-top: 1rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
-
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 37, 35, 0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
-    .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; }
-    .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--pill-bg); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
-
-    .controls-row { display: flex; justify-content: space-between; align-items: center; margin: 1rem 0; padding: 0.8rem 1rem; background: var(--pill-bg); border-radius: 12px; }
-    .unit-switcher { display: flex; align-items: center; gap: 0.4rem; }
-    .control-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
-    .btn-toggle { padding: 0.35rem 0.75rem; border-radius: 16px; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
-    .btn-toggle.active { background: var(--accent-brown); color: #FFF; border-color: var(--accent-brown); }
-
-    .ingredient-list { list-style: none; padding-left: 0; }
-    .ingredient-list li { margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
-
-    .locked-container { position: relative; margin-top: 1.5rem; border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); }
-    .blurred-text { filter: blur(6px); opacity: 0.4; user-select: none; padding: 2rem; background: #FAFAFA; }
-    .unlock-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.95) 30%); padding: 2rem; text-align: center; }
-
-    .app-download-btn { background: var(--accent-gold); color: #FFF; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(200, 150, 62, 0.3); transition: transform 0.2s; }
-    .app-download-btn:hover { transform: translateY(-2px); }
-
-    .vip-box { text-align: center; padding: 1rem; }
-    .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: #FFF; }
-    
-    .social-btn { width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0.5rem; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main); }
-    .social-btn:hover { background: var(--pill-bg); }
-    .social-btn.apple { background: #000; color: #FFF; border: none; }
-    
-    .divider { display: flex; align-items: center; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1.5rem 0; }
-    .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--soft-border); }
-    .divider:not(:empty)::before { margin-right: .5em; }
-    .divider:not(:empty)::after { margin-left: .5em; }
-
-    footer { text-align: center; padding: 3rem 1.5rem; border-top: 1px solid var(--soft-border); color: var(--text-muted); }
-  </style>
-</head>
-<body>
-
-  <div id="customToast"><span id="toastMessage">Notification message here</span></div>
-
-  <div id="customConfirmModal">
-    <div class="confirm-card">
-      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Sign Out?</h3>
-      <p id="confirmText" style="color: var(--text-muted); font-size: 0.95rem;">Are you sure you want to log out of your account?</p>
-      <div class="confirm-btns">
-        <button class="filter-btn" style="flex: 1; background: var(--pill-bg);" onclick="closeConfirmModal(false)">Cancel</button>
-        <button class="app-download-btn" style="flex: 1; margin-top: 0; background: #FF453A;" onclick="closeConfirmModal(true)">Log Out</button>
-      </div>
-    </div>
-  </div>
-
-  <header>
-    <a href="#" class="brand-logo">Sally's Sweets</a>
-    <nav>
-      <a href="#recipes">Recipes</a>
-      <a onclick="openAboutModal()">About Sally</a>
-      <button class="login-btn" id="mainLoginBtn" onclick="openLoginModal()">Login / Sign Up</button>
-      <div class="social-links">
-        <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="social-icon" title="Instagram">📸</a>
-        <a href="https://www.snapchat.com/add/sallysweets_ofc" target="_blank" class="social-icon" title="Snapchat">👻</a>
-      </div>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <div class="hero-subtitle">Decadent • Simple • Aesthetic</div>
-    <h1>Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
-    <div class="search-container">
-      <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by ingredient or bake..." oninput="handleSearch()">
-    </div>
-    <div class="filters" id="recipes">
-      <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
-      <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami</button>
-      <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
-      <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies &amp; Bars</button>
-      <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
-    </div>
-  </section>
-
-  <main class="container">
-    <div class="recipe-grid" id="recipeGrid"></div>
-  </main>
-
-  <div class="modal-overlay" id="recipeModal">
-    <div class="modal-content">
-      <button class="close-btn" onclick="closeModal('recipeModal')">&times;</button>
-      <div id="modalBody"></div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="loginModal">
-    <div class="modal-content vip-box" style="max-width: 500px;">
-      <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
-      <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS APP</span>
-      <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-brown); margin: 0.5rem 0 1rem;">Unlock the Full Experience</h2>
-      
-      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
-        Log in or sign up to view full step-by-step instructions and access exclusive kitchen features!
-      </p>
-
-      <div id="mainAuthView">
-        <button class="social-btn apple" onclick="handleAppleLogin()"> Continue with Apple</button>
-        <button class="social-btn" onclick="handleGoogleLogin()">
-          <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-          </svg>
-          Continue with Google
-        </button>
-        <button class="social-btn" onclick="showPhoneAuthView()">📱 Continue with Phone Number</button>
-
-        <div class="divider">OR</div>
-
-        <!-- Full Name field for Sign Up -->
-        <input type="text" id="authName" class="vip-input" placeholder="Full Name (for new accounts)..." style="margin-bottom: 0.5rem;">
-        <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
-        <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;">
-        <input type="password" id="authConfirmPass" class="vip-input" placeholder="Confirm password..." style="margin-bottom: 0.3rem;">
-        <div id="passwordError" style="color: #FF453A; font-size: 0.85rem; font-weight: 600; text-align: left; margin-bottom: 0.8rem; display: none;">Passwords do not match. Please re-enter.</div>
-
-        <button class="app-download-btn" style="width: 100%; margin-top: 0.5rem;" onclick="handleEmailAuth()">Log In / Create Account</button>
-      </div>
-
-      <div id="phoneAuthView" style="display: none;">
-        <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your phone number:</p>
-        <input type="tel" id="authPhone" class="vip-input" placeholder="+1 (555) 000-0000" maxlength="17" style="margin-bottom: 1rem;" oninput="formatWebsitePhone(this)">
-        <button class="app-download-btn" id="sendSmsBtn" style="width: 100%; margin-top: 0;" onclick="sendSmsCode()">Send SMS Code</button>
-        
-        <div id="smsCodeSection" style="display: none; margin-top: 1.5rem;">
-          <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter the 6-digit code:</p>
-          <input type="text" id="authCode" class="vip-input" placeholder="123456" style="margin-bottom: 1rem; text-align: center; letter-spacing: 4px; font-size: 1.2rem;">
-          <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="verifySmsCode()">Verify &amp; Log In</button>
-        </div>
-
-        <button class="login-btn" style="width: 100%; margin-top: 1.5rem; border: none; background: var(--pill-bg);" onclick="showMainAuthView()">← Back to Email / Social</button>
-      </div>
-      
-      <div id="recaptcha-container" style="margin-top: 10px;"></div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="aboutModal">
-    <div class="modal-content" style="text-align: center; max-width: 650px;">
-      <button class="close-btn" onclick="closeModal('aboutModal')">&times;</button>
-      <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">MEET THE BAKER</span>
-      <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; color: var(--accent-brown); margin: 0.5rem 0 1.5rem;">About Sally</h2>
-      <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
-        Hi there! I’m <strong>Sally</strong>. I’m 20 years old, born in <strong>Baghdad, Iraq</strong>, and currently a junior majoring in <strong>Biomedical Sciences</strong> with aspirations of becoming an Anesthesiologist! ⚽✨
-      </p>
-    </div>
-  </div>
-
-  <footer>
-    <p>&copy; 2026 <strong>Sally's Sweets</strong>. Crafted with love in Arizona. 🌵</p>
-  </footer>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import {  
-      getAuth, 
-      onAuthStateChanged, 
-      GoogleAuthProvider, 
-      OAuthProvider,
-      signInWithPopup,
-      RecaptchaVerifier,
-      signInWithPhoneNumber,
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword,
-      sendEmailVerification,
-      updateProfile,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyC2NAV9FP1Ac8EizCyLZW8Oap-AxjdpYQo",
-      authDomain: "sallys-sweets.firebaseapp.com",
-      projectId: "sallys-sweets",
-      storageBucket: "sallys-sweets.firebasestorage.app",
-      messagingSenderId: "294297383937",
-      appId: "1:294297383937:web:a66acf8031233517adfc00",
-      measurementId: "G-5GK0F3D3MW"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    window.currentUser = null;
-
-    window.showToast = function(message) {
-      const toast = document.getElementById('customToast');
-      document.getElementById('toastMessage').innerText = message;
-      toast.style.display = 'flex';
-      setTimeout(() => { toast.style.display = 'none'; }, 4000);
-    };
-
-    let confirmCallback = null;
-    window.showCustomConfirm = function(message, onConfirm) {
-      document.getElementById('confirmText').innerText = message;
-      document.getElementById('customConfirmModal').style.display = 'flex';
-      confirmCallback = onConfirm;
-    };
-    window.closeConfirmModal = function(result) {
-      document.getElementById('customConfirmModal').style.display = 'none';
-      if (result && confirmCallback) confirmCallback();
-      confirmCallback = null;
-    };
-
-    onAuthStateChanged(auth, (user) => {
-      window.currentUser = user;
-      const mainLoginBtn = document.getElementById('mainLoginBtn');
-      
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const nameToShow = user.displayName || user.email || "Member";
-        mainLoginBtn.innerText = "Log Out (" + nameToShow + ")";
-        mainLoginBtn.onclick = () => {
-          window.showCustomConfirm("Are you sure you want to log out of your account?", () => {
-            signOut(auth).then(() => {
-              window.showToast("You have been signed out successfully.");
-            });
-          });
-        };
-        window.closeModal('loginModal');
-        
-        if (document.getElementById('recipeModal').style.display === 'flex') {
-          const titleElem = document.querySelector('.modal-content h2');
-          if (titleElem) {
-            const openRecipe = window.recipes.find(r => r.title === titleElem.innerText);
-            if (openRecipe) window.openRecipeModal(openRecipe.id);
-          }
-        }
-      } else {
-        mainLoginBtn.innerText = "Login / Sign Up";
-        mainLoginBtn.onclick = () => window.openLoginModal();
-        
-        if (document.getElementById('recipeModal').style.display === 'flex') {
-          const titleElem = document.querySelector('.modal-content h2');
-          if (titleElem) {
-            const openRecipe = window.recipes.find(r => r.title === titleElem.innerText);
-            if (openRecipe) window.openRecipeModal(openRecipe.id);
-          }
-        }
+        setIsLoggedInMember(true);
+        AsyncStorage.setItem(MEMBER_SESSION_KEY, 'active');
       }
     });
+    const interval = setInterval(checkAuthState, 500);
+    return () => { unsubscribe(); clearInterval(interval); };
+  }, []);
 
-    window.showPhoneAuthView = function() {
-      document.getElementById('mainAuthView').style.display = 'none';
-      document.getElementById('phoneAuthView').style.display = 'block';
-      document.getElementById('smsCodeSection').style.display = 'none';
-      document.getElementById('sendSmsBtn').style.display = 'block';
-      document.getElementById('authPhone').value = '';
-      document.getElementById('authCode').value = '';
-    };
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const idToken = response.authentication?.idToken || null;
+      const accessToken = response.authentication?.accessToken || null;
+      
+      const credential = GoogleAuthProvider.credential(idToken, accessToken);
+      signInWithCredential(auth, credential)
+        .then(() => {
+          setIsLoggedInMember(true);
+          AsyncStorage.setItem(MEMBER_SESSION_KEY, 'active');
+          setAuthModalVisible(false);
+          Alert.alert("Success 🎉", "Logged in with Google!");
+          resetFormState();
+        })
+        .catch(err => {
+          console.error("Firebase Credential Error:", err);
+          Alert.alert("Google Login Error", err.message);
+        });
+    }
+  }, [response]);
 
-    window.showMainAuthView = function() {
-      document.getElementById('phoneAuthView').style.display = 'none';
-      document.getElementById('mainAuthView').style.display = 'block';
-    };
+  useEffect(() => {
+    let interval: any = null;
+    if (activeTimerLabel && timerSecondsLeft > 0) {
+      interval = setInterval(() => setTimerSecondsLeft(prev => prev - 1), 1000);
+    } else if (timerSecondsLeft === 0 && activeTimerLabel) {
+      Alert.alert("Timer Complete! 🔔", `${activeTimerLabel} is done!`);
+      setActiveTimerLabel(null);
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [activeTimerLabel, timerSecondsLeft]);
 
-    window.formatWebsitePhone = function(input) {
-      const cleaned = input.value.replace(/\D/g, '');
-      if (cleaned.length === 0) { input.value = ''; return; }
-      let formatted = '+1 ';
-      const coreNumber = cleaned.startsWith('1') ? cleaned.substring(1) : cleaned;
-      if (coreNumber.length > 0) formatted += `(${coreNumber.substring(0, 3)}`;
-      if (coreNumber.length >= 4) formatted += `) ${coreNumber.substring(3, 6)}`;
-      if (coreNumber.length >= 7) formatted += `-${coreNumber.substring(6, 10)}`;
-      input.value = formatted;
-    };
+  const toggleLanguage = async () => {
+    const newLang = lang === 'en' ? 'ar' : 'en';
+    setLang(newLang);
+    await AsyncStorage.setItem(LANG_KEY, newLang);
+  };
 
-    window.handleGoogleLogin = async () => {
-      const provider = new GoogleAuthProvider();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        const userName = result.user.displayName || "there";
-        window.showToast("Welcome, " + userName + "! 🎉 Enjoy exploring Sally's recipes.");
-      } catch(error) {
-        window.showToast("Google Login Error: " + error.message);
+  const resetFormState = () => {
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setPhoneNumber('');
+    setSmsCode('');
+    setCodeSent(false);
+    setResendTimer(60);
+    setShowPassword(false);
+    setAuthView('menu');
+  };
+
+  const handleRecipeCardPress = (item: Recipe) => {
+    if (!isLoggedInMember) {
+      resetFormState();
+      setAuthModalVisible(true);
+      return;
+    }
+    setCheckedIngredients([]);
+    setCheckedSteps([]);
+    setShowNutrition(false);
+    setActiveRecipe(item);
+  };
+
+  const toggleFavorite = (id: string) => {
+    if (!isLoggedInMember) {
+      resetFormState();
+      setAuthModalVisible(true);
+      return;
+    }
+    setFavorites(favorites.includes(id) ? favorites.filter(favId !== id) : [...favorites, id]);
+  };
+
+  const startTimer = (seconds: number, label: string) => { setActiveTimerLabel(label); setTimerSecondsLeft(seconds); };
+  const stopTimer = () => { setActiveTimerLabel(null); setTimerSecondsLeft(0); };
+
+  const startBakingSession = async (recipe: Recipe) => {
+    setActiveBakeRecipe(recipe);
+    await AsyncStorage.setItem(ACTIVE_BAKE_KEY, JSON.stringify(recipe));
+    setActiveRecipe(null);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    Alert.alert("Baking Session Active 👩‍🍳", `Sally's AI Assistant now knows you are baking!`);
+  };
+
+  const finishBakingSession = async () => {
+    setActiveBakeRecipe(null);
+    await AsyncStorage.removeItem(ACTIVE_BAKE_KEY);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  const handlePhoneChange = (text: string) => {
+    const cleaned = text.replace(/\D/g, '');
+    if (cleaned.length === 0) {
+      setPhoneNumber('');
+      return;
+    }
+    let formatted = '+1 ';
+    const coreNumber = cleaned.startsWith('1') ? cleaned.substring(1) : cleaned;
+
+    if (coreNumber.length > 0) formatted += `(${coreNumber.substring(0, 3)}`;
+    if (coreNumber.length >= 4) formatted += `) ${coreNumber.substring(3, 6)}`;
+    if (coreNumber.length >= 7) formatted += `-${coreNumber.substring(6, 10)}`;
+    
+    setPhoneNumber(formatted);
+  };
+
+  const handleAppleSignIn = async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        const credential = await AppleAuthentication.signInAsync({
+          requestedScopes: [
+            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+            AppleAuthentication.AppleAuthenticationScope.EMAIL,
+          ],
+        });
+
+        if (credential.identityToken) {
+          const provider = new OAuthProvider('apple.com');
+          const firebaseCredential = provider.credential({ idToken: credential.identityToken });
+          await signInWithCredential(auth, firebaseCredential);
+          await AsyncStorage.setItem(MEMBER_SESSION_KEY, 'active');
+          setAuthModalVisible(false);
+          Alert.alert("Signed In", "Welcome back via Apple ID!");
+        }
+      } else {
+        const provider = new OAuthProvider('apple.com');
+        await signInWithPopup(auth, provider);
+        await AsyncStorage.setItem(MEMBER_SESSION_KEY, 'active');
+        setAuthModalVisible(false);
+        Alert.alert("Signed In", "Welcome back via Apple ID!");
       }
-    };
-
-    window.handleAppleLogin = async () => {
-      const provider = new OAuthProvider('apple.com');
-      try {
-        const result = await signInWithPopup(auth, provider);
-        const userName = result.user.displayName || "there";
-        window.showToast("Welcome, " + userName + "! 🎉 Enjoy exploring Sally's recipes.");
-      } catch(error) {
-        window.showToast("Apple Login Error: " + error.message);
+    } catch (e: any) {
+      if (e.code !== 'ERR_REQUEST_CANCELED') {
+        await signInAnonymously(auth);
+        await AsyncStorage.setItem(MEMBER_SESSION_KEY, 'active');
+        setAuthModalVisible(false);
+        Alert.alert("Signed In", "Welcome back!");
       }
-    };
+    }
+  };
 
-    window.confirmationResultObj = null;
+  const handleGoogleLogin = () => {
+    if (Platform.OS !== 'web') {
+      Alert.alert(
+        "Expo Go Restriction",
+        "Google explicitly blocks Expo Go natively (Error 400). Please test Google Sign-In on the web browser preview!"
+      );
+      return;
+    }
+    promptAsync();
+  };
 
-    window.sendSmsCode = async () => {
-      let rawInput = document.getElementById('authPhone').value.trim();
-      let phoneNumber = rawInput.replace(/[\s-()]/g, '');
-      if (phoneNumber.length === 10 && !phoneNumber.startsWith('+')) phoneNumber = '+1' + phoneNumber;
+  const handleEmailAuth = async () => {
+    Keyboard.dismiss();
+    if (!email.trim() || !password.trim()) {
+      Alert.alert("Missing Fields", "Please enter both an email and password.");
+      return;
+    }
 
-      if (!phoneNumber || phoneNumber.length < 11) {
-        return window.showToast("Please enter a valid 10-digit phone number.");
+    if (isSignUp && password !== confirmPassword) {
+      Alert.alert("Passwords Do Not Match", "Please check that your passwords match.");
+      return;
+    }
+
+    setLoadingAuth(true);
+    try {
+      if (isSignUp) {
+        const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
+        await sendEmailVerification(userCredential.user);
+        Alert.alert(
+          "Account Created! 📧", 
+          "We've sent a verification link to your email. Please check your inbox (and spam folder) to verify your account."
+        );
+      } else {
+        await signInWithEmailAndPassword(auth, email.trim(), password);
+        Alert.alert("Welcome Back!", "You are now signed in.");
       }
-
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+      await AsyncStorage.setItem(MEMBER_SESSION_KEY, 'active');
+      setAuthModalVisible(false);
+      resetFormState();
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        Alert.alert("Account Exists", "An account with this email already exists. Please select 'Sign In' instead.");
+      } else {
+        Alert.alert("Authentication Error", error.message || "Could not sign in.");
       }
+    } finally {
+      setLoadingAuth(false);
+    }
+  };
 
-      try {
-        window.confirmationResultObj = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
-        document.getElementById('sendSmsBtn').style.display = 'none';
-        document.getElementById('smsCodeSection').style.display = 'block';
-        window.showToast("Code Sent 📱 Check your phone for the SMS verification code.");
-      } catch (error) {
-        window.showToast("Phone Login Error: " + error.message);
-      }
-    };
+  const handlePhoneLogin = async () => {
+    if (!phoneNumber.trim()) {
+      Alert.alert("Missing Phone", "Please enter a valid phone number.");
+      return;
+    }
 
-    window.verifySmsCode = async () => {
-      const code = document.getElementById('authCode').value;
-      if (!code) return window.showToast("Please enter the 6-digit code.");
-      if (!window.confirmationResultObj) return;
-
-      try {
-        const result = await window.confirmationResultObj.confirm(code);
-        window.showToast("Welcome back! 🎉 You are now signed in.");
-      } catch (error) {
-        window.showToast("Invalid code: " + error.message);
-      }
-    };
-
-    window.handleEmailAuth = async () => {
-      const name = document.getElementById('authName').value.trim();
-      const email = document.getElementById('authEmail').value.trim();
-      const pass = document.getElementById('authPass').value.trim();
-      const confirmPass = document.getElementById('authConfirmPass').value.trim();
-      const errorDiv = document.getElementById('passwordError');
-
-      if (!email || !pass) return window.showToast("Please enter both an email and password.");
-      errorDiv.style.display = 'none';
-
-      try {
-        // Try logging in first
-        const userCred = await signInWithEmailAndPassword(auth, email, pass);
-        const displayName = userCred.user.displayName || email.split('@')[0];
-        window.showToast("Welcome back, " + displayName + "! 🎉");
-      } catch(error) {
-        // If user doesn't exist, create account
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential' || error.code === 'auth/invalid-login-credentials') {
-          if (confirmPass && pass !== confirmPass) {
-            errorDiv.style.display = 'block';
-            return;
+    if (!codeSent) {
+      if (Platform.OS === 'web') {
+        try {
+          if (!(window as any).recaptchaVerifier) {
+            (window as any).recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-explore', { size: 'invisible' });
           }
+          const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, (window as any).recaptchaVerifier);
+          (window as any).confirmationResult = confirmationResult;
+          setCodeSent(true);
+          Alert.alert("Code Sent 📱", "Enter the verification code sent to your phone.");
+        } catch (error: any) {
+          Alert.alert("Error", error.message);
+        }
+      } else {
+        setCodeSent(true);
+        setSmsCode('123456');
+        Alert.alert("Code Sent 📱", "Use test verification code: 123456");
+      }
+    } else {
+      if (!smsCode.trim()) {
+        Alert.alert("Missing Code", "Please enter the 6-digit code.");
+        return;
+      }
+      
+      if (Platform.OS === 'web') {
+        try {
+          await (window as any).confirmationResult.confirm(smsCode);
+          await AsyncStorage.setItem(MEMBER_SESSION_KEY, 'active');
+          setAuthModalVisible(false);
+          Alert.alert("Welcome Member! 🎉", "You are now signed in and all recipes are unlocked!");
+          resetFormState();
+        } catch (e: any) {
+          Alert.alert("Verification Error", "Invalid SMS code.");
+        }
+      } else {
+        if (smsCode === '123456') {
           try {
-            const userCred = await createUserWithEmailAndPassword(auth, email, pass);
-            if (name) {
-              await updateProfile(userCred.user, { displayName: name });
-            }
-            await sendEmailVerification(userCred.user);
-            const finalName = name || email.split('@')[0];
-            window.showToast("Welcome to Sally's Sweets, " + finalName + "! 🎉 Check your email for verification.");
-          } catch(createError) {
-            window.showToast("Error creating account: " + createError.message);
+            await signInAnonymously(auth);
+            await AsyncStorage.setItem(MEMBER_SESSION_KEY, 'active');
+            setAuthModalVisible(false);
+            Alert.alert("Welcome Member! 🎉", "You are now signed in!");
+            resetFormState();
+          } catch (e: any) {
+            Alert.alert("Error", "Could not sign in. Ensure Anonymous Auth is enabled in Firebase.");
           }
-        } else if (error.code === 'auth/email-already-in-use') {
-          window.showToast("An account with this email already exists. Please sign in.");
         } else {
-          window.showToast("Login Error: " + error.message);
+          Alert.alert("Verification Error", "Please enter the test code 123456");
         }
       }
-    };
+    }
+  };
 
-    // Full 6 Recipe Database
-    window.activeUnitMode = 'US';
-    window.currentCategory = 'all';
+  const sendAiMessage = () => {
+    if (!aiInput.trim()) return;
+    const userText = aiInput.trim();
+    setChatMessages(prev => [...prev, { sender: 'user', text: userText }]);
+    setAiInput('');
 
-    window.recipes = [
-      {
-        id: 1, category: 'brownies',
-        title: "Sally's Signature Brown Butter Espresso Brownies",
-        desc: 'Rich, ultra-fudgy brownies topped with Oreo cookies, paper-thin crinkle tops, and dark chocolate pools.',
-        time: '50 mins', yield: '16 squares', img: 'Signature Brownies Espresso Pic.jpg',
-        macros: { cal: 340, pro: 4, carb: 42, fat: 18 },
-        ingredientsUS: ['3/4 cup unsalted butter, browned', '3/4 cup cocoa powder', '2 tsp espresso powder', '3 large eggs', '1 3/4 cups brown sugar', '3/4 cup flour', '1/2 tsp sea salt', 'Chop chocolate bar'],
-        ingredientsM: ['170g butter, browned', '75g cocoa powder', '2 tsp espresso powder', '3 large eggs', '350g brown sugar', '94g flour', '1/2 tsp salt', '100g chocolate bar'],
-        steps: ['Brown butter in a saucepan until nutty.', 'Whisk cocoa and espresso into warm butter.', 'Beat eggs and brown sugar for 4-5 minutes.', 'Fold cocoa-butter mixture into whipped eggs.', 'Sift in flour and salt, then fold in chocolate.', 'Bake at 350°F for 45-50 minutes.']
-      },
-      {
-        id: 2, category: 'cookies',
-        title: "Sally's Chewy Chocolate Chip Cookies",
-        desc: 'Super chewy bakery-style cookies with a signature two-temperature bake technique for golden crispy edges.',
-        time: '35 mins', yield: '12 cookies', img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
-        macros: { cal: 280, pro: 3, carb: 38, fat: 14 },
-        ingredientsUS: ['3/4 cup butter', '2/3 cup sugar', '3/4 cup brown sugar', '2 eggs', '2 2/3 cups flour', '1.5 cups chocolate chips'],
-        ingredientsM: ['190g butter', '130g sugar', '165g brown sugar', '2 eggs', '330g flour', '250g chocolate chips'],
-        steps: ['Whisk butter and sugars together.', 'Add eggs and vanilla extract.', 'Fold in flour, baking soda, and salt.', 'Chill dough for 30 minutes.', 'Bake at 350°F then finish at 370°F for 2 mins.']
-      },
-      {
-        id: 3, category: 'cookies',
-        title: "Sally's Brown Butter Chocolate Chip Cookies",
-        desc: 'Rich browned butter infused with espresso powder and dark chocolate chunks.',
-        time: '30 mins', yield: '14 cookies', img: 'Brown Butter Choc Chip.jpg',
-        macros: { cal: 310, pro: 3, carb: 40, fat: 16 },
-        ingredientsUS: ['3/4 cup brown butter', '1 cup brown sugar', '1 egg + 1 yolk', '1 3/4 cups flour', '1.5 cups dark chocolate chunks'],
-        ingredientsM: ['170g brown butter', '200g brown sugar', '1 egg + 1 yolk', '220g flour', '220g chocolate chunks'],
-        steps: ['Brown butter and stir in espresso powder.', 'Whisk with sugars and eggs.', 'Fold in flour and chocolate chunks.', 'Chill and bake at 350°F for 12 mins.']
-      },
-      {
-        id: 4, category: 'cookies',
-        title: 'Coffee Cake Cookies with Cardamom Icing',
-        desc: 'Soft cinnamon brown sugar cookies topped with buttery crumble streusel and cardamom cream cheese drizzle.',
-        time: '40 mins', yield: '12 cookies', img: 'Coffee Cake Pic.jpg',
-        macros: { cal: 320, pro: 4, carb: 45, fat: 15 },
-        ingredientsUS: ['1/2 cup butter', '1 cup brown sugar', '1 egg', '2.5 cups flour', 'Cardamom icing'],
-        ingredientsM: ['113g butter', '215g brown sugar', '1 egg', '325g flour', 'Cardamom icing'],
-        steps: ['Beat butter, oil, and brown sugar.', 'Add egg and fold in dry ingredients.', 'Top with streusel and bake.', 'Drizzle cardamom icing once cooled.']
-      },
-      {
-        id: 5, category: 'macarons',
-        title: "Cookies 'n Cream Oreos Macarons",
-        desc: 'Delicate Swiss meringue macaron shells with Oreo crumbs and buttercream.',
-        time: '1 hr 15 mins', yield: '18 macarons', img: 'Cookie n Cream Macaron Pic.jpg',
-        macros: { cal: 150, pro: 3, carb: 22, fat: 7 },
-        ingredientsUS: ['100g egg whites', '100g sugar', '100g almond flour', '100g powdered sugar', 'Oreo crumbs'],
-        ingredientsM: ['100g egg whites', '100g sugar', '100g almond flour', '100g powdered sugar', 'Oreo crumbs'],
-        steps: ['Whip egg whites and sugar over a double boiler.', 'Fold in sifted almond flour and Oreo powder.', 'Pipe circles and rest for 30 mins.', 'Bake at 325°F for 15 mins.']
-      },
-      {
-        id: 6, category: 'creami',
-        title: 'High-Protein Dark Chocolate Oreo Creami',
-        desc: 'A thick, ultra-creamy protein pint packed with rich cocoa and crunchy Oreo cookies.',
-        time: '5 mins', yield: '1 pint', img: 'oreo-creami.jpg',
-        macros: { cal: 250, pro: 26, carb: 18, fat: 6 },
-        ingredientsUS: ['1.5 cups Fairlife milk', '2 tbsp cocoa powder', '3 tbsp sweetener', '3 Oreo mix-ins'],
-        ingredientsM: ['360ml Fairlife milk', '15g cocoa powder', '35g sweetener', '3 Oreo mix-ins'],
-        steps: ['Blend ingredients in pint container.', 'Freeze for 24 hours.', 'Process on Lite Ice Cream mode.', 'Add mix-ins and spin.']
-      }
-    ];
+    setTimeout(() => {
+      let aiReply = "I'm Sally's AI assistant! How can I help you in the kitchen today?";
+      
+      if (activeBakeRecipe) {
+        const title = lang === 'ar' ? activeBakeRecipe.title_ar : activeBakeRecipe.title_en;
+        const prep = lang === 'ar' ? activeBakeRecipe.prepTime_ar : activeBakeRecipe.prepTime_en;
+        const note = lang === 'ar' ? activeBakeRecipe.note_ar : activeBakeRecipe.note_en;
+        const instructions = lang === 'ar' ? activeBakeRecipe.instructions_ar : activeBakeRecipe.instructions_en;
 
-    window.renderRecipes = function(items) {
-      const grid = document.getElementById('recipeGrid');
-      grid.innerHTML = items.map(r => `
-        <div class="recipe-card" onclick="openRecipeModal(${r.id})">
-          <div class="card-img-wrapper">
-            <span class="card-tag">${r.category}</span>
-            <img src="${r.img}" alt="${r.title}">
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">${r.title}</h3>
-            <p class="card-desc">${r.desc}</p>
-            <div class="macro-row">
-              <span class="macro-pill">${r.macros.cal} kcal</span>
-              <span class="macro-pill">${r.macros.pro}g Protein</span>
-              <span class="macro-pill">${r.macros.carb}g Carbs</span>
-              <span class="macro-pill">${r.macros.fat}g Fat</span>
-            </div>
-            <div class="card-meta">
-              <span>Prep: ${r.time}</span>
-              <span>Yield: ${r.yield}</span>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    };
-
-    window.handleSearch = function() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = window.recipes.filter(r => {
-        const matchesCat = window.currentCategory === 'all' || r.category === window.currentCategory;
-        const matchesSearch = r.title.toLowerCase().includes(query) || r.desc.toLowerCase().includes(query);
-        return matchesCat && matchesSearch;
-      });
-      window.renderRecipes(filtered);
-    };
-
-    window.filterRecipes = function(cat) {
-      window.currentCategory = cat;
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      window.handleSearch();
-    };
-
-    window.openRecipeModal = function(id) {
-      const recipe = window.recipes.find(r => r.id === id);
-      const modalBody = document.getElementById('modalBody');
-      const baseIngredients = window.activeUnitMode === 'US' ? recipe.ingredientsUS : recipe.ingredientsM;
-
-      let instructionsHtml = "";
-      if (!window.currentUser) {
-        instructionsHtml = `
-          <div class="locked-container">
-            <div class="blurred-text">
-              <ol style="padding-left: 1.5rem; line-height: 2;">
-                <li>Preheat oven and prepare your baking pans with parchment paper.</li>
-                <li>In a large bowl, whisk together the dry ingredients until fully combined.</li>
-                <li>Carefully fold the wet ingredients into the dry. Do not overmix the batter.</li>
-                <li>Bake for the specified time. Let cool completely before serving.</li>
-              </ol>
-            </div>
-            <div class="unlock-overlay">
-              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-brown); margin-bottom: 5px;">Unlock the Full Recipe</h3>
-              <p style="color: var(--text-main); font-weight: 500; font-size: 0.95rem; margin-bottom: 5px;">Sign in to view full instructions!</p>
-              <button class="app-download-btn" onclick="openLoginModal()">Login / Sign Up</button>
-            </div>
-          </div>
-        `;
-      } else {
-        instructionsHtml = `
-          <ol style="padding-left: 1.5rem; line-height: 2; margin-top: 1rem; color: var(--text-main);">
-            ${recipe.steps.map(step => `<li style="margin-bottom: 0.8rem;">${step}</li>`).join('')}
-          </ol>
-        `;
+        const lowerQuery = userText.toLowerCase();
+        if (lowerQuery.includes('bake') || lowerQuery.includes('time') || lowerQuery.includes('long') || lowerQuery.includes('minutes') || lowerQuery.includes('اخبز') || lowerQuery.includes('كم')) {
+          const bakeStep = instructions.find(s => s.step.toLowerCase().includes('bake') || s.step.toLowerCase().includes('اخبز') || s.step.toLowerCase().includes('تُخبز'));
+          aiReply = bakeStep 
+            ? `For ${title}, here is the exact instruction: "${bakeStep.step}" (Total prep/bake time: ${prep}).` 
+            : `For ${title}, check the instructions tab! Total prep time is ${prep}.`;
+        } else if (lowerQuery.includes('note') || lowerQuery.includes('tip') || lowerQuery.includes('ملاحظة')) {
+          aiReply = note ? `Sally's note for this recipe: ${note}` : `No special notes for this one, just follow the recipe instructions carefully!`;
+        } else {
+          aiReply = `Since you are currently baking ${title}, you need to follow the active recipe steps. Let me know if you need help with a specific step or baking time!`;
+        }
       }
 
-      modalBody.innerHTML = `
-        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; color: var(--accent-brown);">${recipe.title}</h2>
-        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Prep: ${recipe.time} &nbsp;|&nbsp; Yield: ${recipe.yield}</p>
-        
-        <div class="macro-row" style="margin-top: 10px;">
-          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.cal} kcal</span>
-          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.pro}g Protein</span>
-          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.carb}g Carbs</span>
-          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.fat}g Fat</span>
-        </div>
-        
-        <div class="controls-row">
-          <div class="unit-switcher">
-            <span class="control-label">Units:</span>
-            <button class="btn-toggle ${window.activeUnitMode === 'US' ? 'active' : ''}" onclick="switchUnits(${recipe.id}, 'US')">US</button>
-            <button class="btn-toggle ${window.activeUnitMode === 'M' ? 'active' : ''}" onclick="switchUnits(${recipe.id}, 'M')">Metric</button>
-          </div>
-        </div>
+      setChatMessages(prev => [...prev, { sender: 'ai', text: aiReply }]);
+    }, 600);
+  };
 
-        <img src="${recipe.img}" style="width:100%; height:320px; object-fit:cover; border-radius:12px; margin: 1rem 0;" alt="${recipe.title}">
-        
-        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin: 1.5rem 0 0.5rem;">Ingredients</h3>
-        <ul class="ingredient-list">
-          ${baseIngredients.map(item => `<li><label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox"> <span>${item}</span></label></li>`).join('')}
-        </ul>
+  const handleOpenCoOp = (recipe: Recipe) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setCoOpRoomCode(Math.floor(100000 + Math.random() * 900000).toString());
+    setMyReadyStatus(false);
+    setPartnerReady(false);
+    setPartnerCurrentStep(1);
+    setActiveRecipe(null);
+    setTimeout(() => setCoOpModalVisible(true), 250);
+  };
 
-        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin: 1.5rem 0 0.5rem;">Instructions</h3>
-        ${instructionsHtml}
-      `;
-      document.getElementById('recipeModal').style.display = 'flex';
-    };
+  const shareCoOpInvite = async () => {
+    Share.share({ message: `Join my live baking session on Sally's Sweets App!\n\n6-Digit PIN: ${coOpRoomCode}` });
+  };
 
-    window.switchUnits = function(recipeId, unit) {
-      window.activeUnitMode = unit;
-      window.openRecipeModal(recipeId);
-    };
+  const toggleMyReadyStatus = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    const newStatus = !myReadyStatus;
+    setMyReadyStatus(newStatus);
+    if (newStatus) setTimeout(() => { setPartnerReady(true); Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); }, 1500);
+    else setPartnerReady(false);
+  };
 
-    window.openAboutModal = function() { document.getElementById('aboutModal').style.display = 'flex'; };
-    window.openLoginModal = function() { 
-      document.getElementById('recipeModal').style.display = 'none';
-      document.getElementById('loginModal').style.display = 'flex';
-      window.showMainAuthView();
-    };
-    window.closeModal = function(modalId) { document.getElementById(modalId).style.display = 'none'; };
+  const sendEmojiReaction = (emoji: string) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setLiveReaction(emoji);
+    setTimeout(() => setLiveReaction(null), 2500);
+  };
 
-    window.renderRecipes(window.recipes);
-  </script>
-</body>
-</html>
+  const toggleIngredientCheck = (idx: number) => setCheckedIngredients(checkedIngredients.includes(idx) ? checkedIngredients.filter(i => i !== idx) : [...checkedIngredients, idx]);
+  const toggleStepCheck = (idx: number) => setCheckedSteps(checkedSteps.includes(idx) ? checkedSteps.filter(s => s !== idx) : [...checkedSteps, idx]);
+
+  const formatTimerDisplay = (totalSecs: number) => `${Math.floor(totalSecs / 60).toString().padStart(2, '0')}:${(totalSecs % 60).toString().padStart(2, '0')}`;
+
+  const filteredRecipes = SALLY_RECIPES.filter(r => {
+    const title = lang === 'ar' ? r.title_ar : r.title_en;
+    const desc = lang === 'ar' ? r.description_ar : r.description_en;
+    const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) || desc.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || r.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const theme = {
+    bg: isDarkMode ? '#0A0A0C' : '#F8F8FA',
+    headerBg: isDarkMode ? '#141416' : '#FFFFFF',
+    cardBg: isDarkMode ? '#1C1C1E' : '#FFFFFF',
+    border: isDarkMode ? '#2C2C2E' : '#E5E5EA',
+    text: isDarkMode ? '#F0EFEA' : '#121212',
+    subText: isDarkMode ? '#8E8E93' : '#6C6C70',
+    chipBg: isDarkMode ? '#1C1C1E' : '#EFEFF4',
+  };
+
+  const isAr = lang === 'ar';
+
+  return (
+    <View style={[styles.container, { backgroundColor: theme.bg }]}>
+      <View nativeID="recaptcha-explore" style={{ display: 'none' }} />
+
+      <View style={[styles.header, { backgroundColor: theme.headerBg, borderBottomColor: theme.border }]}>
+        <View style={styles.headerCenter}>
+          <Text style={[styles.headerTitle, { color: theme.text }]}>{d.header}</Text>
+          <Text style={[styles.headerSub, { color: theme.subText }]}>{d.subHeader}</Text>
+        </View>
+        <TouchableOpacity style={styles.langToggleBtn} onPress={toggleLanguage}>
+          <Text style={styles.langToggleText}>{lang === 'en' ? 'عربي' : 'EN'}</Text>
+        </TouchableOpacity>
+      </View>
+
+      {!isLoggedInMember && (
+        <TouchableOpacity style={styles.guestNoticeBanner} onPress={() => { resetFormState(); setAuthModalVisible(true); }}>
+          <Ionicons name="lock-closed" size={16} color="#121212" style={{ marginRight: 6 }} />
+          <Text style={styles.guestNoticeBannerText}>Membership Required: Tap here to Sign In!</Text>
+        </TouchableOpacity>
+      )}
+
+      {activeBakeRecipe && (
+        <TouchableOpacity 
+          style={[styles.activeBakeBanner, { backgroundColor: theme.cardBg, borderColor: '#D4A359' }]} 
+          activeOpacity={0.9} 
+          onPress={() => setAiModalVisible(true)}
+        >
+          <Ionicons name="sparkles" size={18} color="#D4A359" style={{ marginRight: 8 }} />
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.activeBakeTitle, { color: theme.text }]} numberOfLines={1}>
+              Baking Active: {isAr ? activeBakeRecipe.title_ar : activeBakeRecipe.title_en}
+            </Text>
+            <Text style={{ fontSize: 10, color: '#D4A359' }}>Tap to ask Sally's AI Assistant 🤖</Text>
+          </View>
+          <TouchableOpacity style={styles.finishBakeBtn} activeOpacity={0.7} onPress={finishBakingSession}>
+            <Text style={styles.finishBakeBtnText}>Finish</Text>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      )}
+
+      <View style={styles.searchSection}>
+        <View style={[styles.searchBar, { backgroundColor: theme.cardBg, borderColor: theme.border, flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+          <Ionicons name="search" size={18} color={theme.subText} style={{ marginHorizontal: 8 }} />
+          <TextInput
+            style={[styles.searchInput, { color: theme.text, textAlign: isAr ? 'right' : 'left' }]}
+            placeholder={d.search}
+            placeholderTextColor={theme.subText}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
+      </View>
+
+      <View style={styles.categoryContainer}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={[styles.categoryScroll, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+          {Object.keys(d.categories).map((catKey) => {
+            const isSelected = selectedCategory === catKey;
+            return (
+              <TouchableOpacity
+                key={catKey}
+                activeOpacity={0.8}
+                style={[styles.categoryChip, { backgroundColor: theme.chipBg, borderColor: theme.border }, isSelected && styles.activeCategoryChip]}
+                onPress={() => setSelectedCategory(catKey)}
+              >
+                <Text style={[styles.categoryChipText, { color: theme.subText }, isSelected && styles.activeCategoryChipText]}>
+                  {d.categories[catKey as keyof typeof d.categories]}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.recipeList} showsVerticalScrollIndicator={true} keyboardShouldPersistTaps="handled">
+        {filteredRecipes.map((item) => {
+          const isFav = favorites.includes(item.id);
+          const title = isAr ? item.title_ar : item.title_en;
+          const desc = isAr ? item.description_ar : item.description_en;
+          const prep = isAr ? item.prepTime_ar : item.prepTime_en;
+
+          return (
+            <TouchableOpacity key={item.id} activeOpacity={0.88} style={[styles.recipeCard, { backgroundColor: theme.cardBg, borderColor: theme.border }]} onPress={() => handleRecipeCardPress(item)}>
+              <View style={styles.cardImageContainer}>
+                <Image source={{ uri: item.imageUrl }} style={styles.cardImage} />
+                {!isLoggedInMember && (
+                  <View style={[styles.lockBadge, isAr ? { right: 12 } : { left: 12 }]}>
+                    <Ionicons name="lock-closed" size={12} color="#FFFFFF" style={{ marginRight: 4 }} />
+                    <Text style={styles.lockBadgeText}>{d.membersOnly}</Text>
+                  </View>
+                )}
+                <TouchableOpacity style={[styles.favoriteBadge, isAr ? { left: 12 } : { right: 12 }]} onPress={(e) => { e.stopPropagation(); toggleFavorite(item.id); }}>
+                  <Ionicons name={isFav ? "heart" : "heart-outline"} size={20} color={isFav ? "#FF453A" : "#FFFFFF"} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.cardContent}>
+                <View style={[styles.cardHeader, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                  <Text style={styles.categoryBadge}>{d.categories[item.category]}</Text>
+                  <View style={[styles.timeBadge, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                    <Ionicons name="time-outline" size={13} color="#D4A359" style={{ marginHorizontal: 4 }} />
+                    <Text style={[styles.timeText, { color: theme.subText }]}>{prep}</Text>
+                  </View>
+                </View>
+
+                <Text style={[styles.cardTitle, { color: theme.text, textAlign: isAr ? 'right' : 'left' }]}>{title}</Text>
+                <Text style={[styles.cardDesc, { color: theme.subText, textAlign: isAr ? 'right' : 'left' }]} numberOfLines={2}>{desc}</Text>
+
+                <View style={[styles.cardMacrosRow, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                  <View style={styles.macroMiniPill}><Text style={styles.macroMiniText}>🔥 {item.calories} kcal</Text></View>
+                  <View style={styles.macroMiniPill}><Text style={styles.macroMiniText}>💪 {item.protein}g {d.protein}</Text></View>
+                </View>
+
+                <View style={[styles.cardFooter, { borderTopColor: theme.border, flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                  <View style={[styles.viewButton, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                    <Text style={styles.viewButtonText}>{isLoggedInMember ? d.view : d.unlock}</Text>
+                    <Ionicons name={isAr ? "chevron-back" : "chevron-forward"} size={14} color="#D4A359" />
+                  </View>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+
+      {/* FULL Authentic Sign-In Modal */}
+      <Modal visible={authModalVisible} animationType="slide" transparent={true} onRequestClose={() => setAuthModalVisible(false)}>
+        <View style={styles.aiModalOverlay}>
+          <View style={[styles.aiModalCard, { backgroundColor: theme.headerBg, borderColor: theme.border, minHeight: 460 }]}>
+            <View style={[styles.aiModalHeader, { borderBottomColor: theme.border }]}>
+              <Text style={[styles.aiModalTitle, { color: theme.text }]}>Welcome to Sally's Sweets 🔒</Text>
+              <TouchableOpacity onPress={() => setAuthModalVisible(false)}>
+                <Ionicons name="close" size={24} color={theme.subText} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView contentContainerStyle={{ paddingVertical: 16 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+              <Text style={[styles.authCardSub, { color: theme.subText, textAlign: 'center', marginBottom: 16 }]}>
+                {authView === 'email'
+                  ? (isSignUp ? 'Create a free account to unlock full recipes' : 'Sign in to access your saved recipes')
+                  : authView === 'phone'
+                  ? 'Sign in using phone number SMS'
+                  : 'Sign in or create an account to unlock all recipes'}
+              </Text>
+
+              {/* Email Form */}
+              {authView === 'email' && (
+                <View style={{ width: '100%' }}>
+                  <TextInput
+                    style={[styles.inputField, { backgroundColor: theme.chipBg, borderColor: theme.border, color: theme.text }]}
+                    placeholder="Email address"
+                    placeholderTextColor={theme.subText}
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                  />
+
+                  <View style={[styles.inputWrapper, { backgroundColor: theme.chipBg, borderColor: theme.border, marginBottom: 10 }]}>
+                    <TextInput
+                      style={[styles.wrapperTextInput, { color: theme.text }]}
+                      placeholder="Password"
+                      placeholderTextColor={theme.subText}
+                      value={password}
+                      onChangeText={setPassword}
+                      secureTextEntry={!showPassword}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                      <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color={theme.subText} />
+                    </TouchableOpacity>
+                  </View>
+
+                  {isSignUp && (
+                    <View style={[styles.inputWrapper, { backgroundColor: theme.chipBg, borderColor: theme.border, marginBottom: 10 }]}>
+                      <TextInput
+                        style={[styles.wrapperTextInput, { color: theme.text }]}
+                        placeholder="Confirm password"
+                        placeholderTextColor={theme.subText}
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
+                        secureTextEntry={!showPassword}
+                      />
+                    </View>
+                  )}
+
+                  <TouchableOpacity 
+                    style={[styles.authPrimaryBtn, loadingAuth && { opacity: 0.6 }]}
+                    onPress={handleEmailAuth}
+                    disabled={loadingAuth}
+                  >
+                    <Text style={styles.authPrimaryBtnText}>{loadingAuth ? 'Processing...' : (isSignUp ? 'Create Account' : 'Sign In')}</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={{ marginTop: 14, alignItems: 'center' }} onPress={() => setIsSignUp(!isSignUp)}>
+                    <Text style={{ color: '#D4A359', fontSize: 13, fontWeight: '600' }}>
+                      {isSignUp ? 'Already have an account? Sign In' : 'Need an account? Create one'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              {/* Phone Form */}
+              {authView === 'phone' && (
+                <View style={{ width: '100%' }}>
+                  <TextInput
+                    style={[styles.inputField, { backgroundColor: theme.chipBg, borderColor: theme.border, color: theme.text }]}
+                    placeholder="+1 (555) 000-0000"
+                    placeholderTextColor={theme.subText}
+                    value={phoneNumber}
+                    onChangeText={handlePhoneChange}
+                    keyboardType="phone-pad"
+                    maxLength={17}
+                    textContentType="telephoneNumber"
+                    autoComplete="tel"
+                  />
+
+                  {codeSent && (
+                    <TextInput
+                      style={[styles.inputField, { backgroundColor: theme.chipBg, borderColor: theme.border, color: theme.text, marginTop: 10 }]}
+                      placeholder="Enter 6-digit SMS code"
+                      placeholderTextColor={theme.subText}
+                      value={smsCode}
+                      onChangeText={setSmsCode}
+                      keyboardType="number-pad"
+                    />
+                  )}
+
+                  <TouchableOpacity style={[styles.authPrimaryBtn, { marginTop: 10 }]} onPress={handlePhoneLogin}>
+                    <Text style={styles.authPrimaryBtnText}>{codeSent ? 'Verify SMS Code' : 'Send Verification Code'}</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              {/* Menu of Options (Apple, Google, Email, Phone) */}
+              {authView === 'menu' && (
+                <View style={{ gap: 10 }}>
+                  <TouchableOpacity style={styles.officialAppleButton} onPress={handleAppleSignIn}>
+                    <Ionicons name="logo-apple" size={20} color="#FFFFFF" style={{ marginRight: 10 }} />
+                    <Text style={styles.officialAppleText}>Continue with Apple</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.officialGoogleButton} onPress={handleGoogleLogin}>
+                    <Ionicons name="logo-google" size={18} color="#4285F4" style={{ marginRight: 10 }} />
+                    <Text style={styles.officialGoogleText}>Continue with Google</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={[styles.authButtonOutline, { borderColor: theme.border }]} onPress={() => setAuthView('email')}>
+                    <Ionicons name="mail-outline" size={18} color={theme.text} style={{ marginRight: 10 }} />
+                    <Text style={[styles.authButtonTextTheme, { color: theme.text }]}>Continue with Email</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={[styles.authButtonOutline, { borderColor: theme.border }]} onPress={() => setAuthView('phone')}>
+                    <Ionicons name="call-outline" size={18} color={theme.text} style={{ marginRight: 10 }} />
+                    <Text style={[styles.authButtonTextTheme, { color: theme.text }]}>Continue with Phone</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              {authView !== 'menu' && (
+                <TouchableOpacity style={{ marginTop: 16, alignItems: 'center' }} onPress={() => setAuthView('menu')}>
+                  <Text style={{ color: theme.subText, fontSize: 14, fontWeight: '600' }}>← Back to all options</Text>
+                </TouchableOpacity>
+              )}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* AI Assistant Chat Modal */}
+      {aiModalVisible && (
+        <Modal visible={aiModalVisible} animationType="slide" transparent={true} onRequestClose={() => setAiModalVisible(false)}>
+          <View style={styles.aiModalOverlay}>
+            <View style={[styles.aiModalCard, { backgroundColor: theme.headerBg, borderColor: theme.border }]}>
+              <View style={[styles.aiModalHeader, { borderBottomColor: theme.border }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="sparkles" size={18} color="#D4A359" style={{ marginRight: 6 }} />
+                  <Text style={[styles.aiModalTitle, { color: theme.text }]}>Sally's Baking AI Assistant</Text>
+                </View>
+                <TouchableOpacity onPress={() => setAiModalVisible(false)}>
+                  <Ionicons name="close" size={24} color={theme.subText} />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView contentContainerStyle={styles.aiChatScroll} showsVerticalScrollIndicator={false}>
+                {chatMessages.length === 0 ? (
+                  <Text style={[styles.aiWelcomeText, { color: theme.subText }]}>
+                    {activeBakeRecipe 
+                      ? `Ask me anything about making "${isAr ? activeBakeRecipe.title_ar : activeBakeRecipe.title_en}"! I know the exact recipe details.` 
+                      : "Start a baking session to ask recipe-specific questions!"}
+                  </Text>
+                ) : (
+                  chatMessages.map((msg, index) => (
+                    <View key={index} style={[styles.chatBubble, msg.sender === 'user' ? styles.userBubble : styles.aiBubble]}>
+                      <Text style={[styles.chatText, msg.sender === 'user' ? styles.userChatText : styles.aiChatText]}>{msg.text}</Text>
+                    </View>
+                  ))
+                )}
+              </ScrollView>
+
+              <View style={[styles.aiInputRow, { borderTopColor: theme.border }]}>
+                <TextInput
+                  style={[styles.aiTextInput, { backgroundColor: theme.chipBg, color: theme.text }]}
+                  placeholder="Ask about times, steps, notes..."
+                  placeholderTextColor={theme.subText}
+                  value={aiInput}
+                  onChangeText={setAiInput}
+                />
+                <TouchableOpacity style={styles.aiSendBtn} onPress={sendAiMessage}>
+                  <Ionicons name="send" size={16} color="#121212" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      )}
+
+      {/* Recipe Detail Modal */}
+      {activeRecipe && (
+        <Modal visible={activeRecipe !== null} animationType="slide" presentationStyle="pageSheet" onRequestClose={() => setActiveRecipe(null)}>
+          <View style={[styles.modalContainer, { backgroundColor: theme.headerBg }]}>
+            <View style={[styles.modalHeader, { borderBottomColor: theme.border, flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+              <TouchableOpacity onPress={() => setActiveRecipe(null)}><Ionicons name="close" size={26} color={theme.text} /></TouchableOpacity>
+              <Text style={styles.modalCategory}>{d.categories[activeRecipe.category]}</Text>
+            </View>
+
+            <ScrollView contentContainerStyle={styles.modalBody} showsVerticalScrollIndicator={true}>
+              {activeTimerLabel && (
+                <View style={[styles.timerWidgetBar, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                  <View style={{ flex: 1, alignItems: isAr ? 'flex-end' : 'flex-start' }}>
+                    <Text style={styles.timerWidgetLabel}>{activeTimerLabel}</Text>
+                    <Text style={styles.timerWidgetTime}>{formatTimerDisplay(timerSecondsLeft)}</Text>
+                  </View>
+                  <TouchableOpacity style={styles.timerStopBtn} onPress={stopTimer}><Text style={styles.timerStopBtnText}>{d.stopTimer}</Text></TouchableOpacity>
+                </View>
+              )}
+
+              <Image source={{ uri: activeRecipe.imageUrl }} style={styles.detailHeroImage} />
+              <Text style={[styles.modalTitle, { color: theme.text, textAlign: isAr ? 'right' : 'left' }]}>
+                {isAr ? activeRecipe.title_ar : activeRecipe.title_en}
+              </Text>
+
+              <View style={[styles.macroDetailRow, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                <View style={[styles.macroBigBox, { backgroundColor: 'rgba(255, 69, 58, 0.1)' }]}>
+                  <Text style={[styles.macroBigValue, { color: '#FF453A' }]}>{activeRecipe.calories}</Text>
+                  <Text style={[styles.macroBigLabel, { color: theme.subText }]}>{d.calories}</Text>
+                </View>
+                <View style={[styles.macroBigBox, { backgroundColor: 'rgba(48, 209, 88, 0.1)' }]}>
+                  <Text style={[styles.macroBigValue, { color: '#30D158' }]}>{activeRecipe.protein}g</Text>
+                  <Text style={[styles.macroBigLabel, { color: theme.subText }]}>{d.protein}</Text>
+                </View>
+              </View>
+
+              <TouchableOpacity 
+                style={[styles.nutritionToggleBtn, { flexDirection: isAr ? 'row-reverse' : 'row' }]} 
+                onPress={() => setShowNutrition(!showNutrition)}
+              >
+                <Ionicons name="leaf-outline" size={16} color="#D4A359" style={{ marginHorizontal: 6 }} />
+                <Text style={styles.nutritionToggleText}>{d.nutritionalValue}</Text>
+                <Ionicons name={showNutrition ? "chevron-up" : "chevron-down"} size={16} color="#D4A359" />
+              </TouchableOpacity>
+
+              {showNutrition && (
+                <View style={[styles.expandedNutritionBox, { backgroundColor: theme.chipBg, flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                   <View style={styles.expandedMacroCol}>
+                      <Text style={[styles.expandedMacroValue, { color: theme.text }]}>{activeRecipe.carbs}g</Text>
+                      <Text style={[styles.expandedMacroLabel, { color: theme.subText }]}>{d.carbs}</Text>
+                   </View>
+                   <View style={styles.expandedMacroDivider} />
+                   <View style={styles.expandedMacroCol}>
+                      <Text style={[styles.expandedMacroValue, { color: theme.text }]}>{activeRecipe.fat}g</Text>
+                      <Text style={[styles.expandedMacroLabel, { color: theme.subText }]}>{d.fat}</Text>
+                   </View>
+                </View>
+              )}
+
+              <View style={[styles.actionBtnRow, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                <TouchableOpacity style={styles.startBakeSoloBtn} activeOpacity={0.8} onPress={() => startBakingSession(activeRecipe)}>
+                  <Ionicons name="restaurant-outline" size={18} color="#121212" style={{ marginHorizontal: 6 }} />
+                  <Text style={styles.startBakeSoloText}>{d.startSolo}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.bakeTogetherCoOpBtn} activeOpacity={0.8} onPress={() => handleOpenCoOp(activeRecipe)}>
+                  <Ionicons name="people-outline" size={18} color="#D4A359" style={{ marginHorizontal: 6 }} />
+                  <Text style={styles.bakeTogetherCoOpText}>{d.bakeTogether}</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={[styles.metaRow, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                <View style={[styles.metaPill, { backgroundColor: theme.chipBg, flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                  <Ionicons name="time-outline" size={16} color="#D4A359" style={{ marginHorizontal: 4 }}/>
+                  <Text style={[styles.metaText, { color: theme.text }]}>{isAr ? activeRecipe.prepTime_ar : activeRecipe.prepTime_en}</Text>
+                </View>
+                <View style={[styles.metaPill, { backgroundColor: theme.chipBg, flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                  <Ionicons name="restaurant-outline" size={16} color="#D4A359" style={{ marginHorizontal: 4 }}/>
+                  <Text style={[styles.metaText, { color: theme.text }]}>{isAr ? activeRecipe.yield_ar : activeRecipe.yield_en}</Text>
+                </View>
+              </View>
+
+              <View style={[styles.unitToggleRow, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                <TouchableOpacity style={[styles.unitBtn, unitMode === 'US' && styles.unitBtnActive]} onPress={() => setUnitMode('US')}>
+                  <Text style={[styles.unitBtnText, unitMode === 'US' && styles.unitBtnTextActive]}>US Units</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.unitBtn, unitMode === 'Metric' && styles.unitBtnActive]} onPress={() => setUnitMode('Metric')}>
+                  <Text style={[styles.unitBtnText, unitMode === 'Metric' && styles.unitBtnTextActive]}>Metric (g)</Text>
+                </TouchableOpacity>
+              </View>
+
+              {(isAr ? activeRecipe.note_ar : activeRecipe.note_en) && (
+                <View style={[styles.bakerNoteBox, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                  <Ionicons name="sparkles" size={16} color="#D4A359" style={{ marginHorizontal: 8 }} />
+                  <Text style={[styles.bakerNoteText, { textAlign: isAr ? 'right' : 'left' }]}>
+                    <Text style={{ fontWeight: '700' }}>{d.bakerNote}</Text>
+                    {isAr ? activeRecipe.note_ar : activeRecipe.note_en}
+                  </Text>
+                </View>
+              )}
+
+              <Text style={[styles.sectionHeading, { color: theme.text, textAlign: isAr ? 'right' : 'left' }]}>{d.ingredients}</Text>
+              {((isAr ? (unitMode === 'US' ? activeRecipe.ingredientsUS_ar : activeRecipe.ingredientsM_ar) : (unitMode === 'US' ? activeRecipe.ingredientsUS_en : activeRecipe.ingredientsM_en))).map((ing, idx) => {
+                const isChecked = checkedIngredients.includes(idx);
+                return (
+                  <TouchableOpacity key={idx} style={[styles.interactiveCheckRow, { flexDirection: isAr ? 'row-reverse' : 'row' }]} onPress={() => toggleIngredientCheck(idx)}>
+                    <Ionicons name={isChecked ? "checkbox" : "square-outline"} size={20} color={isChecked ? "#D4A359" : theme.subText} style={{ marginHorizontal: 10 }} />
+                    <Text style={[styles.bulletText, { color: theme.text, textAlign: isAr ? 'right' : 'left' }, isChecked && styles.crossedOffText]}>{ing}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+
+              <Text style={[styles.sectionHeading, { color: theme.text, textAlign: isAr ? 'right' : 'left' }]}>{d.instructions}</Text>
+              {(isAr ? activeRecipe.instructions_ar : activeRecipe.instructions_en).map((stepObj, idx) => {
+                const isChecked = checkedSteps.includes(idx);
+                return (
+                  <TouchableOpacity key={idx} style={[styles.stepBox, { backgroundColor: theme.cardBg, borderColor: theme.border, flexDirection: isAr ? 'row-reverse' : 'row' }]} onPress={() => toggleStepCheck(idx)}>
+                    <Ionicons name={isChecked ? "checkmark-circle" : "ellipse-outline"} size={22} color={isChecked ? "#30D158" : "#D4A359"} style={{ marginHorizontal: 10, marginTop: 2 }} />
+                    <View style={{ flex: 1, alignItems: isAr ? 'flex-end' : 'flex-start' }}>
+                      <Text style={[styles.stepText, { color: theme.text, textAlign: isAr ? 'right' : 'left' }, isChecked && styles.crossedOffText]}>{stepObj.step}</Text>
+                      {stepObj.timerSeconds && stepObj.timerLabel && (
+                        <TouchableOpacity style={[styles.inlineTimerBtn, { flexDirection: isAr ? 'row-reverse' : 'row' }]} onPress={() => startTimer(stepObj.timerSeconds!, stepObj.timerLabel!)}>
+                          <Ionicons name="timer-outline" size={14} color="#121212" style={{ marginHorizontal: 4 }} />
+                          <Text style={styles.inlineTimerBtnText}>{isAr ? 'بدء المؤقت' : `Start Timer`}</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
+        </Modal>
+      )}
+
+      {coOpModalVisible && (
+        <Modal visible={coOpModalVisible} animationType="slide" transparent={true} onRequestClose={() => setCoOpModalVisible(false)}>
+          <View style={styles.coOpModalOverlay}>
+            <View style={[styles.coOpCard, { backgroundColor: theme.headerBg, borderColor: theme.border }]}>
+              {liveReaction && <View style={styles.reactionToast}><Text style={styles.reactionToastText}>{liveReaction}</Text></View>}
+              <View style={[styles.coOpHeader, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                <View style={{ alignItems: isAr ? 'flex-end' : 'flex-start' }}>
+                  <Text style={[styles.coOpTitle, { color: theme.text }]}>{d.bakeTogether}</Text>
+                  <Text style={[styles.coOpRoomBadge, { color: theme.subText }]}>
+                    PIN: <Text style={{ color: '#D4A359', fontWeight: '800', letterSpacing: 1.5 }}>{coOpRoomCode}</Text>
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={() => setCoOpModalVisible(false)}><Ionicons name="close-circle" size={26} color={theme.subText} /></TouchableOpacity>
+              </View>
+
+              <View style={[styles.modeToggleBox, { backgroundColor: theme.cardBg }]}>
+                <TouchableOpacity 
+                  style={[styles.modeOptionBtn, coOpSyncMode === 'Synced' && styles.modeOptionBtnActive]}
+                  onPress={() => setCoOpSyncMode('Synced')}
+                >
+                  <Text style={[styles.modeOptionText, coOpSyncMode === 'Synced' && styles.modeOptionTextActive]}>
+                    Lockstep Mode 🔒
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                  style={[styles.modeOptionBtn, coOpSyncMode === 'Flexible' && styles.modeOptionBtnActive]}
+                  onPress={() => setCoOpSyncMode('Flexible')}
+                >
+                  <Text style={[styles.modeOptionText, coOpSyncMode === 'Flexible' && styles.modeOptionTextActive]}>
+                    Own Pace Mode ⚡
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <Text style={[styles.modeExplainText, { color: theme.subText, textAlign: isAr ? 'right' : 'left' }]}>
+                {coOpSyncMode === 'Synced' 
+                  ? (isAr ? 'يبقى الخبازان على نفس الخطوة بالضبط. لا تفتح الخطوة إلا عندما تؤكد كلاهما!' : 'Both bakers stay on the exact same step. Step unlocks only when both confirm!') 
+                  : (isAr ? 'اخبز بحرية بينما تشاهد تقدم شريكك مباشرة.' : 'Bake freely while seeing partner progress live.')}
+              </Text>
+
+              <View style={[styles.partnerCard, { backgroundColor: theme.cardBg, borderColor: '#D4A359', flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                <Ionicons name="person-circle-outline" size={32} color="#D4A359" style={{ marginHorizontal: 10 }} />
+                <View style={{ flex: 1, alignItems: isAr ? 'flex-end' : 'flex-start' }}>
+                  <Text style={[styles.partnerName, { color: theme.text }]}>{isAr ? 'شريك عن بعد' : 'Long-Distance Partner'}</Text>
+                  <Text style={[styles.partnerStatusText, { color: theme.subText }]}>
+                    {coOpSyncMode === 'Synced' 
+                      ? (partnerReady 
+                          ? (isAr ? "جاهز للخطوة التالية! ✅" : "Ready for Next Step! ✅") 
+                          : (isAr ? "يخفق البيض والسكر البني..." : "Whipping eggs & brown sugar..."))
+                      : (isAr ? `حاليا في الخطوة ${partnerCurrentStep}` : `Currently on Step ${partnerCurrentStep}`)}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.reactionBar}>
+                <Text style={[styles.reactionLabel, { color: theme.subText, textAlign: isAr ? 'right' : 'left' }]}>{isAr ? 'تفاعل سريع:' : 'Quick Reaction:'}</Text>
+                <View style={[styles.reactionIconsRow, { flexDirection: isAr ? 'row-reverse' : 'row' }]}>
+                  {(isAr ? ['🔥 ذهبي!', '🍫 رائحة رائعة!', '⏳ انتظر!', '✨ مثالي!'] : ['🔥 Golden!', '🍫 Smells Good!', '⏳ Wait up!', '✨ Perfect!']).map((emoji, i) => (
+                    <TouchableOpacity 
+                      key={i} 
+                      style={[styles.emojiPill, { backgroundColor: theme.cardBg }]}
+                      onPress={() => sendEmojiReaction(emoji)}
+                    >
+                      <Text style={styles.emojiText}>{emoji}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+              <TouchableOpacity style={[styles.shareInviteBtn, { flexDirection: isAr ? 'row-reverse' : 'row' }]} onPress={shareCoOpInvite}>
+                <Ionicons name="share-outline" size={18} color="#121212" style={{ marginHorizontal: 6 }} />
+                <Text style={styles.shareInviteBtnText}>{isAr ? 'دعوة صديق برمز ٦ أرقام' : 'Invite Friend with 6-Digit PIN'}</Text>
+              </TouchableOpacity>
+
+              {coOpSyncMode === 'Synced' && (
+                <TouchableOpacity 
+                  style={[
+                    styles.readyCheckBtn, 
+                    myReadyStatus ? styles.readyCheckBtnConfirmed : null,
+                    { flexDirection: isAr ? 'row-reverse' : 'row' }
+                  ]}
+                  onPress={toggleMyReadyStatus}
+                >
+                  <Ionicons 
+                    name={myReadyStatus ? "checkmark-circle" : (isAr ? "arrow-back-circle-outline" : "arrow-forward-circle-outline")} 
+                    size={20} 
+                    color={myReadyStatus ? "#121212" : "#FFFFFF"} 
+                    style={{ marginHorizontal: 8 }} 
+                  />
+                  <Text style={[styles.readyCheckBtnText, myReadyStatus && { color: '#121212' }]}>
+                    {myReadyStatus 
+                      ? (isAr ? "في انتظار الشريك... (١/٢ جاهز)" : "Waiting for Partner... (1/2 Ready)") 
+                      : (isAr ? "جاهز للخطوة التالية" : "Ready for Next Step")}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        </Modal>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  header: { paddingTop: 56, paddingBottom: 14, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1 },
+  headerCenter: { alignItems: 'center', flex: 1 },
+  headerTitle: { fontSize: 17, fontWeight: '700' },
+  headerSub: { fontSize: 11, fontWeight: '500', marginTop: 2 },
+  langToggleBtn: { position: 'absolute', right: 20, top: 60, backgroundColor: 'rgba(212, 163, 89, 0.2)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
+  langToggleText: { fontSize: 12, fontWeight: '700', color: '#D4A359' },
+  guestNoticeBanner: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#D4A359', paddingHorizontal: 16, paddingVertical: 8 },
+  guestNoticeBannerText: { fontSize: 11, fontWeight: '700', color: '#121212', textAlign: 'center' },
+  activeBakeBanner: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 10, borderBottomWidth: 1, zIndex: 99 },
+  activeBakeTitle: { fontSize: 13, fontWeight: '700' },
+  finishBakeBtn: { backgroundColor: '#D4A359', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 12 },
+  finishBakeBtnText: { fontSize: 13, fontWeight: '800', color: '#121212' },
+  searchSection: { paddingHorizontal: 16, paddingTop: 14 },
+  searchBar: { alignItems: 'center', borderRadius: 16, paddingHorizontal: 12, paddingVertical: 10, borderWidth: 1 },
+  searchInput: { flex: 1, fontSize: 14 },
+  categoryContainer: { height: 52, justifyContent: 'center' },
+  categoryScroll: { paddingHorizontal: 16, alignItems: 'center', gap: 8 },
+  categoryChip: { height: 36, paddingHorizontal: 16, borderRadius: 18, borderWidth: 1, justifyContent: 'center', alignItems: 'center' },
+  activeCategoryChip: { backgroundColor: '#D4A359', borderColor: '#D4A359' },
+  categoryChipText: { fontSize: 13, fontWeight: '600' },
+  activeCategoryChipText: { color: '#121212' },
+  recipeList: { paddingHorizontal: 16, paddingTop: 10, paddingBottom: 120 },
+  recipeCard: { borderRadius: 22, marginBottom: 16, borderWidth: 1, overflow: 'hidden' },
+  cardImageContainer: { height: 180, position: 'relative' },
+  cardImage: { width: '100%', height: '100%' },
+  lockBadge: { position: 'absolute', top: 12, backgroundColor: 'rgba(0, 0, 0, 0.65)', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 12 },
+  lockBadgeText: { color: '#FFFFFF', fontSize: 11, fontWeight: '700' },
+  favoriteBadge: { position: 'absolute', top: 12, backgroundColor: 'rgba(0, 0, 0, 0.4)', width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+  cardContent: { padding: 16 },
+  cardHeader: { justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  categoryBadge: { fontSize: 11, fontWeight: '700', color: '#D4A359', letterSpacing: 0.5, textTransform: 'uppercase' },
+  timeBadge: { alignItems: 'center' },
+  timeText: { fontSize: 12 },
+  cardTitle: { fontSize: 18, fontWeight: '700', marginBottom: 6 },
+  cardDesc: { fontSize: 13, lineHeight: 18, marginBottom: 10 },
+  cardMacrosRow: { gap: 8, marginBottom: 14 },
+  macroMiniPill: { backgroundColor: 'rgba(212, 163, 89, 0.1)', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 },
+  macroMiniText: { fontSize: 11, fontWeight: '600', color: '#D4A359' },
+  cardFooter: { justifyContent: 'space-between', alignItems: 'center', borderTopWidth: 1, paddingTop: 12 },
+  viewButton: { alignItems: 'center', gap: 4 },
+  viewButtonText: { fontSize: 13, fontWeight: '600', color: '#D4A359' },
+  aiModalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center', padding: 20 },
+  aiModalCard: { borderRadius: 24, padding: 16, height: 420, borderWidth: 1 },
+  aiModalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottomWidth: 1 },
+  aiModalTitle: { fontSize: 16, fontWeight: '700' },
+  aiChatScroll: { paddingVertical: 12 },
+  aiWelcomeText: { fontSize: 13, textAlign: 'center', marginTop: 40, fontStyle: 'italic' },
+  chatBubble: { padding: 10, borderRadius: 14, marginVertical: 4, maxWidth: '80%' },
+  userBubble: { backgroundColor: '#D4A359', alignSelf: 'flex-end' },
+  aiBubble: { backgroundColor: '#2C2C2E', alignSelf: 'flex-start' },
+  chatText: { fontSize: 13 },
+  userChatText: { color: '#121212', fontWeight: '600' },
+  aiChatText: { color: '#F0EFEA' },
+  aiInputRow: { flexDirection: 'row', alignItems: 'center', paddingTop: 10, borderTopWidth: 1 },
+  aiTextInput: { flex: 1, height: 40, borderRadius: 20, paddingHorizontal: 14, fontSize: 13 },
+  aiSendBtn: { backgroundColor: '#D4A359', width: 36, height: 36, borderRadius: 18, justifyContent: 'center', alignItems: 'center', marginLeft: 8 },
+  authCardSub: { fontSize: 13 },
+  inputField: { paddingHorizontal: 14, paddingVertical: 12, borderRadius: 14, borderWidth: 1, marginBottom: 10, fontSize: 14 },
+  inputWrapper: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, borderRadius: 14, borderWidth: 1 },
+  wrapperTextInput: { flex: 1, paddingVertical: 12, fontSize: 14 },
+  authPrimaryBtn: { backgroundColor: '#D4A359', paddingVertical: 14, borderRadius: 16, alignItems: 'center' },
+  authPrimaryBtnText: { fontSize: 15, fontWeight: '700', color: '#121212' },
+  officialAppleButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000', paddingVertical: 14, borderRadius: 18 },
+  officialAppleText: { fontSize: 15, fontWeight: '600', color: '#FFFFFF' },
+  officialGoogleButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF', paddingVertical: 14, borderRadius: 18, borderWidth: 1, borderColor: '#DADCE0' },
+  officialGoogleText: { fontSize: 15, fontWeight: '600', color: '#3C4043' },
+  authButtonOutline: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 14, borderRadius: 18, borderWidth: 1 },
+  authButtonTextTheme: { fontSize: 15, fontWeight: '600' },
+  modalContainer: { flex: 1 },
+  modalHeader: { alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 14, borderBottomWidth: 1 },
+  modalCategory: { fontSize: 13, fontWeight: '700', color: '#D4A359', textTransform: 'uppercase' },
+  modalBody: { padding: 20, paddingBottom: 100 },
+  timerWidgetBar: { alignItems: 'center', backgroundColor: '#D4A359', padding: 14, borderRadius: 18, marginBottom: 16 },
+  timerWidgetLabel: { fontSize: 12, fontWeight: '700', color: '#121212', textTransform: 'uppercase' },
+  timerWidgetTime: { fontSize: 22, fontWeight: '800', color: '#121212' },
+  timerStopBtn: { backgroundColor: 'rgba(0, 0, 0, 0.15)', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12 },
+  timerStopBtnText: { fontSize: 12, fontWeight: '700', color: '#121212' },
+  detailHeroImage: { width: '100%', height: 220, borderRadius: 20, marginBottom: 16 },
+  modalTitle: { fontSize: 24, fontWeight: '700', marginBottom: 14 },
+  macroDetailRow: { gap: 12, marginBottom: 12 },
+  macroBigBox: { flex: 1, padding: 12, borderRadius: 14, alignItems: 'center' },
+  macroBigValue: { fontSize: 18, fontWeight: '800' },
+  macroBigLabel: { fontSize: 11, fontWeight: '600', marginTop: 2 },
+  nutritionToggleBtn: { alignSelf: 'center', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 12, backgroundColor: 'rgba(212, 163, 89, 0.1)', marginBottom: 16 },
+  nutritionToggleText: { fontSize: 13, fontWeight: '700', color: '#D4A359', marginHorizontal: 6 },
+  expandedNutritionBox: { borderRadius: 14, padding: 16, marginBottom: 16, justifyContent: 'space-around', alignItems: 'center' },
+  expandedMacroCol: { alignItems: 'center' },
+  expandedMacroValue: { fontSize: 16, fontWeight: '700' },
+  expandedMacroLabel: { fontSize: 11, fontWeight: '600', marginTop: 2 },
+  expandedMacroDivider: { width: 1, height: '100%', backgroundColor: '#E5E5EA', marginHorizontal: 20 },
+  actionBtnRow: { gap: 12, marginBottom: 16 },
+  startBakeSoloBtn: { flex: 1.2, alignItems: 'center', justifyContent: 'center', backgroundColor: '#D4A359', paddingVertical: 14, borderRadius: 18 },
+  startBakeSoloText: { fontSize: 15, fontWeight: '700', color: '#121212' },
+  bakeTogetherCoOpBtn: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(212, 163, 89, 0.15)', paddingVertical: 14, borderRadius: 18, borderWidth: 1, borderColor: '#D4A359' },
+  bakeTogetherCoOpText: { fontSize: 14, fontWeight: '700', color: '#D4A359' },
+  metaRow: { gap: 12, marginBottom: 12 },
+  metaPill: { alignItems: 'center', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, gap: 6 },
+  metaText: { fontSize: 13, fontWeight: '500' },
+  unitToggleRow: { backgroundColor: 'rgba(212, 163, 89, 0.12)', borderRadius: 14, padding: 4, marginBottom: 16 },
+  unitBtn: { flex: 1, paddingVertical: 8, alignItems: 'center', borderRadius: 10 },
+  unitBtnActive: { backgroundColor: '#D4A359' },
+  unitBtnText: { fontSize: 13, fontWeight: '600', color: '#8E8E93' },
+  unitBtnTextActive: { color: '#121212' },
+  bakerNoteBox: { alignItems: 'center', backgroundColor: 'rgba(212, 163, 89, 0.15)', padding: 12, borderRadius: 14, marginBottom: 16 },
+  bakerNoteText: { fontSize: 13, lineHeight: 18, color: '#D4A359', flex: 1 },
+  sectionHeading: { fontSize: 18, fontWeight: '700', marginTop: 10, marginBottom: 14 },
+  interactiveCheckRow: { alignItems: 'center', marginBottom: 12 },
+  bulletText: { fontSize: 14, flex: 1 },
+  crossedOffText: { textDecorationLine: 'line-through', opacity: 0.4 },
+  stepBox: { padding: 14, borderRadius: 16, marginBottom: 12, borderWidth: 1 },
+  stepText: { fontSize: 14, lineHeight: 20 },
+  inlineTimerBtn: { items: 'center', backgroundColor: '#D4A359', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 12, marginTop: 8 },
+  inlineTimerBtnText: { fontSize: 12, fontWeight: '700', color: '#121212' },
+  coOpModalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center', padding: 20 },
+  coOpCard: { borderRadius: 24, padding: 22, borderWidth: 1 },
+  coOpHeader: { justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 },
+  coOpTitle: { fontSize: 20, fontWeight: '800' },
+  coOpRoomBadge: { fontSize: 13, marginTop: 2 },
+  modeToggleBox: { flexDirection: 'row', borderRadius: 16, padding: 4, marginBottom: 8 },
+  modeOptionBtn: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 12 },
+  modeOptionBtnActive: { backgroundColor: '#D4A359' },
+  modeOptionText: { fontSize: 12, fontWeight: '600', color: '#8E8E93' },
+  modeOptionTextActive: { color: '#121212', fontWeight: '700' },
+  modeExplainText: { fontSize: 12, marginBottom: 16, lineHeight: 16 },
+  partnerCard: { flexDirection: 'row', alignItems: 'center', padding: 14, borderRadius: 18, borderWidth: 1, marginBottom: 16 },
+  partnerName: { fontSize: 14, fontWeight: '700' },
+  partnerStatusText: { fontSize: 12, marginTop: 2 },
+  reactionBar: { marginBottom: 16 },
+  reactionLabel: { fontSize: 12, marginBottom: 8, fontWeight: '600' },
+  reactionIconsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  emojiPill: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 12 },
+  emojiText: { fontSize: 12, fontWeight: '600' },
+  shareInviteBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#D4A359', paddingVertical: 12, borderRadius: 16, marginBottom: 10 },
+  shareInviteBtnText: { fontSize: 14, fontWeight: '700', color: '#121212' },
+  readyCheckBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#3A3A3C', paddingVertical: 14, borderRadius: 16 },
+  readyCheckBtnConfirmed: { backgroundColor: '#30D158' },
+  readyCheckBtnText: { fontSize: 14, fontWeight: '700', color: '#FFFFFF' },
+  reactionToast: { position: 'absolute', top: -40, alignSelf: 'center', backgroundColor: '#D4A359', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 10, elevation: 10 },
+  reactionToastText: { fontSize: 14, fontWeight: '800', color: '#121212' },
+});
