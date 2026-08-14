@@ -49,6 +49,31 @@
       line-height: 1.6;
     }
 
+    /* Live Timer Widgets */
+    .timer-widget {
+      background: var(--accent-gold);
+      color: #FFF;
+      padding: 12px 18px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      box-shadow: 0 4px 12px rgba(200, 150, 62, 0.25);
+    }
+    .timer-label { font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .timer-time { font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+    .timer-stop { background: rgba(0,0,0,0.15); border: none; color: #FFF; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: background 0.2s; }
+    .timer-stop:hover { background: rgba(0,0,0,0.25); }
+
+    #globalTimer {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--accent-gold); color: #FFF; padding: 12px 24px;
+      border-radius: 30px; box-shadow: 0 10px 25px rgba(200, 150, 62, 0.35);
+      z-index: 3000; font-weight: 700; align-items: center; gap: 15px;
+      display: none;
+    }
+
     /* Custom Toast Notification Banner */
     #customToast {
       position: fixed; top: 20px; right: 20px;
@@ -133,15 +158,14 @@
     .ingredient-list { list-style: none; padding-left: 0; }
     .ingredient-list li { margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
 
-    .inline-timer-btn { display: inline-flex; align-items: center; background: var(--accent-gold); color: #FFF; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; border: none; cursor: pointer; margin-left: 10px; }
+    .inline-timer-btn { display: inline-flex; align-items: center; background: var(--accent-gold); color: #FFF; padding: 6px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; border: none; cursor: pointer; margin-left: 10px; box-shadow: 0 2px 8px rgba(200, 150, 62, 0.3); transition: transform 0.1s; }
+    .inline-timer-btn:active { transform: scale(0.95); }
 
     .locked-container { position: relative; margin-top: 1.5rem; border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); }
     .blurred-text { filter: blur(6px); opacity: 0.4; user-select: none; padding: 2rem; background: #FAFAFA; }
     .unlock-overlay {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.95) 30%);
-      padding: 2rem; text-align: center;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.95) 30%); padding: 2rem; text-align: center;
     }
 
     .app-download-btn {
@@ -153,22 +177,13 @@
     .app-download-btn:hover { transform: translateY(-2px); }
 
     .vip-box { text-align: center; padding: 1rem; }
-    .vip-input {
-      width: 100%; padding: 0.8rem; border-radius: 8px;
-      border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: #FFF;
-    }
+    .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: #FFF; }
     
-    .social-btn {
-      width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-      margin-bottom: 0.5rem; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main);
-    }
+    .social-btn { width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0.5rem; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main); }
     .social-btn:hover { background: var(--pill-bg); }
     .social-btn.apple { background: #000; color: #FFF; border: none; }
     
-    .divider {
-      display: flex; align-items: center; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1.5rem 0;
-    }
+    .divider { display: flex; align-items: center; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1.5rem 0; }
     .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--soft-border); }
     .divider:not(:empty)::before { margin-right: .5em; }
     .divider:not(:empty)::after { margin-left: .5em; }
@@ -178,12 +193,14 @@
 </head>
 <body>
 
-  <!-- Custom Toast Notification Banner -->
-  <div id="customToast">
-    <span id="toastMessage">Notification message here</span>
+  <!-- Floating Global Timer Banner -->
+  <div id="globalTimer">
+    <span id="globalTimerText">Whip Eggs - 05:00</span>
+    <button onclick="stopTimer()" style="background: rgba(0,0,0,0.2); border: none; color: white; padding: 6px 12px; border-radius: 10px; cursor: pointer; font-weight: bold;">Stop</button>
   </div>
 
-  <!-- Custom Confirmation Modal -->
+  <div id="customToast"><span id="toastMessage">Notification message here</span></div>
+
   <div id="customConfirmModal">
     <div class="confirm-card">
       <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Sign Out?</h3>
@@ -195,7 +212,6 @@
     </div>
   </div>
 
-  <!-- Header -->
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
@@ -211,7 +227,6 @@
     </nav>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-subtitle reveal-on-scroll">Decadent • Simple • Aesthetic</div>
     <h1 class="reveal-on-scroll">Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
@@ -229,12 +244,10 @@
     </div>
   </section>
 
-  <!-- Main Recipe Grid -->
   <main class="container">
     <div class="recipe-grid" id="recipeGrid"></div>
   </main>
 
-  <!-- Recipe Detail Modal -->
   <div class="modal-overlay" id="recipeModal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal('recipeModal')">&times;</button>
@@ -242,7 +255,6 @@
     </div>
   </div>
 
-  <!-- Login Modal -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-content vip-box" style="max-width: 500px;">
       <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
@@ -296,7 +308,6 @@
     </div>
   </div>
 
-  <!-- About Modal -->
   <div class="modal-overlay" id="aboutModal">
     <div class="modal-content" style="text-align: center; max-width: 650px;">
       <button class="close-btn" onclick="closeModal('aboutModal')">&times;</button>
@@ -317,7 +328,6 @@
         <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Message / Request Sally</h2>
       </div>
       <form id="contactForm" action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST" onsubmit="submitContactForm(event)">
-        <!-- Autoresponse config to email user back -->
         <input type="hidden" name="_autoresponse" value="Thank you for reaching out to Sally's Sweets! We have received your message and will get back to you shortly.">
         <input type="hidden" name="_subject" value="New Inquiry from Sally's Sweets!">
 
@@ -377,6 +387,8 @@
     const auth = getAuth(app);
 
     window.currentUser = null;
+    window.activeTimer = null;
+    window.timerInterval = null;
 
     // Toast and Confirm Functions
     window.showToast = function(message) {
@@ -396,6 +408,65 @@
       document.getElementById('customConfirmModal').style.display = 'none';
       if (result && confirmCallback) confirmCallback();
       confirmCallback = null;
+    };
+
+    // Live Timer System
+    window.updateTimerUI = function() {
+      const globalTimer = document.getElementById('globalTimer');
+      const globalTimerText = document.getElementById('globalTimerText');
+      const modalTimerContainer = document.getElementById('modalTimerContainer');
+
+      if (!window.activeTimer) {
+        if (globalTimer) globalTimer.style.display = 'none';
+        if (modalTimerContainer) modalTimerContainer.innerHTML = '';
+        return;
+      }
+
+      const m = Math.floor(window.activeTimer.seconds / 60).toString().padStart(2, '0');
+      const s = (window.activeTimer.seconds % 60).toString().padStart(2, '0');
+      const timeString = `${m}:${s}`;
+      const label = window.activeTimer.label;
+
+      if (globalTimer) {
+        globalTimer.style.display = 'flex';
+        globalTimerText.innerText = `${label} - ${timeString}`;
+      }
+
+      if (modalTimerContainer) {
+        modalTimerContainer.innerHTML = `
+          <div class="timer-widget">
+            <div>
+              <div class="timer-label">${label}</div>
+              <div class="timer-time">${timeString}</div>
+            </div>
+            <button class="timer-stop" onclick="stopTimer()">Stop</button>
+          </div>
+        `;
+      }
+    };
+
+    window.triggerTimer = function(seconds, label) {
+      if (window.timerInterval) clearInterval(window.timerInterval);
+      window.activeTimer = { seconds: seconds, label: label };
+      window.updateTimerUI();
+
+      window.timerInterval = setInterval(() => {
+        window.activeTimer.seconds--;
+        if (window.activeTimer.seconds <= 0) {
+          clearInterval(window.timerInterval);
+          window.activeTimer = null;
+          window.showToast("Timer Complete! 🔔 " + label + " is done!");
+          window.updateTimerUI();
+        } else {
+          window.updateTimerUI();
+        }
+      }, 1000);
+    };
+
+    window.stopTimer = function() {
+      if (window.timerInterval) clearInterval(window.timerInterval);
+      window.activeTimer = null;
+      window.updateTimerUI();
     };
 
     // Intersection Observer for Smooth Scrolling Animations
@@ -558,13 +629,11 @@
       errorDiv.style.display = 'none';
 
       try {
-        // Try logging in first if the account already exists
         const userCred = await signInWithEmailAndPassword(auth, email, pass);
         const displayName = userCred.user.displayName || email.split('@')[0];
         window.showToast("Welcome back, " + displayName + "! 🎉");
         window.closeModal('loginModal');
       } catch(error) {
-        // If user doesn't exist, try creating a new account
         if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential' || error.code === 'auth/invalid-login-credentials') {
           if (confirmPass && pass !== confirmPass) {
             errorDiv.style.display = 'block';
@@ -583,7 +652,7 @@
             if (createError.code === 'auth/email-already-in-use') {
               window.showToast("An account with this email already exists. Please log in instead.");
             } else {
-              window.showToast("Error creating account: " + createError.message);
+              window.showToast("Error: " + createError.message);
             }
           }
         } else if (error.code === 'auth/email-already-in-use') {
@@ -594,7 +663,7 @@
       }
     };
 
-    // Full 6 Recipe Database
+    // Full 6 Recipe Database with Timer Labels
     window.activeUnitMode = 'US';
     window.currentCategory = 'all';
 
@@ -605,16 +674,16 @@
         desc: 'Rich, ultra-fudgy brownies topped with Oreo cookies, paper-thin crinkle tops, and dark chocolate pools.',
         time: '50 mins', yield: '16 squares', img: 'Signature Brownies Espresso Pic.jpg',
         macros: { cal: 340, pro: 4, carb: 42, fat: 18 },
-        ingredientsUS: ['3/4 cup (1.5 sticks) unsalted butter, browned', '3/4 cup Dutch-process cocoa powder', '2 tsp instant espresso powder', '1 tsp pure vanilla extract', '3 large eggs', '1 3/4 cups light brown sugar', '3/4 cup + 2 tbsp all-purpose flour', '1/2 tsp sea salt', '3.5 oz chopped Ghirardelli semisweet chocolate bar', '1/2 cup dark chocolate chips', 'Whole Oreo cookies (for topping)'],
+        ingredientsUS: ['3/4 cup (1.5 sticks) unsalted butter, browned', '3/4 cup Dutch-process cocoa powder', '2 tsp instant espresso powder', '1 tsp pure vanilla extract', '3 large eggs (room temperature)', '1 3/4 cups light brown sugar', '3/4 cup + 2 tbsp all-purpose flour', '1/2 tsp sea salt', '3.5 oz chopped Ghirardelli semisweet chocolate bar', '1/2 cup dark chocolate chips', 'Whole Oreo cookies (for topping)'],
         ingredientsM: ['170g unsalted butter, browned', '75g Dutch-process cocoa powder', '2 tsp instant espresso powder', '1 tsp vanilla extract', '3 large eggs', '350g light brown sugar', '94g all-purpose flour', '1/2 tsp sea salt', '100g chopped chocolate bar', '85g dark chocolate chips', 'Whole Oreo cookies (for topping)'],
         steps: [
           { text: 'Brown the butter in a saucepan over medium heat until nutty and golden brown milk solids appear at the bottom. Remove from heat.' },
           { text: 'Let the browned butter cool until it is warm but not hot (around 120°F or 50°C), then whisk in the cocoa powder and instant espresso until smooth.' },
-          { text: 'In a stand mixer with a whisk attachment, beat the eggs and light brown sugar on medium-high speed for a full 4-5 minutes until pale, thick, and doubled in volume.', timer: 300 },
+          { text: 'In a stand mixer with a whisk attachment, beat the eggs and light brown sugar on medium-high speed for a full 4-5 minutes until pale, thick, and doubled in volume.', timer: 300, timerLabel: 'Whip Eggs & Sugar' },
           { text: 'Using a rubber spatula, gently fold the warm cocoa-butter mixture into the whipped eggs until just combined. Do not overmix.' },
           { text: 'Sift in the flour and salt, folding gently. Once mostly combined, fold in the chopped chocolate bar and chocolate chips.' },
           { text: 'Pour the batter into a parchment-lined 8x8 metal pan. Press whole Oreo cookies evenly into the top of the batter.' },
-          { text: 'Bake at 350°F (175°C) for 45-50 minutes. Let cool completely in the pan before slicing into 16 equal squares.', timer: 2700 }
+          { text: 'Bake at 350°F (175°C) for 45-50 minutes. Let cool completely in the pan before slicing into 16 equal squares.', timer: 2700, timerLabel: 'Bake Brownies' }
         ]
       },
       {
@@ -629,9 +698,9 @@
           { text: 'In a large bowl, whisk the softened butter, granulated sugar, and light brown sugar vigorously for 2-3 minutes until smooth and slightly pale.' },
           { text: 'Add the eggs one at a time, followed by the vanilla extract, whisking until the mixture is glossy and well emulsified.' },
           { text: 'Switch to a rubber spatula. Fold in the flour, baking soda, and salt just until no dry streaks of flour remain.' },
-          { text: 'Portion the dough into large 3-tablespoon (approx 55g) balls. Place on a baking sheet and chill in the fridge for exactly 30 minutes.', timer: 1800 },
-          { text: 'Place chilled dough balls on a parchment-lined baking sheet spaced 2 inches apart. Bake at 350°F (175°C) for 14 minutes.', timer: 840 },
-          { text: 'Increase oven temperature to 370°F (185°C) and bake for a final 2 minutes to crisp the edges. Top with flaky sea salt immediately after removing from the oven.', timer: 120 }
+          { text: 'Portion the dough into large 3-tablespoon (approx 55g) balls. Place on a baking sheet and chill in the fridge for exactly 30 minutes.', timer: 1800, timerLabel: 'Chill Cookie Dough' },
+          { text: 'Place chilled dough balls on a parchment-lined baking sheet spaced 2 inches apart. Bake at 350°F (175°C) for 14 minutes.', timer: 840, timerLabel: 'Bake Cookies' },
+          { text: 'Increase oven temperature to 370°F (185°C) and bake for a final 2 minutes to crisp the edges. Top with flaky sea salt immediately after removing from the oven.', timer: 120, timerLabel: 'Crisp Edges' }
         ]
       },
       {
@@ -648,8 +717,8 @@
           { text: 'In a large bowl, vigorously whisk the granulated sugar, light brown sugar, and warm browned butter together for 1-2 minutes until glossy.' },
           { text: 'Add the egg, egg yolk, and vanilla bean paste, whisking until the mixture is completely smooth and falls in ribbons off the whisk.' },
           { text: 'Gently fold in the flour, baking soda, and salt with a spatula. Fold in the dark chocolate chunks until evenly distributed.' },
-          { text: 'Portion into 2.5-tablespoon (approx 45g) balls using a cookie scoop. Chill the dough in the fridge for 1 hour.', timer: 3600 },
-          { text: 'Bake at 350°F (175°C) for 12 minutes on a parchment-lined baking sheet. Once slightly cooled, decorate with edible gold leaf flakes and flaky sea salt.', timer: 720 }
+          { text: 'Portion into 2.5-tablespoon (approx 45g) balls using a cookie scoop. Chill the dough in the fridge for 1 hour.', timer: 3600, timerLabel: 'Chill Dough' },
+          { text: 'Bake at 350°F (175°C) for 12 minutes on a parchment-lined baking sheet. Once slightly cooled, decorate with edible gold leaf flakes and flaky sea salt.', timer: 720, timerLabel: 'Bake Cookies' }
         ]
       },
       {
@@ -706,7 +775,7 @@
           { text: 'Preheat the oven to 350°F. To make the dough, combine the butter, oil and brown sugar. Mix for a couple minutes until it is smooth. The mixture should be lighter in color and fluffy. Add the egg and vanilla and mix again. Add the remaining ingredients and mix until just combined.' },
           { text: 'To make the streusel, combine all the ingredients in a bowl and mix with a spoon or your hand. Start with 1/3 cup of flour. The mixture should stick together, but should also crumble when you run it through your fingers. If it isn\'t crumbling, add 1 tbsp additions of flour until it crumbles.' },
           { text: 'Using a large (1/4 cup) cookie scoop, scoop a ball of dough onto a lined baking sheet. Using the back of your cookie scoop or your fingers, make an indent on the top of the dough. Sprinkle a couple tablespoons of the streusel on the top of the cookie, into the indent.' },
-          { text: 'Bake the cookies at 350 for 18-20 minutes, it took me 19 minutes to bake first time. While they are baking, make the icing. Combine the 1/2 cup powdered sugar and 1 tbsp cream cheese together until well combined, then add 1 tbsp milk, and 1/4 tsp vanilla in a small bowl and whisk until it\'s smooth and runny. After well combined add as much cardamom until it tastes good. Once the cookies have cooled slightly, drizzle on lots of icing! Enjoy!', timer: 1140 }
+          { text: 'Bake the cookies at 350 for 18-20 minutes, it took me 19 minutes to bake first time. While they are baking, make the icing. Combine the 1/2 cup powdered sugar and 1 tbsp cream cheese together until well combined, then add 1 tbsp milk, and 1/4 tsp vanilla in a small bowl and whisk until it\'s smooth and runny. After well combined add as much cardamom until it tastes good. Once the cookies have cooled slightly, drizzle on lots of icing! Enjoy!', timer: 1140, timerLabel: 'Bake Cookies' }
         ]
       },
       {
@@ -749,10 +818,10 @@
           { text: 'Carefully scrape all the cream filling off the Oreos. Pulse the dry cookie wafers in a food processor until they are fine powder crumbs.' },
           { text: 'Sift the almond flour, powdered sugar, and Oreo crumbs through a fine-mesh sieve twice. Discard any large chunks left behind.' },
           { text: 'In a heat-proof bowl set over a pot of simmering water (double boiler), whisk the egg whites and granulated sugar until the sugar is completely dissolved (test by rubbing between your fingers).' },
-          { text: 'Transfer to a stand mixer and whip on medium-high speed until you achieve stiff, glossy peaks that stand straight up.', timer: 300 },
+          { text: 'Transfer to a stand mixer and whip on medium-high speed until you achieve stiff, glossy peaks that stand straight up.', timer: 300, timerLabel: 'Whip Meringue' },
           { text: 'Add the sifted dry ingredients into the meringue. Gently fold with a spatula by scraping the bowl edges and pressing through the center until the batter flows off the spatula in a continuous thick ribbon (figure-8 test).' },
-          { text: 'Transfer to a piping bag with a medium round tip. Pipe 1.5-inch circles onto a silicone mat. Tap the tray firmly on the counter 3 times to release air bubbles. Let rest at room temperature for 30-40 minutes until a dry skin forms (it should not stick to your finger when lightly touched).', timer: 2100 },
-          { text: 'Bake at 325°F (160°C) for 15 minutes. Let cool completely before filling with your choice of buttercream or ganache.', timer: 900 }
+          { text: 'Transfer to a piping bag with a medium round tip. Pipe 1.5-inch circles onto a silicone mat. Tap the tray firmly on the counter 3 times to release air bubbles. Let rest at room temperature for 30-40 minutes until a dry skin forms (it should not stick to your finger when lightly touched).', timer: 2100, timerLabel: 'Rest Macaron Shells' },
+          { text: 'Bake at 325°F (160°C) for 15 minutes. Let cool completely before filling with your choice of buttercream or ganache.', timer: 900, timerLabel: 'Bake Shells' }
         ]
       },
       {
@@ -790,11 +859,6 @@
         ]
       }
     ];
-
-    window.triggerTimer = function(seconds) {
-      const minutes = Math.floor(seconds / 60);
-      window.showToast("Timer started for " + minutes + " minutes! ⏱️");
-    };
 
     window.renderRecipes = function(items) {
       const grid = document.getElementById('recipeGrid');
@@ -870,7 +934,7 @@
             ${recipe.steps.map(stepObj => `
               <li style="margin-bottom: 0.8rem;">
                 ${stepObj.text}
-                ${stepObj.timer ? `<br><button class="inline-timer-btn" onclick="triggerTimer(${stepObj.timer})">⏱️ Start Timer</button>` : ''}
+                ${stepObj.timer ? `<br><button class="inline-timer-btn" onclick="triggerTimer(${stepObj.timer}, '${stepObj.timerLabel}')">⏱️ Start Timer</button>` : ''}
               </li>
             `).join('')}
           </ol>
@@ -878,9 +942,11 @@
       }
 
       modalBody.innerHTML = `
-        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; color: var(--accent-brown);">${recipe.title}</h2>
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; color: var(--accent-brown); margin-bottom: 0.25rem;">${recipe.title}</h2>
         <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Prep: ${recipe.time} &nbsp;|&nbsp; Yield: ${recipe.yield}</p>
         
+        <div id="modalTimerContainer"></div>
+
         <div class="macro-row" style="margin-top: 10px;">
           <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.cal} kcal</span>
           <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.pro}g Protein</span>
@@ -909,6 +975,9 @@
         <button class="login-btn" style="width: 100%; margin-top: 2rem; padding: 12px; background: var(--pill-bg); border: none;" onclick="closeModal('recipeModal')">← Back to Recipes</button>
       `;
       document.getElementById('recipeModal').style.display = 'flex';
+      
+      // Update timer UI immediately in case a timer is already running
+      window.updateTimerUI();
     };
 
     window.switchUnits = function(recipeId, unit) {
