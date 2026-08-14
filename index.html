@@ -30,93 +30,391 @@
       line-height: 1.6;
     }
 
+    /* Custom Toast Notification Banner */
     #customToast {
-      position: fixed; top: 20px; right: 20px;
-      background: var(--accent-brown); color: #FFF;
-      padding: 1rem 1.5rem; border-radius: 12px;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--accent-brown);
+      color: #FFF;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      z-index: 2000; display: none; align-items: center; gap: 12px; font-weight: 500;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      animation: slideIn 0.3s ease forwards;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
+    /* Custom Confirm Modal */
     #customConfirmModal {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(44, 37, 35, 0.6); backdrop-filter: blur(4px);
-      display: none; justify-content: center; align-items: center; z-index: 2500;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(44, 37, 35, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2500;
     }
-    .confirm-card { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; }
-    .confirm-btns { display: flex; gap: 10px; margin-top: 1.5rem; }
+    .confirm-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+    .confirm-btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 1.5rem;
+    }
 
+    /* Header & Navigation */
     header {
-      background: var(--bg-main); border-bottom: 1px solid var(--soft-border);
-      position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+      background: var(--bg-main);
+      border-bottom: 1px solid var(--soft-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
-    .brand-logo { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--accent-brown); text-decoration: none; }
-    nav { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
-    nav a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 500; cursor: pointer; }
+    .brand-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--accent-brown);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
     nav a:hover { color: var(--accent-gold); }
 
-    .login-btn {
-      background: transparent; color: var(--accent-brown); border: 1px solid var(--accent-brown);
-      padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 600;
+    .social-links {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-left: 0.5rem;
     }
-    .login-btn:hover { background: var(--accent-brown); color: #FFF; }
 
-    .hero { text-align: center; padding: 3.5rem 1.5rem 2rem; max-width: 800px; margin: 0 auto; }
-    .hero-subtitle { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.75rem; }
-    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 400; color: var(--accent-brown); line-height: 1.15; margin-bottom: 1rem; }
+    .social-icon {
+      color: var(--accent-brown);
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
 
-    .search-container { margin: 2rem auto 1.5rem; max-width: 500px; }
-    .search-input { width: 100%; padding: 0.85rem 1.25rem; border-radius: 30px; border: 1px solid var(--soft-border); background: #FFF; font-size: 0.95rem; outline: none; }
+    .social-icon:hover {
+      transform: scale(1.15);
+      color: var(--accent-gold);
+    }
 
-    .filters { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 3rem; flex-wrap: wrap; }
-    .filter-btn { background: var(--pill-bg); border: 1px solid transparent; color: var(--text-main); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.9rem; cursor: pointer; }
-    .filter-btn.active, .filter-btn:hover { background: var(--accent-brown); color: #FFF; }
-
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 5rem; }
-    .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
-    .recipe-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); cursor: pointer; transition: transform 0.3s ease; }
-    .recipe-card:hover { transform: translateY(-5px); }
-    .card-img-wrapper { height: 260px; position: relative; width: 100%; overflow: hidden; }
-    .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-    .card-tag { position: absolute; top: 1rem; left: 1rem; background: rgba(255,255,255,0.92); color: var(--accent-brown); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
-    .card-content { padding: 1.5rem; }
-    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--accent-brown); margin-bottom: 0.5rem; }
-    .card-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .login-btn {
+      background: transparent;
+      color: var(--accent-brown);
+      border: 1px solid var(--accent-brown);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
     
-    .macro-row { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
-    .macro-pill { background: rgba(200, 150, 62, 0.1); color: var(--accent-gold); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; }
-    .card-meta { display: flex; justify-content: space-between; border-top: 1px solid var(--soft-border); padding-top: 1rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+    .login-btn:hover {
+      background: var(--accent-brown);
+      color: #FFF;
+    }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 37, 35, 0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
-    .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; }
-    .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--pill-bg); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+    /* Hero & Search */
+    .hero {
+      text-align: center;
+      padding: 3.5rem 1.5rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
-    .controls-row { display: flex; justify-content: space-between; align-items: center; margin: 1rem 0; padding: 0.8rem 1rem; background: var(--pill-bg); border-radius: 12px; }
+    .hero-subtitle {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 400;
+      color: var(--accent-brown);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .search-container {
+      margin: 2rem auto 1.5rem;
+      max-width: 500px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.85rem 1.25rem;
+      border-radius: 30px;
+      border: 1px solid var(--soft-border);
+      background: #FFF;
+      font-size: 0.95rem;
+      outline: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .search-input:focus { border-color: var(--accent-gold); }
+
+    /* Category Filters */
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--pill-bg);
+      border: 1px solid transparent;
+      color: var(--text-main);
+      padding: 0.5rem 1.25rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent-brown);
+      color: #FFF;
+    }
+
+    /* Recipe Grid */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem 5rem;
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .recipe-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--soft-border);
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .recipe-card:hover { transform: translateY(-5px); }
+
+    .card-img-wrapper {
+      height: 260px;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .card-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--accent-brown);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .card-content { padding: 1.5rem; }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--accent-brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    /* Macro Pills */
+    .macro-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .macro-pill {
+      background: rgba(200, 150, 62, 0.1);
+      color: var(--accent-gold);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--soft-border);
+      padding-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(44, 37, 35, 0.6);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border-radius: 20px;
+      max-width: 750px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      background: var(--pill-bg);
+      border: none;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1rem 0;
+      padding: 0.8rem 1rem;
+      background: var(--pill-bg);
+      border-radius: 12px;
+    }
+
     .unit-switcher { display: flex; align-items: center; gap: 0.4rem; }
     .control-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
-    .btn-toggle { padding: 0.35rem 0.75rem; border-radius: 16px; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    
+    .btn-toggle {
+      padding: 0.35rem 0.75rem;
+      border-radius: 16px;
+      border: 1px solid var(--soft-border);
+      background: #FFF;
+      color: var(--text-main);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
     .btn-toggle.active { background: var(--accent-brown); color: #FFF; border-color: var(--accent-brown); }
 
     .ingredient-list { list-style: none; padding-left: 0; }
     .ingredient-list li { margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
 
+    /* Locked Content Overlay */
     .locked-container { position: relative; margin-top: 1.5rem; border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); }
     .blurred-text { filter: blur(6px); opacity: 0.4; user-select: none; padding: 2rem; background: #FAFAFA; }
-    .unlock-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.95) 30%); padding: 2rem; text-align: center; }
+    .unlock-overlay {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.95) 30%);
+      padding: 2rem; text-align: center;
+    }
 
-    .app-download-btn { background: var(--accent-gold); color: #FFF; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(200, 150, 62, 0.3); transition: transform 0.2s; }
+    .app-download-btn {
+      background: var(--accent-gold); color: #FFF; border: none;
+      padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1.1rem;
+      cursor: pointer; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(200, 150, 62, 0.3);
+      transition: transform 0.2s;
+    }
     .app-download-btn:hover { transform: translateY(-2px); }
 
+    /* Form Styles */
     .vip-box { text-align: center; padding: 1rem; }
-    .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: #FFF; }
+    .vip-input {
+      width: 100%; padding: 0.8rem; border-radius: 8px;
+      border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: #FFF;
+    }
     
-    .social-btn { width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0.5rem; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main); }
+    .social-btn {
+      width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin-bottom: 0.5rem; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main);
+    }
     .social-btn:hover { background: var(--pill-bg); }
     .social-btn.apple { background: #000; color: #FFF; border: none; }
     
-    .divider { display: flex; align-items: center; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1.5rem 0; }
+    .divider {
+      display: flex; align-items: center; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1.5rem 0;
+    }
     .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--soft-border); }
     .divider:not(:empty)::before { margin-right: .5em; }
     .divider:not(:empty)::after { margin-left: .5em; }
@@ -126,8 +424,12 @@
 </head>
 <body>
 
-  <div id="customToast"><span id="toastMessage">Notification message here</span></div>
+  <!-- Custom Toast Notification Banner -->
+  <div id="customToast">
+    <span id="toastMessage">Notification message here</span>
+  </div>
 
+  <!-- Custom Confirmation Modal -->
   <div id="customConfirmModal">
     <div class="confirm-card">
       <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Sign Out?</h3>
@@ -139,12 +441,15 @@
     </div>
   </div>
 
+  <!-- Header -->
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
       <a href="#recipes">Recipes</a>
       <a onclick="openAboutModal()">About Sally</a>
+      <a onclick="openRequestModal()">Custom Orders</a>
       <button class="login-btn" id="mainLoginBtn" onclick="openLoginModal()">Login / Sign Up</button>
+      
       <div class="social-links">
         <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="social-icon" title="Instagram">📸</a>
         <a href="https://www.snapchat.com/add/sallysweets_ofc" target="_blank" class="social-icon" title="Snapchat">👻</a>
@@ -152,12 +457,15 @@
     </nav>
   </header>
 
+  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-subtitle">Decadent • Simple • Aesthetic</div>
     <h1>Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
+    
     <div class="search-container">
       <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by ingredient or bake..." oninput="handleSearch()">
     </div>
+
     <div class="filters" id="recipes">
       <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
       <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami</button>
@@ -167,10 +475,12 @@
     </div>
   </section>
 
+  <!-- Main Recipe Grid -->
   <main class="container">
     <div class="recipe-grid" id="recipeGrid"></div>
   </main>
 
+  <!-- Recipe Detail Modal -->
   <div class="modal-overlay" id="recipeModal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal('recipeModal')">&times;</button>
@@ -178,6 +488,7 @@
     </div>
   </div>
 
+  <!-- Login Modal -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-content vip-box" style="max-width: 500px;">
       <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
@@ -203,7 +514,7 @@
 
         <div class="divider">OR</div>
 
-        <!-- Name Input Field -->
+        <!-- Full Name input field -->
         <input type="text" id="authName" class="vip-input" placeholder="Full Name (optional for sign up)..." style="margin-bottom: 0.5rem;">
         <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
         <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;">
@@ -231,6 +542,7 @@
     </div>
   </div>
 
+  <!-- About Modal -->
   <div class="modal-overlay" id="aboutModal">
     <div class="modal-content" style="text-align: center; max-width: 650px;">
       <button class="close-btn" onclick="closeModal('aboutModal')">&times;</button>
@@ -239,6 +551,29 @@
       <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
         Hi there! I’m <strong>Sally</strong>. I’m 20 years old, born in <strong>Baghdad, Iraq</strong>, and currently a junior majoring in <strong>Biomedical Sciences</strong> with aspirations of becoming an Anesthesiologist! ⚽✨
       </p>
+    </div>
+  </div>
+
+  <!-- Custom Order / Request Modal -->
+  <div class="modal-overlay" id="requestModal">
+    <div class="modal-content vip-box" style="text-align: left; max-width: 600px;">
+      <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS PORTAL</span>
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Message / Request Sally</h2>
+      </div>
+      <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
+        <label style="font-weight: 600; font-size: 0.9rem;">Select Message Type</label>
+        <select name="Type" class="vip-input" style="background: #FFF; margin-bottom: 1rem;" required>
+          <option value="Custom Order Inquiry">Custom Order Inquiry</option>
+          <option value="General Inquiry">General Question</option>
+        </select>
+        <label style="font-weight: 600; font-size: 0.9rem;">Your Name</label>
+        <input type="text" name="Name" class="vip-input" style="margin-bottom: 1rem;" required>
+        <label style="font-weight: 600; font-size: 0.9rem;">Your Email</label>
+        <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
+        <button type="submit" class="app-download-btn" style="width: 100%; margin-top: 0; background: var(--accent-gold);">Send Message</button>
+      </form>
     </div>
   </div>
 
@@ -430,12 +765,10 @@
       errorDiv.style.display = 'none';
 
       try {
-        // Try logging in first
         const userCred = await signInWithEmailAndPassword(auth, email, pass);
         const displayName = userCred.user.displayName || email.split('@')[0];
         window.showToast("Welcome back, " + displayName + "! 🎉");
       } catch(error) {
-        // If user doesn't exist, create account
         if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential' || error.code === 'auth/invalid-login-credentials') {
           if (confirmPass && pass !== confirmPass) {
             errorDiv.style.display = 'block';
@@ -450,10 +783,14 @@
             const finalName = name || email.split('@')[0];
             window.showToast("Welcome to Sally's Sweets, " + finalName + "! 🎉 Check your email for verification.");
           } catch(createError) {
-            window.showToast("Error creating account: " + createError.message);
+            if (createError.code === 'auth/email-already-in-use') {
+              window.showToast("An account with this email already exists. Please log in instead.");
+            } else {
+              window.showToast("Error: " + createError.message);
+            }
           }
         } else if (error.code === 'auth/email-already-in-use') {
-          window.showToast("An account with this email already exists. Please sign in.");
+          window.showToast("An account with this email already exists. Please log in instead.");
         } else {
           window.showToast("Login Error: " + error.message);
         }
@@ -640,6 +977,7 @@
     };
 
     window.openAboutModal = function() { document.getElementById('aboutModal').style.display = 'flex'; };
+    window.openRequestModal = function() { document.getElementById('requestModal').style.display = 'flex'; };
     window.openLoginModal = function() { 
       document.getElementById('recipeModal').style.display = 'none';
       document.getElementById('loginModal').style.display = 'flex';
