@@ -23,10 +23,7 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* Apple-Style Smooth Scrolling & Reveal Animations */
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     .reveal-on-scroll {
       opacity: 0;
@@ -49,19 +46,11 @@
 
     /* Custom Toast Notification Banner */
     #customToast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--accent-brown);
-      color: #FFF;
-      padding: 1rem 1.5rem;
-      border-radius: 12px;
+      position: fixed; top: 20px; right: 20px;
+      background: var(--accent-brown); color: #FFF;
+      padding: 1rem 1.5rem; border-radius: 12px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      z-index: 2000;
-      display: none;
-      align-items: center;
-      gap: 12px;
-      font-weight: 500;
+      z-index: 2000; display: none; align-items: center; gap: 12px; font-weight: 500;
       animation: slideIn 0.3s ease forwards;
     }
     @keyframes slideIn {
@@ -71,367 +60,91 @@
 
     /* Custom Confirm Modal */
     #customConfirmModal {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(44, 37, 35, 0.6);
-      backdrop-filter: blur(4px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 2500;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(44, 37, 35, 0.6); backdrop-filter: blur(4px);
+      display: none; justify-content: center; align-items: center; z-index: 2500;
     }
-    .confirm-card {
-      background: var(--card-bg);
-      padding: 2rem;
-      border-radius: 20px;
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-    }
-    .confirm-btns {
-      display: flex;
-      gap: 10px;
-      margin-top: 1.5rem;
-    }
+    .confirm-card { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; }
+    .confirm-btns { display: flex; gap: 10px; margin-top: 1.5rem; }
 
-    /* Header & Navigation */
     header {
-      background: var(--bg-main);
-      border-bottom: 1px solid var(--soft-border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      padding: 1.25rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
+      background: var(--bg-main); border-bottom: 1px solid var(--soft-border);
+      position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
     }
 
-    .brand-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.2rem;
-      font-weight: 600;
-      color: var(--accent-brown);
-      text-decoration: none;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: var(--text-main);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: color 0.2s ease;
-    }
-
+    .brand-logo { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--accent-brown); text-decoration: none; }
+    nav { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+    nav a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: color 0.2s ease; }
     nav a:hover { color: var(--accent-gold); }
 
-    .social-links {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-left: 0.5rem;
-    }
-
-    .social-icon {
-      color: var(--accent-brown);
-      font-size: 1.1rem;
-      text-decoration: none;
-      transition: transform 0.2s;
-    }
-
-    .social-icon:hover {
-      transform: scale(1.15);
-      color: var(--accent-gold);
-    }
+    .social-links { display: flex; align-items: center; gap: 0.6rem; margin-left: 0.5rem; }
+    .social-icon { color: var(--accent-brown); font-size: 1.1rem; text-decoration: none; transition: transform 0.2s; }
+    .social-icon:hover { transform: scale(1.15); color: var(--accent-gold); }
 
     .login-btn {
-      background: transparent;
-      color: var(--accent-brown);
-      border: 1px solid var(--accent-brown);
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
+      background: transparent; color: var(--accent-brown); border: 1px solid var(--accent-brown);
+      padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 600; transition: all 0.2s;
     }
-    
-    .login-btn:hover {
-      background: var(--accent-brown);
-      color: #FFF;
-    }
+    .login-btn:hover { background: var(--accent-brown); color: #FFF; }
 
-    /* Hero & Search */
-    .hero {
-      text-align: center;
-      padding: 3.5rem 1.5rem 2rem;
-      max-width: 800px;
-      margin: 0 auto;
-    }
+    .hero { text-align: center; padding: 3.5rem 1.5rem 2rem; max-width: 800px; margin: 0 auto; }
+    .hero-subtitle { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.75rem; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 400; color: var(--accent-brown); line-height: 1.15; margin-bottom: 1rem; }
 
-    .hero-subtitle {
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 0.8rem;
-      color: var(--accent-gold);
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-    }
-
-    .hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.5rem;
-      font-weight: 400;
-      color: var(--accent-brown);
-      line-height: 1.15;
-      margin-bottom: 1rem;
-    }
-
-    .search-container {
-      margin: 2rem auto 1.5rem;
-      max-width: 500px;
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 0.85rem 1.25rem;
-      border-radius: 30px;
-      border: 1px solid var(--soft-border);
-      background: #FFF;
-      font-size: 0.95rem;
-      outline: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    }
-
+    .search-container { margin: 2rem auto 1.5rem; max-width: 500px; }
+    .search-input { width: 100%; padding: 0.85rem 1.25rem; border-radius: 30px; border: 1px solid var(--soft-border); background: #FFF; font-size: 0.95rem; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
     .search-input:focus { border-color: var(--accent-gold); }
 
-    /* Category Filters */
-    .filters {
-      display: flex;
-      justify-content: center;
-      gap: 0.75rem;
-      margin-bottom: 3rem;
-      flex-wrap: wrap;
-    }
+    .filters { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 3rem; flex-wrap: wrap; }
+    .filter-btn { background: var(--pill-bg); border: 1px solid transparent; color: var(--text-main); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.9rem; cursor: pointer; }
+    .filter-btn.active, .filter-btn:hover { background: var(--accent-brown); color: #FFF; }
 
-    .filter-btn {
-      background: var(--pill-bg);
-      border: 1px solid transparent;
-      color: var(--text-main);
-      padding: 0.5rem 1.25rem;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    .filter-btn.active, .filter-btn:hover {
-      background: var(--accent-brown);
-      color: #FFF;
-    }
-
-    /* Recipe Grid */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem 5rem;
-    }
-
-    .recipe-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2rem;
-    }
-
-    .recipe-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--soft-border);
-      cursor: pointer;
-      position: relative;
-      transition: transform 0.3s ease;
-    }
-
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+    .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+    .recipe-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); cursor: pointer; position: relative; transition: transform 0.3s ease; }
     .recipe-card:hover { transform: translateY(-5px); }
-
-    .card-img-wrapper {
-      height: 260px;
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .card-img-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-
-    .card-tag {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      background: rgba(255, 255, 255, 0.92);
-      color: var(--accent-brown);
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
+    .card-img-wrapper { height: 260px; position: relative; width: 100%; overflow: hidden; }
+    .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+    .card-tag { position: absolute; top: 1rem; left: 1rem; background: rgba(255,255,255,0.92); color: var(--accent-brown); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
     .card-content { padding: 1.5rem; }
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--accent-brown); margin-bottom: 0.5rem; }
+    .card-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
+    
+    .macro-row { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+    .macro-pill { background: rgba(200, 150, 62, 0.1); color: var(--accent-gold); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; }
+    .card-meta { display: flex; justify-content: space-between; border-top: 1px solid var(--soft-border); padding-top: 1rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
-    .card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      color: var(--accent-brown);
-      margin-bottom: 0.5rem;
-    }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 37, 35, 0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
+    .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; }
+    .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--pill-bg); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
 
-    .card-desc {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
-
-    /* Macro Pills */
-    .macro-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .macro-pill {
-      background: rgba(200, 150, 62, 0.1);
-      color: var(--accent-gold);
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    .card-meta {
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid var(--soft-border);
-      padding-top: 1rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* Modals */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(44, 37, 35, 0.6);
-      backdrop-filter: blur(5px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      padding: 1rem;
-    }
-
-    .modal-content {
-      background: var(--card-bg);
-      border-radius: 20px;
-      max-width: 750px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 2.5rem;
-      position: relative;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 1.5rem; right: 1.5rem;
-      background: var(--pill-bg);
-      border: none;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-
-    .controls-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 1rem 0;
-      padding: 0.8rem 1rem;
-      background: var(--pill-bg);
-      border-radius: 12px;
-    }
-
+    .controls-row { display: flex; justify-content: space-between; align-items: center; margin: 1rem 0; padding: 0.8rem 1rem; background: var(--pill-bg); border-radius: 12px; }
     .unit-switcher { display: flex; align-items: center; gap: 0.4rem; }
     .control-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
-    
-    .btn-toggle {
-      padding: 0.35rem 0.75rem;
-      border-radius: 16px;
-      border: 1px solid var(--soft-border);
-      background: #FFF;
-      color: var(--text-main);
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
+    .btn-toggle { padding: 0.35rem 0.75rem; border-radius: 16px; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
     .btn-toggle.active { background: var(--accent-brown); color: #FFF; border-color: var(--accent-brown); }
 
     .ingredient-list { list-style: none; padding-left: 0; }
     .ingredient-list li { margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
 
-    /* Locked Content Overlay */
+    .inline-timer-btn { display: inline-flex; align-items: center; background: var(--accent-gold); color: #FFF; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; border: none; cursor: pointer; margin-left: 10px; }
+
     .locked-container { position: relative; margin-top: 1.5rem; border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); }
     .blurred-text { filter: blur(6px); opacity: 0.4; user-select: none; padding: 2rem; background: #FAFAFA; }
-    .unlock-overlay {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.95) 30%);
-      padding: 2rem; text-align: center;
-    }
+    .unlock-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.95) 30%); padding: 2rem; text-align: center; }
 
-    .app-download-btn {
-      background: var(--accent-gold); color: #FFF; border: none;
-      padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1.1rem;
-      cursor: pointer; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(200, 150, 62, 0.3);
-      transition: transform 0.2s;
-    }
+    .app-download-btn { background: var(--accent-gold); color: #FFF; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(200, 150, 62, 0.3); transition: transform 0.2s; }
     .app-download-btn:hover { transform: translateY(-2px); }
 
-    /* Form Styles */
     .vip-box { text-align: center; padding: 1rem; }
-    .vip-input {
-      width: 100%; padding: 0.8rem; border-radius: 8px;
-      border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: #FFF;
-    }
+    .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: #FFF; }
     
-    .social-btn {
-      width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-      margin-bottom: 0.5rem; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main);
-    }
+    .social-btn { width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0.5rem; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main); }
     .social-btn:hover { background: var(--pill-bg); }
     .social-btn.apple { background: #000; color: #FFF; border: none; }
     
-    .divider {
-      display: flex; align-items: center; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1.5rem 0;
-    }
+    .divider { display: flex; align-items: center; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1.5rem 0; }
     .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--soft-border); }
     .divider:not(:empty)::before { margin-right: .5em; }
     .divider:not(:empty)::after { margin-left: .5em; }
@@ -474,7 +187,7 @@
     </nav>
   </header>
 
-  <!-- Hero Section (Now with reveal-on-scroll classes) -->
+  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-subtitle reveal-on-scroll">Decadent • Simple • Aesthetic</div>
     <h1 class="reveal-on-scroll">Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
@@ -571,7 +284,7 @@
     </div>
   </div>
 
-  <!-- Custom Order / Request Modal -->
+  <!-- UPDATED Custom Order / Request Modal -->
   <div class="modal-overlay" id="requestModal">
     <div class="modal-content vip-box" style="text-align: left; max-width: 600px;">
       <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
@@ -579,16 +292,27 @@
         <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS PORTAL</span>
         <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Message / Request Sally</h2>
       </div>
-      <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
+      <form id="contactForm" action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST" onsubmit="submitContactForm(event)">
+        <!-- Autoresponse config to email user back -->
+        <input type="hidden" name="_autoresponse" value="Thank you for reaching out to Sally's Sweets! We have received your message and will get back to you shortly.">
+        <input type="hidden" name="_subject" value="New Inquiry from Sally's Sweets!">
+
         <label style="font-weight: 600; font-size: 0.9rem;">Select Message Type</label>
         <select name="Type" class="vip-input" style="background: #FFF; margin-bottom: 1rem;" required>
           <option value="Custom Order Inquiry">Custom Order Inquiry</option>
+          <option value="Recipe Request">Recipe Request (What should I make next?)</option>
           <option value="General Inquiry">General Question</option>
         </select>
+
         <label style="font-weight: 600; font-size: 0.9rem;">Your Name</label>
         <input type="text" name="Name" class="vip-input" style="margin-bottom: 1rem;" required>
+
         <label style="font-weight: 600; font-size: 0.9rem;">Your Email</label>
         <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
+
+        <label style="font-weight: 600; font-size: 0.9rem;">Message Details</label>
+        <textarea name="Message" class="vip-input" rows="4" style="margin-bottom: 1rem; resize: vertical;" placeholder="Please describe your order, recipe request, or question here..." required></textarea>
+
         <button type="submit" class="app-download-btn" style="width: 100%; margin-top: 0; background: var(--accent-gold);">Send Message</button>
       </form>
     </div>
@@ -665,12 +389,32 @@
       });
     };
 
+    // AJAX Submission for Contact Form (Prevents redirect)
+    window.submitContactForm = async function(event) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+      try {
+        await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        window.closeModal('requestModal');
+        window.showToast("Thank you for your message! Please wait for a response or be on the lookout for an email.");
+        form.reset();
+      } catch(e) {
+        window.showToast("Error sending message. Please try again.");
+      }
+    };
+
+    // Auth State Updates (Fixes locked state)
     onAuthStateChanged(auth, (user) => {
       window.currentUser = user;
       const mainLoginBtn = document.getElementById('mainLoginBtn');
       
       if (user) {
-        const nameToShow = user.displayName || user.email.split('@')[0];
+        const nameToShow = user.displayName || user.phoneNumber || user.email?.split('@')[0] || "Member";
         mainLoginBtn.innerText = "Log Out (" + nameToShow + ")";
         mainLoginBtn.onclick = () => {
           window.showCustomConfirm("Are you sure you want to log out of your account?", () => {
@@ -679,26 +423,15 @@
             });
           });
         };
-        window.closeModal('loginModal');
-        
-        if (document.getElementById('recipeModal').style.display === 'flex') {
-          const titleElem = document.querySelector('.modal-content h2');
-          if (titleElem) {
-            const openRecipe = window.recipes.find(r => r.title === titleElem.innerText);
-            if (openRecipe) window.openRecipeModal(openRecipe.id);
-          }
-        }
+        window.closeModal('loginModal'); // Ensures modal disappears perfectly
       } else {
         mainLoginBtn.innerText = "Login / Sign Up";
         mainLoginBtn.onclick = () => window.openLoginModal();
-        
-        if (document.getElementById('recipeModal').style.display === 'flex') {
-          const titleElem = document.querySelector('.modal-content h2');
-          if (titleElem) {
-            const openRecipe = window.recipes.find(r => r.title === titleElem.innerText);
-            if (openRecipe) window.openRecipeModal(openRecipe.id);
-          }
-        }
+      }
+
+      // Automatically re-renders the grid to remove/add padlocks when logging in/out
+      if (window.recipes) {
+        window.renderRecipes(window.recipes);
       }
     });
 
@@ -733,6 +466,7 @@
         const result = await signInWithPopup(auth, provider);
         const userName = result.user.displayName || "there";
         window.showToast("Welcome back, " + userName + "! 🎉 Enjoy exploring Sally's recipes.");
+        window.closeModal('loginModal');
       } catch(error) {
         window.showToast("Google Login Error: " + error.message);
       }
@@ -744,6 +478,7 @@
         const result = await signInWithPopup(auth, provider);
         const userName = result.user.displayName || "there";
         window.showToast("Welcome back, " + userName + "! 🎉 Enjoy exploring Sally's recipes.");
+        window.closeModal('loginModal');
       } catch(error) {
         window.showToast("Apple Login Error: " + error.message);
       }
@@ -782,6 +517,7 @@
       try {
         await window.confirmationResultObj.confirm(code);
         window.showToast("Welcome back! 🎉 You are now signed in.");
+        window.closeModal('loginModal');
       } catch (error) {
         window.showToast("Invalid code: " + error.message);
       }
@@ -801,6 +537,7 @@
         const userCred = await signInWithEmailAndPassword(auth, email, pass);
         const displayName = userCred.user.displayName || email.split('@')[0];
         window.showToast("Welcome back, " + displayName + "! 🎉");
+        window.closeModal('loginModal');
       } catch(error) {
         if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential' || error.code === 'auth/invalid-login-credentials') {
           if (confirmPass && pass !== confirmPass) {
@@ -815,6 +552,7 @@
             await sendEmailVerification(userCred.user);
             const finalName = name || email.split('@')[0];
             window.showToast("Welcome to Sally's Sweets, " + finalName + "! 🎉 Check your email for verification.");
+            window.closeModal('loginModal');
           } catch(createError) {
             if (createError.code === 'auth/email-already-in-use') {
               window.showToast("An account with this email already exists. Please log in instead.");
@@ -830,7 +568,7 @@
       }
     };
 
-    // Full 6 Recipe Database
+    // --- EXACT, FULL, UNEDITED RECIPE DATABASE ---
     window.activeUnitMode = 'US';
     window.currentCategory = 'all';
 
@@ -838,68 +576,272 @@
       {
         id: 1, category: 'brownies',
         title: "Sally's Signature Brown Butter Espresso Brownies",
-        desc: 'Rich, ultra-fudgy brownies topped with Oreo cookies, paper-thin crinkle tops, and dark chocolate pools.',
+        desc: 'Rich, ultra-fudgy brownies topped with Oreo cookies, paper-thin crinkle tops, bloomed espresso cocoa, and dark chocolate pools.',
         time: '50 mins', yield: '16 squares', img: 'Signature Brownies Espresso Pic.jpg',
         macros: { cal: 340, pro: 4, carb: 42, fat: 18 },
-        ingredientsUS: ['3/4 cup unsalted butter, browned', '3/4 cup cocoa powder', '2 tsp espresso powder', '3 large eggs', '1 3/4 cups brown sugar', '3/4 cup flour', '1/2 tsp sea salt', 'Chop chocolate bar'],
-        ingredientsM: ['170g butter, browned', '75g cocoa powder', '2 tsp espresso powder', '3 large eggs', '350g brown sugar', '94g flour', '1/2 tsp salt', '100g chocolate bar'],
-        steps: ['Brown butter in a saucepan until nutty.', 'Whisk cocoa and espresso into warm butter.', 'Beat eggs and brown sugar for 4-5 minutes.', 'Fold cocoa-butter mixture into whipped eggs.', 'Sift in flour and salt, then fold in chocolate.', 'Bake at 350°F for 45-50 minutes.']
+        ingredientsUS: [
+          '3/4 cup (1.5 sticks) unsalted butter, browned',
+          '3/4 cup Dutch-process cocoa powder',
+          '2 tsp instant espresso powder',
+          '1 tsp pure vanilla extract',
+          '3 large eggs (room temperature)',
+          '1 3/4 cups light brown sugar',
+          '3/4 cup + 2 tbsp all-purpose flour',
+          '1/2 tsp sea salt',
+          '3.5 oz chopped Ghirardelli semisweet chocolate bar',
+          '1/2 cup dark chocolate chips',
+          'Whole Oreo cookies (for topping)'
+        ],
+        ingredientsM: [
+          '170g unsalted butter, browned',
+          '75g Dutch-process cocoa powder',
+          '2 tsp instant espresso powder',
+          '1 tsp vanilla extract',
+          '3 large eggs',
+          '350g light brown sugar',
+          '94g all-purpose flour',
+          '1/2 tsp sea salt',
+          '100g chopped chocolate bar',
+          '85g dark chocolate chips',
+          'Whole Oreo cookies (for topping)'
+        ],
+        steps: [
+          { text: 'Brown the butter in a saucepan over medium heat until nutty and golden brown milk solids appear at the bottom. Remove from heat.' },
+          { text: 'Let the browned butter cool until it is warm but not hot (around 120°F or 50°C), then whisk in the cocoa powder and instant espresso until smooth.' },
+          { text: 'In a stand mixer with a whisk attachment, beat the eggs and light brown sugar on medium-high speed for a full 4-5 minutes until pale, thick, and doubled in volume.', timer: 300 },
+          { text: 'Using a rubber spatula, gently fold the warm cocoa-butter mixture into the whipped eggs until just combined. Do not overmix.' },
+          { text: 'Sift in the flour and salt, folding gently. Once mostly combined, fold in the chopped chocolate bar and chocolate chips.' },
+          { text: 'Pour the batter into a parchment-lined 8x8 metal pan. Press whole Oreo cookies evenly into the top of the batter.' },
+          { text: 'Bake at 350°F (175°C) for 45-50 minutes. Let cool completely in the pan before slicing into 16 equal squares.', timer: 2700 }
+        ]
       },
       {
         id: 2, category: 'cookies',
         title: "Sally's Chewy Chocolate Chip Cookies",
         desc: 'Super chewy bakery-style cookies with a signature two-temperature bake technique for golden crispy edges.',
-        time: '35 mins', yield: '12 cookies', img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
+        time: '35 mins (+ chilling)', yield: '12 large cookies', img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
         macros: { cal: 280, pro: 3, carb: 38, fat: 14 },
-        ingredientsUS: ['3/4 cup butter', '2/3 cup sugar', '3/4 cup brown sugar', '2 eggs', '2 2/3 cups flour', '1.5 cups chocolate chips'],
-        ingredientsM: ['190g butter', '130g sugar', '165g brown sugar', '2 eggs', '330g flour', '250g chocolate chips'],
-        steps: ['Whisk butter and sugars together.', 'Add eggs and vanilla extract.', 'Fold in flour, baking soda, and salt.', 'Chill dough for 30 minutes.', 'Bake at 350°F then finish at 370°F for 2 mins.']
+        ingredientsUS: [
+          '3/4 cup unsalted butter (softened)',
+          '2/3 cup granulated sugar',
+          '3/4 cup light brown sugar',
+          '2 large eggs (room temperature)',
+          '1 tsp pure vanilla extract',
+          '2 2/3 cups all-purpose flour',
+          '1 tsp baking soda',
+          '1 tsp fine salt',
+          '1.5 cups chocolate chips',
+          'Flaky sea salt (for finishing)'
+        ],
+        ingredientsM: [
+          '190g unsalted butter',
+          '130g granulated sugar',
+          '165g light brown sugar',
+          '2 large eggs',
+          '1 tsp vanilla extract',
+          '330g all-purpose flour',
+          '1 tsp baking soda',
+          '1 tsp fine salt',
+          '250g chocolate chips',
+          'Flaky sea salt'
+        ],
+        steps: [
+          { text: 'In a large bowl, whisk the softened butter, granulated sugar, and light brown sugar vigorously for 2-3 minutes until smooth and slightly pale.' },
+          { text: 'Add the eggs one at a time, followed by the vanilla extract, whisking until the mixture is glossy and well emulsified.' },
+          { text: 'Switch to a rubber spatula. Fold in the flour, baking soda, and salt just until no dry streaks of flour remain.' },
+          { text: 'Portion the dough into large 3-tablespoon (approx 55g) balls. Place on a baking sheet and chill in the fridge for exactly 30 minutes.', timer: 1800 },
+          { text: 'Place chilled dough balls on a parchment-lined baking sheet spaced 2 inches apart. Bake at 350°F (175°C) for 14 minutes.', timer: 840 },
+          { text: 'Increase oven temperature to 370°F (185°C) and bake for a final 2 minutes to crisp the edges. Top with flaky sea salt immediately after removing from the oven.', timer: 120 }
+        ]
       },
       {
         id: 3, category: 'cookies',
         title: "Sally's Brown Butter Chocolate Chip Cookies",
-        desc: 'Rich browned butter infused with espresso powder and dark chocolate chunks.',
-        time: '30 mins', yield: '14 cookies', img: 'Brown Butter Choc Chip.jpg',
+        desc: 'Rich browned butter infused with bloomed espresso powder, packed with dark chocolate chunks and edible gold leaf.',
+        time: '30 mins (+ chilling)', yield: '14 cookies', img: 'Brown Butter Choc Chip.jpg',
         macros: { cal: 310, pro: 3, carb: 40, fat: 16 },
-        ingredientsUS: ['3/4 cup brown butter', '1 cup brown sugar', '1 egg + 1 yolk', '1 3/4 cups flour', '1.5 cups dark chocolate chunks'],
-        ingredientsM: ['170g brown butter', '200g brown sugar', '1 egg + 1 yolk', '220g flour', '220g chocolate chunks'],
-        steps: ['Brown butter and stir in espresso powder.', 'Whisk with sugars and eggs.', 'Fold in flour and chocolate chunks.', 'Chill and bake at 350°F for 12 mins.']
+        ingredientsUS: [
+          '3/4 cup unsalted butter, browned',
+          '2 tsp instant espresso powder',
+          '1 cup light brown sugar',
+          '1/3 cup granulated sugar',
+          '1 large egg + 1 egg yolk',
+          '1 tbsp vanilla bean paste',
+          '1 3/4 cups all-purpose flour',
+          '1/2 tsp baking soda',
+          '1/2 tsp salt',
+          '1.5 cups dark chocolate chunks',
+          'Edible gold leaf flakes & flaky sea salt'
+        ],
+        ingredientsM: [
+          '170g unsalted butter, browned',
+          '2 tsp instant espresso powder',
+          '200g light brown sugar',
+          '65g granulated sugar',
+          '1 large egg + 1 egg yolk',
+          '1 tbsp vanilla bean paste',
+          '220g all-purpose flour',
+          '1/2 tsp baking soda',
+          '1/2 tsp salt',
+          '220g dark chocolate chunks',
+          'Edible gold leaf flakes & flaky sea salt'
+        ],
+        steps: [
+          { text: 'Melt butter in a saucepan over medium or medium-low heat until it foams, browns, and releases a nutty aroma. Remove from heat.' },
+          { text: 'Let the browned butter cool for 2-4 minutes, then stir in the instant espresso powder until dissolved.' },
+          { text: 'In a large bowl, vigorously whisk the granulated sugar, light brown sugar, and warm browned butter together for 1-2 minutes until glossy.' },
+          { text: 'Add the egg, egg yolk, and vanilla bean paste, whisking until the mixture is completely smooth and falls in ribbons off the whisk.' },
+          { text: 'Gently fold in the flour, baking soda, and salt with a spatula. Fold in the dark chocolate chunks until evenly distributed.' },
+          { text: 'Portion into 2.5-tablespoon (approx 45g) balls using a cookie scoop. Chill the dough in the fridge for 1 hour.', timer: 3600 },
+          { text: 'Bake at 350°F (175°C) for 12 minutes on a parchment-lined baking sheet. Once slightly cooled, decorate with edible gold leaf flakes and flaky sea salt.', timer: 720 }
+        ]
       },
       {
         id: 4, category: 'cookies',
         title: 'Coffee Cake Cookies with Cardamom Icing',
-        desc: 'Soft cinnamon brown sugar cookies topped with buttery crumble streusel and cardamom cream cheese drizzle.',
-        time: '40 mins', yield: '12 cookies', img: 'Coffee Cake Pic.jpg',
+        desc: 'Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.',
+        time: '40 mins', yield: '12 large cookies', img: 'Coffee Cake Pic.jpg',
         macros: { cal: 320, pro: 4, carb: 45, fat: 15 },
-        ingredientsUS: ['1/2 cup butter', '1 cup brown sugar', '1 egg', '2.5 cups flour', 'Cardamom icing'],
-        ingredientsM: ['113g butter', '215g brown sugar', '1 egg', '325g flour', 'Cardamom icing'],
-        steps: ['Beat butter, oil, and brown sugar.', 'Add egg and fold in dry ingredients.', 'Top with streusel and bake.', 'Drizzle cardamom icing once cooled.']
+        ingredientsUS: [
+          'Dough: 1/2 cup (113g) softened butter',
+          'Dough: 1/2 cup oil (100g)',
+          'Dough: 1 cup Light Brown Sugar (215g)',
+          'Dough: 1 Large Egg (room temp)',
+          'Dough: 1 tsp vanilla',
+          'Dough: 2 tsp cinnamon',
+          'Dough: 2 1/2 cups AP Flour (325g)',
+          'Dough: 1/2 tsp baking soda',
+          'Dough: 1/2 tsp baking powder',
+          'Dough: 1/2 tsp salt',
+          'Streusel: 1/4 cup butter (56g, softened)',
+          'Streusel: 1/4 cup Light Brown Sugar (54g)',
+          'Streusel: 1/3-1/2 cup AP Flour (46g-65g)',
+          'Streusel: 1/2 tsp Cinnamon',
+          'Streusel: Pinch of salt',
+          'Icing: 1/2 cup Powdered Sugar (56g)',
+          'Icing: 1 tbsp Cream Cheese (softened)',
+          'Icing: 1/4-1/2 tsp Cardamom Powder',
+          'Icing: 1/4 tsp Vanilla Extract',
+          'Icing: 1 tbsp milk'
+        ],
+        ingredientsM: [
+          'Dough: 113g softened butter',
+          'Dough: 100g oil',
+          'Dough: 215g Light Brown Sugar',
+          'Dough: 1 Large Egg',
+          'Dough: 1 tsp vanilla',
+          'Dough: 2 tsp cinnamon',
+          'Dough: 325g AP Flour',
+          'Dough: 1/2 tsp baking soda',
+          'Dough: 1/2 tsp baking powder',
+          'Dough: 1/2 tsp salt',
+          'Streusel: 56g butter, softened',
+          'Streusel: 54g Light Brown Sugar',
+          'Streusel: 46g-65g AP Flour',
+          'Streusel: 1/2 tsp Cinnamon',
+          'Streusel: Pinch of salt',
+          'Icing: 56g Powdered Sugar',
+          'Icing: 1 tbsp Cream Cheese, softened',
+          'Icing: 1/4-1/2 tsp Cardamom Powder',
+          'Icing: 1/4 tsp Vanilla Extract',
+          'Icing: 1 tbsp milk'
+        ],
+        steps: [
+          { text: 'Preheat the oven to 350°F. To make the dough, combine the butter, oil and brown sugar. Mix for a couple minutes until it is smooth. The mixture should be lighter in color and fluffy. Add the egg and vanilla and mix again. Add the remaining ingredients and mix until just combined.' },
+          { text: 'To make the streusel, combine all the ingredients in a bowl and mix with a spoon or your hand. Start with 1/3 cup of flour. The mixture should stick together, but should also crumble when you run it through your fingers. If it isn\'t crumbling, add 1 tbsp additions of flour until it crumbles.' },
+          { text: 'Using a large (1/4 cup) cookie scoop, scoop a ball of dough onto a lined baking sheet. Using the back of your cookie scoop or your fingers, make an indent on the top of the dough. Sprinkle a couple tablespoons of the streusel on the top of the cookie, into the indent.' },
+          { text: 'Bake the cookies at 350 for 18-20 minutes, it took me 19 minutes to bake first time. While they are baking, make the icing. Combine the 1/2 cup powdered sugar and 1 tbsp cream cheese together until well combined, then add 1 tbsp milk, and 1/4 tsp vanilla in a small bowl and whisk until it\'s smooth and runny. After well combined add as much cardamom until it tastes good. Once the cookies have cooled slightly, drizzle on lots of icing! Enjoy!', timer: 1140 }
+        ]
       },
       {
         id: 5, category: 'macarons',
         title: "Cookies 'n Cream Oreos Macarons",
-        desc: 'Delicate Swiss meringue macaron shells with Oreo crumbs and buttercream.',
+        desc: 'Delicate Swiss meringue macaron shells with scraped Oreo crumbs, filled with cookies & cream buttercream or white chocolate ganache.',
         time: '1 hr 15 mins', yield: '18 macarons', img: 'Cookie n Cream Macaron Pic.jpg',
         macros: { cal: 150, pro: 3, carb: 22, fat: 7 },
-        ingredientsUS: ['100g egg whites', '100g sugar', '100g almond flour', '100g powdered sugar', 'Oreo crumbs'],
-        ingredientsM: ['100g egg whites', '100g sugar', '100g almond flour', '100g powdered sugar', 'Oreo crumbs'],
-        steps: ['Whip egg whites and sugar over a double boiler.', 'Fold in sifted almond flour and Oreo powder.', 'Pipe circles and rest for 30 mins.', 'Bake at 325°F for 15 mins.']
+        ingredientsUS: [
+          'For Shells: 100g egg whites',
+          '100g sugar',
+          '100g almond flour',
+          '100g powdered sugar',
+          '20g crushed Oreo cookie shells (no cream)',
+          '1/4 tsp cream of tartar',
+          'Option 1 Buttercream: 1/2 cup butter',
+          '1/2 cup powdered sugar',
+          '5 ground Oreos',
+          '1 tsp vanilla',
+          'Option 2 Ganache: 100g white chocolate',
+          '50g heavy whipping cream',
+          '3 crushed Oreos'
+        ],
+        ingredientsM: [
+          'For Shells: 100g egg whites',
+          '100g sugar',
+          '100g almond flour',
+          '100g powdered sugar',
+          '20g crushed Oreo shells',
+          '1g cream of tartar',
+          'Option 1 Buttercream: 113g butter',
+          '50g powdered sugar',
+          '5 ground Oreos',
+          '1 tsp vanilla',
+          'Option 2 Ganache: 100g white chocolate',
+          '50g heavy cream',
+          '3 crushed Oreos'
+        ],
+        steps: [
+          { text: 'Carefully scrape all the cream filling off the Oreos. Pulse the dry cookie wafers in a food processor until they are fine powder crumbs.' },
+          { text: 'Sift the almond flour, powdered sugar, and Oreo crumbs through a fine-mesh sieve twice. Discard any large chunks left behind.' },
+          { text: 'In a heat-proof bowl set over a pot of simmering water (double boiler), whisk the egg whites and granulated sugar until the sugar is completely dissolved (test by rubbing between your fingers).' },
+          { text: 'Transfer to a stand mixer and whip on medium-high speed until you achieve stiff, glossy peaks that stand straight up.', timer: 300 },
+          { text: 'Add the sifted dry ingredients into the meringue. Gently fold with a spatula by scraping the bowl edges and pressing through the center until the batter flows off the spatula in a continuous thick ribbon (figure-8 test).' },
+          { text: 'Transfer to a piping bag with a medium round tip. Pipe 1.5-inch circles onto a silicone mat. Tap the tray firmly on the counter 3 times to release air bubbles. Let rest at room temperature for 30-40 minutes until a dry skin forms (it should not stick to your finger when lightly touched).', timer: 2100 },
+          { text: 'Bake at 325°F (160°C) for 15 minutes. Let cool completely before filling with your choice of buttercream or ganache.', timer: 900 }
+        ]
       },
       {
         id: 6, category: 'creami',
         title: 'High-Protein Dark Chocolate Oreo Creami',
-        desc: 'A thick, ultra-creamy protein pint packed with rich cocoa and crunchy Oreo cookies.',
-        time: '5 mins', yield: '1 pint', img: 'oreo-creami.jpg',
+        desc: 'A thick, ultra-creamy protein pint packed with rich cocoa and crunchy Oreo cookies—without the guilt!',
+        time: '5 mins prep (+ 24hr freeze)', yield: '1 Ninja Creami pint', img: 'oreo-creami.jpg',
         macros: { cal: 250, pro: 26, carb: 18, fat: 6 },
-        ingredientsUS: ['1.5 cups Fairlife milk', '2 tbsp cocoa powder', '3 tbsp sweetener', '3 Oreo mix-ins'],
-        ingredientsM: ['360ml Fairlife milk', '15g cocoa powder', '35g sweetener', '3 Oreo mix-ins'],
-        steps: ['Blend ingredients in pint container.', 'Freeze for 24 hours.', 'Process on Lite Ice Cream mode.', 'Add mix-ins and spin.']
+        ingredientsUS: [
+          '1.5 cups Fairlife milk',
+          '2 tbsp Dutch-process cocoa powder',
+          '3 tbsp monk fruit sweetener',
+          '1/4 tsp xanthan gum',
+          '1/2 tsp vanilla bean paste',
+          'Pinch of salt',
+          'Mix-in: 3 Oreo cookies (cream removed)'
+        ],
+        ingredientsM: [
+          '360ml Fairlife milk',
+          '15g Dutch-process cocoa powder',
+          '35g monk fruit sweetener',
+          '1g xanthan gum',
+          '1/2 tsp vanilla bean paste',
+          'Pinch of salt',
+          'Mix-in: 3 Oreo cookies'
+        ],
+        steps: [
+          { text: 'Pour the Fairlife milk into your Ninja Creami pint container. Add the cocoa powder, monk fruit sweetener, xanthan gum, vanilla bean paste, and salt.' },
+          { text: 'Use a milk frother or small whisk to vigorously blend the ingredients directly in the pint until completely smooth and no cocoa lumps remain.' },
+          { text: 'Place the lid on the pint and freeze on a completely level surface in your freezer for a full 24 hours.' },
+          { text: 'Remove from the freezer and run the sides of the pint under hot tap water for 60 seconds to loosen the icy edges.' },
+          { text: 'Place the pint in the Ninja Creami machine and process on the LITE ICE CREAM setting.' },
+          { text: 'Remove the pint, scrape down the icy sides with a butter knife, and if the mixture looks powdery, run it on the RESPIN setting until perfectly creamy.' },
+          { text: 'Use a spoon to hollow out a 1-inch hole in the center of the ice cream. Add the crushed cream-less Oreos into the hole and run the MIX-IN setting.' }
+        ]
       }
     ];
 
+    window.triggerTimer = function(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      window.showToast("Timer started for " + minutes + " minutes! ⏱️");
+    };
+
     window.renderRecipes = function(items) {
       const grid = document.getElementById('recipeGrid');
-      // Add the "reveal-on-scroll" class dynamically to every recipe card
       grid.innerHTML = items.map(r => `
         <div class="recipe-card reveal-on-scroll" onclick="openRecipeModal(${r.id})">
           <div class="card-img-wrapper">
@@ -922,8 +864,6 @@
           </div>
         </div>
       `).join('');
-
-      // Restart the scroll observer after cards are rendered
       window.initScrollAnimations();
     };
 
@@ -971,7 +911,12 @@
       } else {
         instructionsHtml = `
           <ol style="padding-left: 1.5rem; line-height: 2; margin-top: 1rem; color: var(--text-main);">
-            ${recipe.steps.map(step => `<li style="margin-bottom: 0.8rem;">${step}</li>`).join('')}
+            ${recipe.steps.map(stepObj => `
+              <li style="margin-bottom: 0.8rem;">
+                ${stepObj.text}
+                ${stepObj.timer ? `<button class="inline-timer-btn" onclick="triggerTimer(${stepObj.timer})">⏱️ Start Timer</button>` : ''}
+              </li>
+            `).join('')}
           </ol>
         `;
       }
@@ -1004,6 +949,8 @@
 
         <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin: 1.5rem 0 0.5rem;">Instructions</h3>
         ${instructionsHtml}
+
+        <button class="login-btn" style="width: 100%; margin-top: 2rem; padding: 12px; background: var(--pill-bg); border: none;" onclick="closeModal('recipeModal')">← Back to Recipes</button>
       `;
       document.getElementById('recipeModal').style.display = 'flex';
     };
@@ -1023,8 +970,6 @@
     window.closeModal = function(modalId) { document.getElementById(modalId).style.display = 'none'; };
 
     window.renderRecipes(window.recipes);
-    
-    // Call observer initialization on script load
     window.initScrollAnimations();
   </script>
 </body>
