@@ -23,6 +23,23 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* Apple-Style Smooth Scrolling & Reveal Animations */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
@@ -457,16 +474,16 @@
     </nav>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Section (Now with reveal-on-scroll classes) -->
   <section class="hero">
-    <div class="hero-subtitle">Decadent • Simple • Aesthetic</div>
-    <h1>Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
+    <div class="hero-subtitle reveal-on-scroll">Decadent • Simple • Aesthetic</div>
+    <h1 class="reveal-on-scroll">Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
     
-    <div class="search-container">
+    <div class="search-container reveal-on-scroll">
       <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by ingredient or bake..." oninput="handleSearch()">
     </div>
 
-    <div class="filters" id="recipes">
+    <div class="filters reveal-on-scroll" id="recipes">
       <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
       <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami</button>
       <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
@@ -613,6 +630,7 @@
 
     window.currentUser = null;
 
+    // Toast and Confirm Functions
     window.showToast = function(message) {
       const toast = document.getElementById('customToast');
       document.getElementById('toastMessage').innerText = message;
@@ -630,6 +648,21 @@
       document.getElementById('customConfirmModal').style.display = 'none';
       if (result && confirmCallback) confirmCallback();
       confirmCallback = null;
+    };
+
+    // Intersection Observer for Smooth Scrolling Animations
+    window.initScrollAnimations = function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+        observer.observe(el);
+      });
     };
 
     onAuthStateChanged(auth, (user) => {
@@ -866,8 +899,9 @@
 
     window.renderRecipes = function(items) {
       const grid = document.getElementById('recipeGrid');
+      // Add the "reveal-on-scroll" class dynamically to every recipe card
       grid.innerHTML = items.map(r => `
-        <div class="recipe-card" onclick="openRecipeModal(${r.id})">
+        <div class="recipe-card reveal-on-scroll" onclick="openRecipeModal(${r.id})">
           <div class="card-img-wrapper">
             <span class="card-tag">${r.category}</span>
             <img src="${r.img}" alt="${r.title}">
@@ -888,6 +922,9 @@
           </div>
         </div>
       `).join('');
+
+      // Restart the scroll observer after cards are rendered
+      window.initScrollAnimations();
     };
 
     window.handleSearch = function() {
@@ -986,6 +1023,9 @@
     window.closeModal = function(modalId) { document.getElementById(modalId).style.display = 'none'; };
 
     window.renderRecipes(window.recipes);
+    
+    // Call observer initialization on script load
+    window.initScrollAnimations();
   </script>
 </body>
 </html>
