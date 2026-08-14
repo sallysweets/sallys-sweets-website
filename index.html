@@ -30,15 +30,6 @@
       line-height: 1.6;
     }
 
-    .sally-mark {
-      width: 18px;
-      height: 18px;
-      display: inline-block;
-      vertical-align: middle;
-      margin: 0 4px;
-      color: var(--accent-gold);
-    }
-
     /* Header & Navigation */
     header {
       background: var(--bg-main);
@@ -114,17 +105,6 @@
     .login-btn:hover {
       background: var(--accent-brown);
       color: #FFF;
-    }
-
-    .order-btn {
-      background: var(--accent-gold);
-      color: #FFF !important;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem !important;
-      cursor: pointer;
-      border: none;
-      font-weight: 600;
     }
 
     /* Hero & Search */
@@ -329,19 +309,6 @@
       font-size: 1.2rem;
     }
 
-    .modal-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.3rem;
-      color: var(--accent-brown);
-    }
-
-    .modal-section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      color: var(--accent-brown);
-      margin: 1.5rem 0 0.5rem;
-    }
-
     .controls-row {
       display: flex;
       justify-content: space-between;
@@ -393,8 +360,6 @@
       gap: 0.6rem;
       font-size: 0.95rem;
     }
-    .ingredient-list input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent-brown); cursor: pointer; }
-    .ingredient-list input[type="checkbox"]:checked + span { text-decoration: line-through; color: var(--text-muted); }
 
     /* App Wall / Locked Content Overlay */
     .locked-container {
@@ -463,12 +428,6 @@
 
     /* Form Styles */
     .vip-box { text-align: center; padding: 1rem; }
-    .vip-box h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
-      color: var(--accent-brown);
-      margin-bottom: 0.5rem;
-    }
     .vip-input {
       width: 100%;
       padding: 0.8rem;
@@ -476,6 +435,7 @@
       border: 1px solid var(--soft-border);
       font-size: 1rem;
       font-family: inherit;
+      background: #FFF;
     }
     
     .social-btn {
@@ -496,19 +456,9 @@
       transition: background 0.2s;
     }
     
-    .social-btn:hover {
-      background: var(--pill-bg);
-    }
-    
-    .social-btn.apple {
-      background: #000;
-      color: #FFF;
-      border: none;
-    }
-    
-    .social-btn.apple:hover {
-      background: #333;
-    }
+    .social-btn:hover { background: var(--pill-bg); }
+    .social-btn.apple { background: #000; color: #FFF; border: none; }
+    .social-btn.apple:hover { background: #333; }
     
     .divider {
       display: flex;
@@ -518,13 +468,11 @@
       font-size: 0.85rem;
       margin: 1.5rem 0;
     }
-    
     .divider::before, .divider::after {
       content: '';
       flex: 1;
       border-bottom: 1px solid var(--soft-border);
     }
-    
     .divider:not(:empty)::before { margin-right: .5em; }
     .divider:not(:empty)::after { margin-left: .5em; }
 
@@ -537,8 +485,6 @@
   </style>
 </head>
 <body>
-
-  <iframe name="hiddenFrame" id="hiddenFrame" style="display:none;"></iframe>
 
   <!-- Header -->
   <header>
@@ -579,7 +525,7 @@
     <div class="recipe-grid" id="recipeGrid"></div>
   </main>
 
-  <!-- Recipe Detail Modal (With App Wall) -->
+  <!-- Recipe Detail Modal -->
   <div class="modal-overlay" id="recipeModal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal('recipeModal')">&times;</button>
@@ -595,7 +541,7 @@
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-brown); margin: 0.5rem 0 1rem;">Unlock the Full Experience</h2>
       
       <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
-        Log in or download the free app to view full step-by-step instructions and access exclusive digital kitchen features!
+        Log in or sign up to view full step-by-step instructions and access exclusive kitchen features!
       </p>
 
       <!-- Main Login View (Email & Social) -->
@@ -615,26 +561,28 @@
         <div class="divider">OR</div>
 
         <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
-        <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 1rem;">
-        <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="handleEmailAuth()">Log In / Create Account</button>
+        <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;">
+        <input type="password" id="authConfirmPass" class="vip-input" placeholder="Confirm password (if signing up)..." style="margin-bottom: 0.3rem;">
+        <div id="passwordError" style="color: #FF453A; font-size: 0.85rem; font-weight: 600; text-align: left; margin-bottom: 0.8rem; display: none;">Passwords do not match. Please re-enter.</div>
+
+        <button class="app-download-btn" style="width: 100%; margin-top: 0.5rem;" onclick="handleEmailAuth()">Log In / Create Account</button>
       </div>
 
-      <!-- Clean In-Modal Phone Login View -->
+      <!-- Clean Phone Login View -->
       <div id="phoneAuthView" style="display: none;">
         <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your phone number:</p>
-        <input type="tel" id="authPhone" class="vip-input" placeholder="(555) 123-4567" style="margin-bottom: 1rem;">
+        <input type="tel" id="authPhone" class="vip-input" placeholder="+1 (555) 000-0000" maxlength="17" style="margin-bottom: 1rem;" oninput="formatWebsitePhone(this)">
         <button class="app-download-btn" id="sendSmsBtn" style="width: 100%; margin-top: 0;" onclick="sendSmsCode()">Send SMS Code</button>
         
         <div id="smsCodeSection" style="display: none; margin-top: 1.5rem;">
           <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter the 6-digit code:</p>
           <input type="text" id="authCode" class="vip-input" placeholder="123456" style="margin-bottom: 1rem; text-align: center; letter-spacing: 4px; font-size: 1.2rem;">
-          <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="verifySmsCode()">Verify & Log In</button>
+          <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="verifySmsCode()">Verify &amp; Log In</button>
         </div>
 
         <button class="login-btn" style="width: 100%; margin-top: 1.5rem; border: none; background: var(--pill-bg);" onclick="showMainAuthView()">← Back to Email / Social</button>
       </div>
       
-      <!-- Hidden container required by Firebase for SMS verification -->
       <div id="recaptcha-container" style="margin-top: 10px;"></div>
     </div>
   </div>
@@ -648,32 +596,6 @@
       <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
         Hi there! I’m <strong>Sally</strong>. I’m 20 years old, born in <strong>Baghdad, Iraq</strong>, and moved to the United States when I was 7 years old. I’m currently a junior majoring in <strong>Biomedical Sciences</strong> with aspirations of becoming an <strong>Anesthesiologist</strong>! Outside the kitchen and lecture halls, I love playing soccer whenever I get the chance. ⚽✨
       </p>
-      <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
-        My baking journey started during winter break of my sophomore year in high school. I decided to challenge myself by creating my own business—<strong>Sally’s Sweets</strong>.
-      </p>
-    </div>
-  </div>
-
-  <!-- Request Modal -->
-  <div class="modal-overlay" id="requestModal">
-    <div class="modal-content vip-box" style="text-align: left; max-width: 600px;">
-      <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
-      <div style="text-align: center; margin-bottom: 1.2rem;">
-        <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS PORTAL</span>
-        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Message / Request Sally</h2>
-      </div>
-      <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
-        <label style="font-weight: 600; font-size: 0.9rem;">Select Message Type</label>
-        <select name="Type" class="vip-input" style="background: #FFF; margin-bottom: 1rem;" required>
-          <option value="Custom Order Inquiry">Custom Order Inquiry</option>
-          <option value="General Inquiry">General Question</option>
-        </select>
-        <label style="font-weight: 600; font-size: 0.9rem;">Your Name</label>
-        <input type="text" name="Name" class="vip-input" style="margin-bottom: 1rem;" required>
-        <label style="font-weight: 600; font-size: 0.9rem;">Your Email</label>
-        <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
-        <button type="submit" class="vip-submit" style="background: var(--accent-gold);">Send Message</button>
-      </form>
     </div>
   </div>
 
@@ -684,7 +606,7 @@
   <!-- MODULE SCRIPT FOR FIREBASE INTEGRATION -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
+    import {  
       getAuth, 
       onAuthStateChanged, 
       GoogleAuthProvider, 
@@ -694,6 +616,7 @@
       signInWithPhoneNumber,
       signInWithEmailAndPassword,
       createUserWithEmailAndPassword,
+      sendEmailVerification,
       signOut
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -718,31 +641,20 @@
       
       if (user) {
         mainLoginBtn.innerText = "Log Out";
-        mainLoginBtn.onclick = () => signOut(auth);
-        window.closeModal('loginModal');
-        
-        if (document.getElementById('recipeModal').style.display === 'flex') {
-          const titleElem = document.querySelector('.modal-title');
-          if (titleElem) {
-            const openRecipe = window.recipes.find(r => r.title === titleElem.innerText);
-            if (openRecipe) window.openRecipeModal(openRecipe.id);
+        mainLoginBtn.onclick = () => {
+          if (confirm("Are you sure you want to log out of your account?")) {
+            signOut(auth).then(() => {
+              alert("You have been signed out successfully.");
+            });
           }
-        }
+        };
+        window.closeModal('loginModal');
       } else {
         mainLoginBtn.innerText = "Login / Sign Up";
         mainLoginBtn.onclick = () => window.openLoginModal();
-        
-        if (document.getElementById('recipeModal').style.display === 'flex') {
-          const titleElem = document.querySelector('.modal-title');
-          if (titleElem) {
-            const openRecipe = window.recipes.find(r => r.title === titleElem.innerText);
-            if (openRecipe) window.openRecipeModal(openRecipe.id);
-          }
-        }
       }
     });
 
-    // --- Authentication UI Toggles ---
     window.showPhoneAuthView = function() {
       document.getElementById('mainAuthView').style.display = 'none';
       document.getElementById('phoneAuthView').style.display = 'block';
@@ -757,11 +669,27 @@
       document.getElementById('mainAuthView').style.display = 'block';
     };
 
-    // --- Authentication Functions ---
+    window.formatWebsitePhone = function(input) {
+      const cleaned = input.value.replace(/\D/g, '');
+      if (cleaned.length === 0) {
+        input.value = '';
+        return;
+      }
+      let formatted = '+1 ';
+      const coreNumber = cleaned.startsWith('1') ? cleaned.substring(1) : cleaned;
+
+      if (coreNumber.length > 0) formatted += `(${coreNumber.substring(0, 3)}`;
+      if (coreNumber.length >= 4) formatted += `) ${coreNumber.substring(3, 6)}`;
+      if (coreNumber.length >= 7) formatted += `-${coreNumber.substring(6, 10)}`;
+      
+      input.value = formatted;
+    };
+
     window.handleGoogleLogin = async () => {
       const provider = new GoogleAuthProvider();
       try {
         await signInWithPopup(auth, provider);
+        alert("Success! 🎉 Welcome to Sally's Sweets. Enjoy exploring recipes!");
       } catch(error) {
         alert("Google Login Error: " + error.message);
       }
@@ -771,8 +699,9 @@
       const provider = new OAuthProvider('apple.com');
       try {
         await signInWithPopup(auth, provider);
+        alert("Success! 🎉 Welcome to Sally's Sweets. Enjoy exploring recipes!");
       } catch(error) {
-        alert("Apple Sign-In requires an active Apple Developer account to be configured first. Error: " + error.message);
+        alert("Apple Login Error: " + error.message);
       }
     };
 
@@ -780,9 +709,8 @@
 
     window.sendSmsCode = async () => {
       let rawInput = document.getElementById('authPhone').value.trim();
-      let phoneNumber = rawInput.replace(/[\s-()]/g, ''); // Strip spaces and dashes
+      let phoneNumber = rawInput.replace(/[\s-()]/g, '');
       
-      // Auto-add +1 for US numbers if they just typed 10 digits
       if (phoneNumber.length === 10 && !phoneNumber.startsWith('+')) {
         phoneNumber = '+1' + phoneNumber;
       }
@@ -792,25 +720,16 @@
       }
 
       if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-          'size': 'invisible'
-        });
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
       }
 
       try {
         window.confirmationResultObj = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
         document.getElementById('sendSmsBtn').style.display = 'none';
         document.getElementById('smsCodeSection').style.display = 'block';
+        alert("Code Sent 📱 Check your phone for the SMS verification code.");
       } catch (error) {
         alert("Phone Login Error: " + error.message);
-        // Reset the verifier without destroying it so they can try again safely!
-        if (window.recaptchaVerifier) {
-          window.recaptchaVerifier.render().then(widgetId => {
-            if (typeof grecaptcha !== 'undefined') {
-              grecaptcha.reset(widgetId);
-            }
-          }).catch(() => {});
-        }
       }
     };
 
@@ -821,32 +740,49 @@
 
       try {
         await window.confirmationResultObj.confirm(code);
+        alert("Welcome Member! 🎉 You are now signed in. Enjoy exploring recipes!");
       } catch (error) {
         alert("Invalid code: " + error.message);
       }
     };
 
     window.handleEmailAuth = async () => {
-      const email = document.getElementById('authEmail').value;
-      const pass = document.getElementById('authPass').value;
+      const email = document.getElementById('authEmail').value.trim();
+      const pass = document.getElementById('authPass').value.trim();
+      const confirmPass = document.getElementById('authConfirmPass').value.trim();
+      const errorDiv = document.getElementById('passwordError');
+
       if (!email || !pass) return alert("Please enter both an email and password.");
 
+      errorDiv.style.display = 'none';
+
       try {
+        // Try signing in first
         await signInWithEmailAndPassword(auth, email, pass);
+        alert("Welcome Back! 🎉 You are now signed in. Enjoy exploring recipes!");
       } catch(error) {
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+        // If user doesn't exist, try creating an account
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential' || error.code === 'auth/invalid-login-credentials') {
+          if (confirmPass && pass !== confirmPass) {
+            errorDiv.style.display = 'block';
+            return;
+          }
           try {
-            await createUserWithEmailAndPassword(auth, email, pass);
+            const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+            await sendEmailVerification(userCred.user);
+            alert("Account Created! 🎉 Welcome to Sally's Sweets! We've sent a verification link to your email. Please check your inbox and spam folder, then enjoy exploring our recipes!");
           } catch(createError) {
             alert("Error creating account: " + createError.message);
           }
+        } else if (error.code === 'auth/email-already-in-use') {
+          alert("An account with this email already exists. Please double-check your password or sign in.");
         } else {
           alert("Login Error: " + error.message);
         }
       }
     };
 
-    // --- Legacy Site Logic ---
+    // --- Legacy Site Data & Rendering ---
     window.activeUnitMode = 'US';
     window.currentCategory = 'all';
 
@@ -933,153 +869,6 @@
           'Place chilled dough balls on a parchment-lined baking sheet spaced 2 inches apart. Bake at 350°F (175°C) for 14 minutes.',
           'Increase oven temperature to 370°F (185°C) and bake for a final 2 minutes to crisp the edges. Top with flaky sea salt immediately after removing from the oven.'
         ]
-      },
-      {
-        id: 3,
-        category: 'cookies',
-        title: "Sally's Brown Butter Chocolate Chip Cookies",
-        desc: 'Rich browned butter infused with bloomed espresso powder, packed with dark chocolate chunks and edible gold leaf.',
-        time: '30 mins (+ chilling)',
-        yield: '14 cookies',
-        img: 'Brown Butter Choc Chip.jpg',
-        macros: { cal: 310, pro: 3, carb: 40, fat: 16 },
-        ingredientsUS: [
-          '3/4 cup unsalted butter, browned',
-          '2 tsp instant espresso powder',
-          '1 cup light brown sugar',
-          '1/3 cup granulated sugar',
-          '1 large egg + 1 egg yolk',
-          '1 tbsp vanilla bean paste',
-          '1 3/4 cups all-purpose flour',
-          '1.5 cups dark chocolate chunks'
-        ],
-        ingredientsM: [
-          '170g unsalted butter, browned',
-          '2 tsp instant espresso powder',
-          '200g light brown sugar',
-          '65g granulated sugar',
-          '1 large egg + 1 egg yolk',
-          '1 tbsp vanilla bean paste',
-          '220g all-purpose flour',
-          '220g dark chocolate chunks'
-        ],
-        steps: [
-          'Melt butter in a saucepan over medium or medium-low heat until it foams, browns, and releases a nutty aroma. Remove from heat.',
-          'Let the browned butter cool for 2-4 minutes, then stir in the instant espresso powder until dissolved.',
-          'In a large bowl, vigorously whisk the granulated sugar, light brown sugar, and warm browned butter together for 1-2 minutes until glossy.',
-          'Add the egg, egg yolk, and vanilla bean paste, whisking until the mixture is completely smooth and falls in ribbons off the whisk.',
-          'Gently fold in the flour, baking soda, and salt with a spatula. Fold in the dark chocolate chunks until evenly distributed.',
-          'Portion into 2.5-tablespoon (approx 45g) balls using a cookie scoop. Chill the dough in the fridge for 1 hour.',
-          'Bake at 350°F (175°C) for 12 minutes on a parchment-lined baking sheet. Once slightly cooled, decorate with edible gold leaf flakes and flaky sea salt.'
-        ]
-      },
-      {
-        id: 4,
-        category: 'cookies',
-        title: 'Coffee Cake Cookies with Cardamom Icing',
-        desc: 'Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.',
-        time: '40 mins',
-        yield: '12 large cookies',
-        img: 'Coffee Cake Pic.jpg',
-        macros: { cal: 320, pro: 4, carb: 45, fat: 15 },
-        ingredientsUS: [
-          '1/2 cup softened butter',
-          '1/2 cup vegetable oil',
-          '1 cup light brown sugar',
-          '1 large egg',
-          '2.5 cups all-purpose flour',
-          '2 tsp ground cinnamon',
-          '1/2 cup powdered sugar (for icing)',
-          '1/4 tsp ground cardamom'
-        ],
-        ingredientsM: [
-          '113g softened butter',
-          '100g oil',
-          '215g light brown sugar',
-          '1 large egg',
-          '325g AP flour',
-          '2 tsp cinnamon',
-          '56g powdered sugar',
-          '1/4 tsp ground cardamom'
-        ],
-        steps: [
-          'In a stand mixer, beat the softened butter, oil, and light brown sugar on medium speed for 2 full minutes until light and fluffy.',
-          'Add the egg and vanilla, mixing until just combined. Switch to a spatula and gently fold in the cinnamon, flour, baking soda, and salt to form a soft dough.',
-          'In a separate small bowl, mix the streusel butter, brown sugar, flour, and cinnamon with a fork until pea-sized crumbles form.',
-          'Use a 2.5-tablespoon cookie scoop (approx 45g) to portion the dough. Press your thumb firmly into the center of each ball to make a deep indent, and generously fill the hole with streusel.',
-          'Bake at 350°F (175°C) for 18 minutes on a parchment-lined baking sheet. Let cool completely on the pan.',
-          'Whisk the powdered sugar, cream cheese, cardamom, and milk in a bowl until completely smooth. Drizzle over the cookies once cooled.'
-        ]
-      },
-      {
-        id: 5,
-        category: 'macarons',
-        title: "Cookies 'n Cream Oreos Macarons",
-        desc: 'Delicate Swiss meringue macaron shells with scraped Oreo crumbs, filled with cookies & cream buttercream.',
-        time: '1 hr 15 mins',
-        yield: '18 macarons',
-        img: 'Cookie n Cream Macaron Pic.jpg',
-        macros: { cal: 150, pro: 3, carb: 22, fat: 7 },
-        ingredientsUS: [
-          '100g egg whites (~3 large)',
-          '100g granulated sugar',
-          '100g fine almond flour',
-          '100g powdered sugar',
-          '20g crushed Oreo cookie shells (no cream)',
-          '1/4 tsp cream of tartar'
-        ],
-        ingredientsM: [
-          '100g room temperature egg whites',
-          '100g granulated sugar',
-          '100g almond flour',
-          '100g powdered sugar',
-          '20g crushed Oreo cookie shells',
-          '1g cream of tartar'
-        ],
-        steps: [
-          'Carefully scrape all the cream filling off the Oreos. Pulse the dry cookie wafers in a food processor until they are fine powder crumbs.',
-          'Sift the almond flour, powdered sugar, and Oreo crumbs through a fine-mesh sieve twice. Discard any large chunks left behind.',
-          'In a heat-proof bowl set over a pot of simmering water (double boiler), whisk the egg whites and granulated sugar until the sugar is completely dissolved (test by rubbing between your fingers).',
-          'Transfer to a stand mixer and whip on medium-high speed until you achieve stiff, glossy peaks that stand straight up.',
-          'Add the sifted dry ingredients into the meringue. Gently fold with a spatula by scraping the bowl edges and pressing through the center until the batter flows off the spatula in a continuous thick ribbon (figure-8 test).',
-          'Transfer to a piping bag with a medium round tip. Pipe 1.5-inch circles onto a silicone mat. Tap the tray firmly on the counter 3 times to release air bubbles. Let rest at room temperature for 30-40 minutes until a dry skin forms.',
-          'Bake at 325°F (160°C) for 15 minutes. Let cool completely before filling with your choice of buttercream or ganache.'
-        ]
-      },
-      {
-        id: 6,
-        category: 'creami',
-        title: 'High-Protein Dark Chocolate Oreo Creami',
-        desc: "A thick, ultra-creamy protein pint packed with rich cocoa and crunchy Oreo cookies—without the guilt!",
-        time: "5 mins prep (+ 24hr freeze)",
-        yield: "1 Ninja Creami pint",
-        img: "oreo-creami.jpg",
-        macros: { cal: 250, pro: 26, carb: 18, fat: 6 },
-        ingredientsUS: [
-          "1.5 cups Fairlife milk",
-          "2 tbsp Dutch-process cocoa powder",
-          "3 tbsp monk fruit sweetener",
-          "1/4 tsp xanthan gum",
-          "1/2 tsp vanilla bean paste",
-          "Mix-in: 3 Oreo cookies (cream removed)"
-        ],
-        ingredientsM: [
-          "360ml Fairlife milk",
-          "15g Dutch-process cocoa powder",
-          "35g monk fruit sweetener",
-          "1g xanthan gum",
-          "1/2 tsp vanilla bean paste",
-          "Mix-in: 3 Oreo cookies"
-        ],
-        steps: [
-          'Pour the Fairlife milk into your Ninja Creami pint container. Add the cocoa powder, monk fruit sweetener, xanthan gum, vanilla bean paste, and salt.',
-          'Use a milk frother or small whisk to vigorously blend the ingredients directly in the pint until completely smooth and no cocoa lumps remain.',
-          'Place the lid on the pint and freeze on a completely level surface in your freezer for a full 24 hours.',
-          'Remove from the freezer and run the sides of the pint under hot tap water for 60 seconds to loosen the icy edges.',
-          'Place the pint in the Ninja Creami machine and process on the LITE ICE CREAM setting.',
-          'Remove the pint, scrape down the icy sides with a butter knife, and if the mixture looks powdery, run it on the RESPIN setting until perfectly creamy.',
-          'Use a spoon to hollow out a 1-inch hole in the center of the ice cream. Add the crushed cream-less Oreos into the hole and run the MIX-IN setting.'
-        ]
       }
     ];
 
@@ -1149,15 +938,8 @@
             
             <div class="unlock-overlay">
               <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-brown); margin-bottom: 5px;">Unlock the Full Recipe</h3>
-              <p style="color: var(--text-main); font-weight: 500; font-size: 0.95rem; margin-bottom: 5px;">Get the step-by-step instructions in the app!</p>
-              
-              <div class="app-features-grid">
-                <span class="feature-item">✨ AI Assistant</span>
-                <span class="feature-item">👥 Bake Together Co-Op</span>
-                <span class="feature-item">⏱️ Smart Timers</span>
-              </div>
-
-              <button class="app-download-btn" onclick="openLoginModal()">Login / Download App</button>
+              <p style="color: var(--text-main); font-weight: 500; font-size: 0.95rem; margin-bottom: 5px;">Get the step-by-step instructions on your website!</p>
+              <button class="app-download-btn" onclick="openLoginModal()">Login / Sign Up</button>
             </div>
           </div>
         `;
@@ -1170,7 +952,7 @@
       }
 
       modalBody.innerHTML = `
-        <h2 class="modal-title">${recipe.title}</h2>
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; color: var(--accent-brown);">${recipe.title}</h2>
         <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Prep: ${recipe.time} &nbsp;|&nbsp; Yield: ${recipe.yield}</p>
         
         <div class="macro-row" style="margin-top: 10px;">
@@ -1190,7 +972,7 @@
 
         <img src="${recipe.img}" style="width:100%; height:320px; object-fit:cover; border-radius:12px; margin: 1rem 0;" alt="${recipe.title}">
         
-        <h3 class="modal-section-title">Ingredients (${window.activeUnitMode === 'US' ? 'US Customary' : 'Metric Weights'})</h3>
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin: 1.5rem 0 0.5rem;">Ingredients</h3>
         <ul class="ingredient-list">
           ${baseIngredients.map(item => `
             <li>
@@ -1201,7 +983,7 @@
           `).join('')}
         </ul>
 
-        <h3 class="modal-section-title">Instructions</h3>
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin: 1.5rem 0 0.5rem;">Instructions</h3>
         ${instructionsHtml}
       `;
       document.getElementById('recipeModal').style.display = 'flex';
@@ -1213,18 +995,16 @@
     };
 
     window.openAboutModal = function() { document.getElementById('aboutModal').style.display = 'flex'; };
-    window.openRequestModal = function() { document.getElementById('requestModal').style.display = 'flex'; };
     window.openLoginModal = function() { 
       document.getElementById('recipeModal').style.display = 'none';
       document.getElementById('loginModal').style.display = 'flex';
-      window.showMainAuthView(); // Always start on the main auth view
+      window.showMainAuthView();
     };
     
     window.closeModal = function(modalId) {
       document.getElementById(modalId).style.display = 'none';
     };
 
-    // Initial render
     window.renderRecipes(window.recipes);
   </script>
 </body>
