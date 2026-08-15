@@ -25,21 +25,21 @@
 
     html { scroll-behavior: smooth; }
 
-    /* The Upgraded "Apple-Style" Frosted Glass Reveal */
+    /* The "Nonchalant" Smooth Glide Reveal */
     .reveal-on-scroll {
       opacity: 0;
-      filter: blur(8px);
-      transform: translateY(40px) scale(0.96);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: blur(4px);
+      transform: translateY(20px);
+      transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), 
+                  transform 1.1s cubic-bezier(0.22, 1, 0.36, 1), 
+                  filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: opacity, transform, filter;
     }
 
     .reveal-on-scroll.is-visible {
       opacity: 1;
       filter: blur(0);
-      transform: translateY(0) scale(1);
+      transform: translateY(0);
     }
 
     body {
@@ -109,7 +109,7 @@
     nav a:hover { color: var(--accent-gold); }
 
     .social-links { display: flex; align-items: center; gap: 0.8rem; margin-left: 0.5rem; }
-    .social-icon { color: var(--accent-brown); width: 20px; height: 20px; transition: transform 0.2s, color 0.2s; }
+    .social-icon { color: var(--accent-brown); width: 20px; height: 20px; transition: transform 0.2s, color 0.2s; display: inline-flex; align-items: center; }
     .social-icon:hover { transform: scale(1.15); color: var(--accent-gold); }
 
     .login-btn {
@@ -290,7 +290,7 @@
     </div>
   </div>
 
-  <!-- Header with sleek new Vector Icons -->
+  <!-- Header -->
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
@@ -338,18 +338,18 @@
     <!-- Updated Baking Basics -->
     <div class="basics-section">
       <div class="category-tag reveal-on-scroll">BAKING BASICS</div>
-      <h2 class="main-heading reveal-on-scroll" style="transition-delay: 100ms;">Little details, better bakes.</h2>
+      <h2 class="main-heading reveal-on-scroll" style="transition-delay: 80ms;">Little details, better bakes.</h2>
 
       <div class="cards-row">
-        <div class="basics-card reveal-on-scroll" style="transition-delay: 200ms;">
+        <div class="basics-card reveal-on-scroll" style="transition-delay: 150ms;">
           <h3 class="card-title">Brown butter is a lifestyle.</h3>
           <p class="card-body">Honestly, taking that extra 5 minutes to brown your butter is a total game changer. It makes everything taste incredibly rich and nutty.</p>
         </div>
-        <div class="basics-card reveal-on-scroll" style="transition-delay: 400ms;">
+        <div class="basics-card reveal-on-scroll" style="transition-delay: 300ms;">
           <h3 class="card-title">Room temp is not a suggestion.</h3>
           <p class="card-body">I used to skip this when I was rushing, but seriously, cold eggs and butter will completely ruin your dough's texture. Let them chill on the counter first!</p>
         </div>
-        <div class="basics-card reveal-on-scroll" style="transition-delay: 600ms;">
+        <div class="basics-card reveal-on-scroll" style="transition-delay: 450ms;">
           <h3 class="card-title">Trust the timer, but use your eyes.</h3>
           <p class="card-body">Every oven is completely different! Start checking a few minutes early, and let the golden edges be your final answer.</p>
         </div>
@@ -446,7 +446,7 @@
     </div>
   </div>
 
-  <!-- About Modal (UPDATED) -->
+  <!-- About Modal -->
   <div class="modal-overlay" id="aboutModal">
     <div class="modal-content" style="text-align: center; max-width: 650px;">
       <button class="close-btn" onclick="closeModal('aboutModal')">&times;</button>
@@ -624,18 +624,22 @@
       window.updateTimerUI();
     };
 
-    // UPDATED INTERSECTION OBSERVER FOR INFINITE UP AND DOWN SCROLL ANIMATION!
+    // Smooth Infinite Observer
     window.initScrollAnimations = function() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
           } else {
-            // This line makes the animation repeat when you scroll up and down!
-            entry.target.classList.remove('is-visible');
+            if (entry.boundingClientRect.top > 0) {
+              entry.target.classList.remove('is-visible');
+            }
           }
         });
-      }, { threshold: 0.1 });
+      }, { 
+        threshold: 0.08,
+        rootMargin: "0px 0px -40px 0px"
+      });
 
       document.querySelectorAll('.reveal-on-scroll').forEach(el => {
         observer.observe(el);
