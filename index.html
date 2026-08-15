@@ -25,21 +25,21 @@
 
     html { scroll-behavior: smooth; }
 
-    /* The "Nonchalant" Smooth Glide Reveal */
+    /* Pure Effortless Fade & Subtle Scale (No Jumping Up/Down) */
     .reveal-on-scroll {
       opacity: 0;
-      filter: blur(4px);
-      transform: translateY(20px);
-      transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), 
-                  transform 1.1s cubic-bezier(0.22, 1, 0.36, 1), 
-                  filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: blur(3px);
+      transform: scale(0.97);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                  filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform, filter;
     }
 
     .reveal-on-scroll.is-visible {
       opacity: 1;
       filter: blur(0);
-      transform: translateY(0);
+      transform: scale(1);
     }
 
     body {
@@ -624,7 +624,7 @@
       window.updateTimerUI();
     };
 
-    // Smooth Infinite Observer
+    // Smooth Infinite Observer with Zero Vertical Jump
     window.initScrollAnimations = function() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -875,7 +875,7 @@
           'Dough: 1 Large Egg (room temp)',
           'Dough: 1 tsp vanilla',
           'Dough: 2 tsp cinnamon',
-          'Dough: 2 1/2 cups AP Flour (325g)',
+          'Dough: 2 2/3 cups AP Flour (325g)',
           'Dough: 1/2 tsp baking soda',
           'Dough: 1/2 tsp baking powder',
           'Dough: 1/2 tsp salt',
