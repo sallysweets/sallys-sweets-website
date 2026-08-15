@@ -30,9 +30,9 @@
       opacity: 0;
       filter: blur(8px);
       transform: translateY(40px) scale(0.96);
-      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
-                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
-                  filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform, filter;
     }
 
@@ -108,8 +108,8 @@
     nav a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: color 0.2s ease; }
     nav a:hover { color: var(--accent-gold); }
 
-    .social-links { display: flex; align-items: center; gap: 0.6rem; margin-left: 0.5rem; }
-    .social-icon { color: var(--accent-brown); font-size: 1.1rem; text-decoration: none; transition: transform 0.2s; }
+    .social-links { display: flex; align-items: center; gap: 0.8rem; margin-left: 0.5rem; }
+    .social-icon { color: var(--accent-brown); width: 20px; height: 20px; transition: transform 0.2s, color 0.2s; }
     .social-icon:hover { transform: scale(1.15); color: var(--accent-gold); }
 
     .login-btn {
@@ -242,6 +242,8 @@
       justify-content: center; align-items: center; transition: background 0.2s;
     }
     .icon-container:hover { background: rgba(255, 255, 255, 0.2); }
+    .icon-container svg { width: 20px; height: 20px; fill: #FFF; }
+    
     .signup-button {
       background: #6A3B3B; color: #FAF7F2; padding: 14px 32px;
       border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.15);
@@ -288,7 +290,7 @@
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- Header with sleek new Vector Icons -->
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
@@ -298,8 +300,12 @@
       <button class="login-btn" id="mainLoginBtn" onclick="openLoginModal()">Login / Sign Up</button>
       
       <div class="social-links">
-        <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="social-icon" title="Instagram">📸</a>
-        <a href="https://www.snapchat.com/add/sallysweets_ofc" target="_blank" class="social-icon" title="Snapchat">👻</a>
+        <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="social-icon" title="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </a>
+        <a href="https://www.snapchat.com/add/sallysweets_ofc" target="_blank" class="social-icon" title="Snapchat">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.126 1.706c-2.368 0-4.542 1.488-4.542 4.148 0 1.056.402 1.954.996 2.656-.376.196-.658.55-.78.966-.192.05-.382.164-.492.352-.164.28-.15.658.07.896.064.068.14.12.22.162-.124.4-.298.882-.53 1.36-.106.216-.034.482.17.592.05.026.104.044.156.05-.008.028-.016.056-.026.084-.336.886-.968 1.49-2.072 1.776-.328.084-.57.374-.57.712 0 .584 1.144.974 2.378 1.134.464.06 1.036.088 1.62.088 1.196 0 2.45-.164 2.806-.474.348.654.836 1.436 1.412 2.108.102.118.256.184.412.184.158 0 .31-.066.412-.184.576-.672 1.064-1.454 1.412-2.108.356.31 1.61.474 2.806.474.584 0 1.156-.028 1.62-.088 1.234-.16 2.378-.55 2.378-1.134 0-.338-.242-.628-.57-.712-1.104-.286-1.736-.89-2.072-1.776-.01-.028-.018-.056-.026-.084.052-.006.106-.024.156-.05.204-.11.276-.376.17-.592-.232-.478-.406-.96-.53-1.36.08-.042.156-.094.22-.162.22-.238.234-.616.07-.896-.11-.188-.3-.302-.492-.352-.122-.416-.404-.77-.78-.966.594-.702.996-1.6.996-2.656 0-2.66-2.174-4.148-4.542-4.148z"/></svg>
+        </a>
       </div>
     </nav>
   </header>
@@ -329,23 +335,23 @@
 
   <!-- Baking Basics & Newsletter Section -->
   <section class="landing-extras">
-    <!-- Baking Basics -->
+    <!-- Updated Baking Basics -->
     <div class="basics-section">
       <div class="category-tag reveal-on-scroll">BAKING BASICS</div>
       <h2 class="main-heading reveal-on-scroll" style="transition-delay: 100ms;">Little details, better bakes.</h2>
 
       <div class="cards-row">
         <div class="basics-card reveal-on-scroll" style="transition-delay: 200ms;">
-          <h3 class="card-title">Read the recipe first</h3>
-          <p class="card-body">A calm mise en place makes the whole recipe feel more generous.</p>
+          <h3 class="card-title">Brown butter is a lifestyle.</h3>
+          <p class="card-body">Honestly, taking that extra 5 minutes to brown your butter is a total game changer. It makes everything taste incredibly rich and nutty.</p>
         </div>
         <div class="basics-card reveal-on-scroll" style="transition-delay: 400ms;">
-          <h3 class="card-title">Room temperature matters</h3>
-          <p class="card-body">Softer butter and room-temp eggs create the lift your cake deserves.</p>
+          <h3 class="card-title">Room temp is not a suggestion.</h3>
+          <p class="card-body">I used to skip this when I was rushing, but seriously, cold eggs and butter will completely ruin your dough's texture. Let them chill on the counter first!</p>
         </div>
         <div class="basics-card reveal-on-scroll" style="transition-delay: 600ms;">
-          <h3 class="card-title">Trust the timer</h3>
-          <p class="card-body">Start checking early, but let color and texture have the final say.</p>
+          <h3 class="card-title">Trust the timer, but use your eyes.</h3>
+          <p class="card-body">Every oven is completely different! Start checking a few minutes early, and let the golden edges be your final answer.</p>
         </div>
       </div>
     </div>
@@ -356,13 +362,13 @@
       <p class="newsletter-sub">New recipes, baking notes, and seasonal favorites—sent when they're fresh.</p>
 
       <div class="social-icons-row">
-        <!-- Instagram SVG -->
+        <!-- Clean Instagram SVG -->
         <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="icon-container">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
-        <!-- Snapchat SVG -->
+        <!-- Clean Snapchat SVG -->
         <a href="https://www.snapchat.com/add/sallysweets_ofc" target="_blank" class="icon-container">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12.012 2c-3.15 0-5.71 2.37-5.71 5.29 0 1.54.67 2.92 1.73 3.91-.49.34-.84.87-1 1.51-.43.08-.85.34-1.12.72-.45.62-.35 1.5.21 1.94.13.1.28.17.43.23-.23.63-.58 1.48-1.07 2.36-.2.37-.06.84.31 1.04.1.05.21.08.31.08.27 0 .54-.15.68-.4.49-.87.89-1.8 1.18-2.52.88.35 1.87.56 2.92.56 1.05 0 2.04-.21 2.92-.56.29.72.69 1.65 1.18 2.52.14.25.41.4.68.4.1 0 .21-.03.31-.08.37-.2.51-.67.31-1.04-.49-.88-.84-1.73-1.07-2.36.15-.06.3-.13.43-.23.56-.44.66-1.32.21-1.94-.27-.38-.69-.64-1.12-.72-.16-.64-.51-1.17-1-1.51 1.06-.99 1.73-2.37 1.73-3.91C17.722 4.37 15.162 2 12.012 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.126 1.706c-2.368 0-4.542 1.488-4.542 4.148 0 1.056.402 1.954.996 2.656-.376.196-.658.55-.78.966-.192.05-.382.164-.492.352-.164.28-.15.658.07.896.064.068.14.12.22.162-.124.4-.298.882-.53 1.36-.106.216-.034.482.17.592.05.026.104.044.156.05-.008.028-.016.056-.026.084-.336.886-.968 1.49-2.072 1.776-.328.084-.57.374-.57.712 0 .584 1.144.974 2.378 1.134.464.06 1.036.088 1.62.088 1.196 0 2.45-.164 2.806-.474.348.654.836 1.436 1.412 2.108.102.118.256.184.412.184.158 0 .31-.066.412-.184.576-.672 1.064-1.454 1.412-2.108.356.31 1.61.474 2.806.474.584 0 1.156-.028 1.62-.088 1.234-.16 2.378-.55 2.378-1.134 0-.338-.242-.628-.57-.712-1.104-.286-1.736-.89-2.072-1.776-.01-.028-.018-.056-.026-.084.052-.006.106-.024.156-.05.204-.11.276-.376.17-.592-.232-.478-.406-.96-.53-1.36.08-.042.156-.094.22-.162.22-.238.234-.616.07-.896-.11-.188-.3-.302-.492-.352-.122-.416-.404-.77-.78-.966.594-.702.996-1.6.996-2.656 0-2.66-2.174-4.148-4.542-4.148z"/></svg>
         </a>
       </div>
 
@@ -413,7 +419,6 @@
 
         <div class="divider">OR</div>
 
-        <!-- Full Name input field -->
         <input type="text" id="authName" class="vip-input" placeholder="Full Name (optional for sign up)..." style="margin-bottom: 0.5rem;">
         <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
         <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;">
@@ -468,11 +473,9 @@
         <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Message / Request Sally</h2>
       </div>
       
-      <!-- Standard Form Submit ensures auto-emails get sent properly -->
       <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
         <input type="hidden" name="_autoresponse" value="Thank you for reaching out to Sally's Sweets! We have received your message and will get back to you shortly.">
         <input type="hidden" name="_subject" value="New Inquiry from Sally's Sweets!">
-        <!-- Redirects them right back to your website, triggering the success banner -->
         <input type="hidden" name="_next" value="https://sweetsbysally.com/?submitted=true">
 
         <label style="font-weight: 600; font-size: 0.9rem;">Select Message Type</label>
@@ -554,7 +557,6 @@
       confirmCallback = null;
     };
 
-    // Check if user just submitted the contact form to trigger the "Thank You" toast
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('submitted') === 'true') {
@@ -622,12 +624,15 @@
       window.updateTimerUI();
     };
 
-    // Intersection Observer for Smooth Scrolling Animations
+    // UPDATED INTERSECTION OBSERVER FOR INFINITE UP AND DOWN SCROLL ANIMATION!
     window.initScrollAnimations = function() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
+          } else {
+            // This line makes the animation repeat when you scroll up and down!
+            entry.target.classList.remove('is-visible');
           }
         });
       }, { threshold: 0.1 });
@@ -796,7 +801,6 @@
       }
     };
 
-    // Full 6 Recipe Database
     window.activeUnitMode = 'US';
     window.currentCategory = 'all';
 
@@ -993,24 +997,6 @@
       }
     ];
 
-    window.triggerTimer = function(seconds, label) {
-      if (window.timerInterval) clearInterval(window.timerInterval);
-      window.activeTimer = { seconds: seconds, label: label };
-      window.updateTimerUI();
-
-      window.timerInterval = setInterval(() => {
-        window.activeTimer.seconds--;
-        if (window.activeTimer.seconds <= 0) {
-          clearInterval(window.timerInterval);
-          window.activeTimer = null;
-          window.showToast("Timer Complete! 🔔 " + label + " is done!");
-          window.updateTimerUI();
-        } else {
-          window.updateTimerUI();
-        }
-      }, 1000);
-    };
-
     window.renderRecipes = function(items) {
       const grid = document.getElementById('recipeGrid');
       grid.innerHTML = items.map(r => `
@@ -1127,7 +1113,6 @@
       `;
       document.getElementById('recipeModal').style.display = 'flex';
       
-      // Update timer UI immediately in case a timer is already running
       window.updateTimerUI();
     };
 
