@@ -416,25 +416,26 @@
 
         <div class="divider">OR</div>
 
-        <input type="text" id="authName" class="vip-input" placeholder="Full Name (optional for sign up)..." style="margin-bottom: 0.5rem;">
-        <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;">
-        <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;">
-        <input type="password" id="authConfirmPass" class="vip-input" placeholder="Confirm password..." style="margin-bottom: 0.3rem;">
+        <!-- EMAIL AUTH FIELDS WITH ENTER KEY SUPPORT -->
+        <input type="text" id="authName" class="vip-input" placeholder="Full Name (optional for sign up)..." style="margin-bottom: 0.5rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authEmail').focus();}">
+        <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authPass').focus();}">
+        <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); handleEmailAuth();}">
+        <input type="password" id="authConfirmPass" class="vip-input" placeholder="Confirm password..." style="margin-bottom: 0.3rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); handleEmailAuth();}">
         <div id="passwordError" style="color: #FF453A; font-size: 0.85rem; font-weight: 600; text-align: left; margin-bottom: 0.8rem; display: none;">Passwords do not match. Please re-enter.</div>
 
         <button class="app-download-btn" style="width: 100%; margin-top: 0.5rem;" onclick="handleEmailAuth()">Log In / Create Account</button>
       </div>
 
-      <!-- Phone Auth View with Name Collection Step -->
+      <!-- Phone Auth View with Name Collection Step and Enter Key Support -->
       <div id="phoneAuthView" style="display: none;">
         <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your phone number:</p>
-        <input type="tel" id="authPhone" class="vip-input" placeholder="+1 (555) 000-0000" maxlength="17" style="margin-bottom: 1rem;" oninput="formatWebsitePhone(this)">
+        <input type="tel" id="authPhone" class="vip-input" placeholder="+1 (555) 000-0000" maxlength="17" style="margin-bottom: 1rem;" oninput="formatWebsitePhone(this)" onkeydown="if(event.key === 'Enter'){event.preventDefault(); sendSmsCode();}">
         <button class="app-download-btn" id="sendSmsBtn" style="width: 100%; margin-top: 0;" onclick="sendSmsCode()">Send SMS Code</button>
         
         <div id="smsCodeSection" style="display: none; margin-top: 1.5rem;">
           <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your name &amp; the 6-digit code:</p>
-          <input type="text" id="phoneUserName" class="vip-input" placeholder="Your Name (e.g. Sally)..." style="margin-bottom: 0.8rem;">
-          <input type="text" id="authCode" class="vip-input" placeholder="123456" style="margin-bottom: 1rem; text-align: center; letter-spacing: 4px; font-size: 1.2rem;">
+          <input type="text" id="phoneUserName" class="vip-input" placeholder="Your Name (e.g. Sally)..." style="margin-bottom: 0.8rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authCode').focus();}">
+          <input type="text" id="authCode" class="vip-input" placeholder="123456" style="margin-bottom: 1rem; text-align: center; letter-spacing: 4px; font-size: 1.2rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); verifySmsCode();}">
           <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="verifySmsCode()">Verify &amp; Log In</button>
         </div>
 
@@ -647,7 +648,6 @@
       const mainLoginBtn = document.getElementById('mainLoginBtn');
       
       if (user) {
-        // Updated priority: displayName first, then email, then phone number
         const nameToShow = user.displayName || user.email?.split('@')[0] || user.phoneNumber || "Member";
         mainLoginBtn.innerText = "Log Out (" + nameToShow + ")";
         mainLoginBtn.onclick = () => {
@@ -738,17 +738,16 @@
         document.getElementById('sendSmsBtn').style.display = 'none';
         document.getElementById('smsCodeSection').style.display = 'block';
         window.showToast("Code Sent 📱 Check your phone for the SMS verification code.");
+        setTimeout(() => document.getElementById('phoneUserName').focus(), 100);
       } catch (error) {
         window.showToast("Phone Login Error: " + error.message);
       }
     };
 
-    // Updated verifySmsCode with Name Validation and Instant UI Refresh
     window.verifySmsCode = async () => {
       const code = document.getElementById('authCode').value;
       const userName = document.getElementById('phoneUserName').value.trim();
       
-      // Stop the process if they leave the name blank
       if (!userName) {
         return window.showToast("Please enter your name to continue.");
       }
@@ -762,10 +761,8 @@
       try {
         const result = await window.confirmationResultObj.confirm(code);
         
-        // Wait to successfully update the Firebase profile with the name
         await updateProfile(result.user, { displayName: userName });
         
-        // Manually force the button to display the name instantly
         const mainLoginBtn = document.getElementById('mainLoginBtn');
         mainLoginBtn.innerText = "Log Out (" + userName + ")";
         
