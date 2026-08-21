@@ -335,7 +335,6 @@
 
   <!-- Baking Basics & Newsletter Section -->
   <section class="landing-extras">
-    <!-- Updated Baking Basics -->
     <div class="basics-section">
       <div class="category-tag reveal-on-scroll">BAKING BASICS</div>
       <h2 class="main-heading reveal-on-scroll" style="transition-delay: 80ms;">Little details, better bakes.</h2>
@@ -416,11 +415,11 @@
 
         <div class="divider">OR</div>
 
-        <!-- EMAIL AUTH FIELDS WITH ENTER KEY SUPPORT -->
-        <input type="text" id="authName" class="vip-input" placeholder="Full Name (optional for sign up)..." style="margin-bottom: 0.5rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authEmail').focus();}">
-        <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authPass').focus();}">
-        <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); handleEmailAuth();}">
-        <input type="password" id="authConfirmPass" class="vip-input" placeholder="Confirm password..." style="margin-bottom: 0.3rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); handleEmailAuth();}">
+        <!-- Autocomplete Off & Enter Key Support Added -->
+        <input type="text" id="authName" class="vip-input" placeholder="Full Name (optional for sign up)..." style="margin-bottom: 0.5rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authEmail').focus();}">
+        <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authPass').focus();}">
+        <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;" autocomplete="new-password" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); handleEmailAuth();}">
+        <input type="password" id="authConfirmPass" class="vip-input" placeholder="Confirm password..." style="margin-bottom: 0.3rem;" autocomplete="new-password" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); handleEmailAuth();}">
         <div id="passwordError" style="color: #FF453A; font-size: 0.85rem; font-weight: 600; text-align: left; margin-bottom: 0.8rem; display: none;">Passwords do not match. Please re-enter.</div>
 
         <button class="app-download-btn" style="width: 100%; margin-top: 0.5rem;" onclick="handleEmailAuth()">Log In / Create Account</button>
@@ -429,20 +428,19 @@
       <!-- Phone Auth View with Name Collection Step and Enter Key Support -->
       <div id="phoneAuthView" style="display: none;">
         <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your phone number:</p>
-        <input type="tel" id="authPhone" class="vip-input" placeholder="+1 (555) 000-0000" maxlength="17" style="margin-bottom: 1rem;" oninput="formatWebsitePhone(this)" onkeydown="if(event.key === 'Enter'){event.preventDefault(); sendSmsCode();}">
+        <input type="tel" id="authPhone" class="vip-input" placeholder="+1 (555) 000-0000" maxlength="17" style="margin-bottom: 1rem;" autocomplete="off" data-lpignore="true" oninput="formatWebsitePhone(this)" onkeydown="if(event.key === 'Enter'){event.preventDefault(); sendSmsCode();}">
         <button class="app-download-btn" id="sendSmsBtn" style="width: 100%; margin-top: 0;" onclick="sendSmsCode()">Send SMS Code</button>
         
         <div id="smsCodeSection" style="display: none; margin-top: 1.5rem;">
           <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your name &amp; the 6-digit code:</p>
-          <input type="text" id="phoneUserName" class="vip-input" placeholder="Your Name (e.g. Sally)..." style="margin-bottom: 0.8rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authCode').focus();}">
-          <input type="text" id="authCode" class="vip-input" placeholder="123456" style="margin-bottom: 1rem; text-align: center; letter-spacing: 4px; font-size: 1.2rem;" onkeydown="if(event.key === 'Enter'){event.preventDefault(); verifySmsCode();}">
+          <input type="text" id="phoneUserName" class="vip-input" placeholder="Your Name (e.g. Sally)..." style="margin-bottom: 0.8rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authCode').focus();}">
+          <input type="text" id="authCode" class="vip-input" placeholder="123456" style="margin-bottom: 1rem; text-align: center; letter-spacing: 4px; font-size: 1.2rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); verifySmsCode();}">
           <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="verifySmsCode()">Verify &amp; Log In</button>
         </div>
 
         <button class="login-btn" style="width: 100%; margin-top: 1.5rem; border: none; background: var(--pill-bg);" onclick="showMainAuthView()">← Back to Email / Social</button>
       </div>
       
-      <div id="recaptcha-container" style="margin-top: 10px;"></div>
     </div>
   </div>
 
@@ -536,6 +534,13 @@
     window.currentUser = null;
     window.activeTimer = null;
     window.timerInterval = null;
+
+    // CLICK OUTSIDE TO CLOSE FIX
+    window.addEventListener('click', function(event) {
+      if (event.target.classList.contains('modal-overlay')) {
+        event.target.style.display = 'none';
+      }
+    });
 
     window.showToast = function(message) {
       const toast = document.getElementById('customToast');
@@ -727,6 +732,14 @@
 
       if (!phoneNumber || phoneNumber.length < 11) {
         return window.showToast("Please enter a valid 10-digit phone number.");
+      }
+
+      // RECAPTCHA CRASH FIX: Inject container before Firebase looks for it
+      if (!document.getElementById('recaptcha-container')) {
+        const recaptchaDiv = document.createElement('div');
+        recaptchaDiv.setAttribute('id', 'recaptcha-container');
+        recaptchaDiv.style.marginTop = '10px';
+        document.getElementById('loginModal').querySelector('.vip-box').appendChild(recaptchaDiv);
       }
 
       if (!window.recaptchaVerifier) {
