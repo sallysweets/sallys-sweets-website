@@ -25,14 +25,20 @@
 
     html { scroll-behavior: smooth; }
 
-    /* --- BULLETPROOF CSS ANIMATIONS (No JavaScript Required) --- */
     .reveal-on-scroll {
-      animation: smoothFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      filter: blur(3px);
+      transform: scale(0.97);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                  filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform, filter;
     }
 
-    @keyframes smoothFadeIn {
-      0% { opacity: 0; filter: blur(3px); transform: translateY(10px); }
-      100% { opacity: 1; filter: blur(0); transform: translateY(0); }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
     }
 
     body {
@@ -237,29 +243,6 @@
     .basics-card .card-body {
       font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;
     }
-
-    .newsletter-section {
-      background-color: #442626; padding: 5rem 1.5rem;
-      text-align: center; color: #FAF7F2;
-    }
-    .newsletter-heading {
-      font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;
-      margin-bottom: 0.75rem; color: #FAF7F2; font-weight: 500;
-    }
-    .newsletter-sub {
-      font-size: 0.95rem; color: #D4C5BE; margin-bottom: 2rem;
-      max-width: 500px; margin-left: auto; margin-right: auto;
-    }
-    .social-icons-row {
-      display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem;
-    }
-    .icon-container {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1); display: flex;
-      justify-content: center; align-items: center; transition: background 0.2s;
-    }
-    .icon-container:hover { background: rgba(255, 255, 255, 0.2); }
-    .icon-container svg { width: 20px; height: 20px; fill: #FFF; }
   </style>
 </head>
 <body>
@@ -499,43 +482,21 @@
   <section class="landing-extras">
     <div class="basics-section">
       <div class="category-tag reveal-on-scroll">BAKING BASICS</div>
-      <h2 class="main-heading reveal-on-scroll">Little details, better bakes.</h2>
+      <h2 class="main-heading reveal-on-scroll" style="transition-delay: 80ms;">Little details, better bakes.</h2>
 
       <div class="cards-row">
-        <div class="basics-card reveal-on-scroll">
+        <div class="basics-card reveal-on-scroll" style="transition-delay: 150ms;">
           <h3 class="card-title">Brown butter is a lifestyle.</h3>
           <p class="card-body">Honestly, taking that extra 5 minutes to brown your butter is a total game changer. It makes everything taste incredibly rich and nutty.</p>
         </div>
-        <div class="basics-card reveal-on-scroll">
+        <div class="basics-card reveal-on-scroll" style="transition-delay: 300ms;">
           <h3 class="card-title">Room temp is not a suggestion.</h3>
           <p class="card-body">I used to skip this when I was rushing, but seriously, cold eggs and butter will completely ruin your dough's texture. Let them chill on the counter first!</p>
         </div>
-        <div class="basics-card reveal-on-scroll">
+        <div class="basics-card reveal-on-scroll" style="transition-delay: 450ms;">
           <h3 class="card-title">Trust the timer, but use your eyes.</h3>
           <p class="card-body">Every oven is completely different! Start checking a few minutes early, and let the golden edges be your final answer.</p>
         </div>
-      </div>
-    </div>
-
-    <!-- RESTORED NEWSLETTER SECTION -->
-    <div class="newsletter-section reveal-on-scroll">
-      <h2 class="newsletter-heading">A little sweetness in your inbox.</h2>
-      <p class="newsletter-sub">New recipes, baking notes, and seasonal favorites—sent when they're fresh.</p>
-
-      <div class="social-icons-row">
-        <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="icon-container">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-        </a>
-      </div>
-
-      <button class="signup-button" onclick="openLoginModal()">Send me sweets ✨</button>
-
-      <div class="app-store-container">
-        <p class="app-store-text">Take Sally's Sweets with you</p>
-        <button class="app-store-button" onclick="showToast('App coming soon to the App Store!')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" style="margin-right: 8px;"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.15 2.65.72 3.4 1.8-3.12 1.87-2.53 5.95.42 7.15-.75 1.86-1.6 3.42-2.47 4.06zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.3 2.31-1.89 4.13-3.74 4.25z"/></svg>
-          Download on the App Store
-        </button>
       </div>
     </div>
   </section>
@@ -775,129 +736,540 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // --- RESTORED RECIPE ARRAY ---
-    window.recipes = [
-      {
-        id: 1, category: 'brownies',
-        title: "Sally's Signature Brown Butter Espresso Brownies",
-        desc: 'Rich, ultra-fudgy brownies topped with Oreo cookies, paper-thin crinkle tops, and dark chocolate pools.',
-        time: '50 mins', yield: '16 squares', img: 'Signature Brownies Espresso Pic.jpg',
-        macros: { cal: 340, pro: 4, carb: 42, fat: 18 },
-        ingredientsUS: ['3/4 cup (1.5 sticks) unsalted butter, browned', '3/4 cup Dutch-process cocoa powder', '2 tsp instant espresso powder', '1 tsp pure vanilla extract', '3 large eggs (room temperature)', '1 3/4 cups light brown sugar', '3/4 cup + 2 tbsp all-purpose flour', '1/2 tsp sea salt', '3.5 oz chopped Ghirardelli semisweet chocolate bar', '1/2 cup dark chocolate chips', 'Whole Oreo cookies (for topping)'],
-        ingredientsM: ['170g unsalted butter, browned', '75g Dutch-process cocoa powder', '2 tsp instant espresso powder', '1 tsp vanilla extract', '3 large eggs', '350g light brown sugar', '94g all-purpose flour', '1/2 tsp sea salt', '100g chopped chocolate bar', '85g dark chocolate chips', 'Whole Oreo cookies (for topping)'],
-        steps: [
-          { text: 'Brown the butter in a saucepan over medium heat until nutty and golden brown milk solids appear at the bottom. Remove from heat.' },
-          { text: 'Let the browned butter cool until it is warm but not hot (around 120°F or 50°C), then whisk in the cocoa powder and instant espresso until smooth.' },
-          { text: 'In a stand mixer with a whisk attachment, beat the eggs and light brown sugar on medium-high speed for a full 4-5 minutes until pale, thick, and doubled in volume.', timer: 300, timerLabel: 'Whip Eggs & Sugar' },
-          { text: 'Using a rubber spatula, gently fold the warm cocoa-butter mixture into the whipped eggs until just combined. Do not overmix.' },
-          { text: 'Sift in the flour and salt, folding gently. Once mostly combined, fold in the chopped chocolate bar and chocolate chips.' },
-          { text: 'Pour the batter into a parchment-lined 8x8 metal pan. Press whole Oreo cookies evenly into the top of the batter.' },
-          { text: 'Bake at 350°F (175°C) for 45-50 minutes. Let cool completely in the pan before slicing into 16 equal squares.', timer: 2700, timerLabel: 'Bake Brownies' }
-        ]
-      },
-      {
-        id: 2, category: 'cookies',
-        title: "Sally's Chewy Chocolate Chip Cookies",
-        desc: 'Super chewy bakery-style cookies with a signature two-temperature bake technique for golden crispy edges.',
-        time: '35 mins (+ chilling)', yield: '12 cookies', img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
-        macros: { cal: 280, pro: 3, carb: 38, fat: 14 },
-        ingredientsUS: ['3/4 cup unsalted butter (softened)', '2/3 cup granulated sugar', '3/4 cup light brown sugar', '2 large eggs (room temperature)', '1 tsp pure vanilla extract', '2 2/3 cups all-purpose flour', '1 tsp baking soda', '1 tsp fine salt', '1.5 cups chocolate chips', 'Flaky sea salt (for finishing)'],
-        ingredientsM: ['190g unsalted butter', '130g granulated sugar', '165g light brown sugar', '2 large eggs', '1 tsp vanilla extract', '330g all-purpose flour', '1 tsp baking soda', '1 tsp fine salt', '250g chocolate chips', 'Flaky sea salt'],
-        steps: [
-          { text: 'In a large bowl, whisk the softened butter, granulated sugar, and light brown sugar vigorously for 2-3 minutes until smooth and slightly pale.' },
-          { text: 'Add the eggs one at a time, followed by the vanilla extract, whisking until the mixture is glossy and well emulsified.' },
-          { text: 'Switch to a rubber spatula. Fold in the flour, baking soda, and salt just until no dry streaks of flour remain.' },
-          { text: 'Portion the dough into large 3-tablespoon (approx 55g) balls. Place on a baking sheet and chill in the fridge for exactly 30 minutes.', timer: 1800, timerLabel: 'Chill Cookie Dough' },
-          { text: 'Place chilled dough balls on a parchment-lined baking sheet spaced 2 inches apart. Bake at 350°F (175°C) for 14 minutes.', timer: 840, timerLabel: 'Bake Cookies' },
-          { text: 'Increase oven temperature to 370°F (185°C) and bake for a final 2 minutes to crisp the edges. Top with flaky sea salt immediately after removing from the oven.', timer: 120, timerLabel: 'Crisp Edges' }
-        ]
-      },
-      {
-        id: 3, category: 'cookies',
-        title: "Sally's Brown Butter Chocolate Chip Cookies",
-        desc: 'Rich browned butter infused with bloomed espresso powder, packed with dark chocolate chunks and edible gold leaf.',
-        time: '30 mins (+ chilling)', yield: '14 cookies', img: 'Brown Butter Choc Chip.jpg',
-        macros: { cal: 310, pro: 3, carb: 40, fat: 16 },
-        ingredientsUS: ['3/4 cup unsalted butter, browned', '2 tsp instant espresso powder', '1 cup light brown sugar', '1/3 cup granulated sugar', '1 large egg + 1 egg yolk', '1 tbsp vanilla bean paste', '1 3/4 cups all-purpose flour', '1/2 tsp baking soda', '1/2 tsp salt', '1.5 cups dark chocolate chunks', 'Edible gold leaf flakes & flaky sea salt'],
-        ingredientsM: ['170g unsalted butter, browned', '2 tsp instant espresso powder', '200g light brown sugar', '65g granulated sugar', '1 large egg + 1 egg yolk', '1 tbsp vanilla bean paste', '220g all-purpose flour', '1/2 tsp baking soda', '1/2 tsp salt', '220g dark chocolate chunks', 'Edible gold leaf flakes & flaky sea salt'],
-        steps: [
-          { text: 'Melt butter in a saucepan over medium or medium-low heat until it foams, browns, and releases a nutty aroma. Remove from heat.' },
-          { text: 'Let the browned butter cool for 2-4 minutes, then stir in the instant espresso powder until dissolved.' },
-          { text: 'In a large bowl, vigorously whisk the granulated sugar, light brown sugar, and warm browned butter together for 1-2 minutes until glossy.' },
-          { text: 'Add the egg, egg yolk, and vanilla bean paste, whisking until the mixture is completely smooth and falls in ribbons off the whisk.' },
-          { text: 'Gently fold in the flour, baking soda, and salt with a spatula. Fold in the dark chocolate chunks until evenly distributed.' },
-          { text: 'Portion into 2.5-tablespoon (approx 45g) balls using a cookie scoop. Chill the dough in the fridge for 1 hour.', timer: 3600, timerLabel: 'Chill Dough' },
-          { text: 'Bake at 350°F (175°C) for 12 minutes on a parchment-lined baking sheet. Once slightly cooled, decorate with edible gold leaf flakes and flaky sea salt.', timer: 720, timerLabel: 'Bake Cookies' }
-        ]
-      },
-      {
-        id: 4, category: 'cookies',
-        title: 'Coffee Cake Cookies with Cardamom Icing',
-        desc: 'Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.',
-        time: '40 mins', yield: '12 large cookies', img: 'Coffee Cake Pic.jpg',
-        macros: { cal: 320, pro: 4, carb: 45, fat: 15 },
-        ingredientsUS: [
-          'Dough: 1/2 cup (113g) softened butter',
-          'Dough: 1/2 cup oil (100g)',
-          'Dough: 1 cup Light Brown Sugar (215g)',
-          'Dough: 1 Large Egg (room temp)',
-          'Dough: 1 tsp vanilla',
-          'Dough: 2 tsp cinnamon',
-          'Dough: 2 1/2 cups AP Flour (325g)',
-          'Dough: 1/2 tsp baking soda',
-          'Dough: 1/2 tsp baking powder',
-          'Dough: 1/2 tsp salt',
-          'Streusel: 1/4 cup butter (56g, softened)',
-          'Streusel: 1/4 cup Light Brown Sugar (54g)',
-          'Streusel: 1/3-1/2 cup AP Flour (46g-65g)',
-          'Streusel: 1/2 tsp Cinnamon',
-          'Streusel: Pinch of salt',
-          'Icing: 1/2 cup Powdered Sugar (56g)',
-          'Icing: 1 tbsp Cream Cheese (softened)',
-          'Icing: 1/4-1/2 tsp Cardamom Powder',
-          'Icing: 1/4 tsp Vanilla Extract',
-          'Icing: 1 tbsp milk'
-        ],
-        ingredientsM: [
-          'Dough: 113g softened butter',
-          'Dough: 100g oil',
-          'Dough: 215g Light Brown Sugar',
-          'Dough: 1 Large Egg',
-          'Dough: 1 tsp vanilla',
-          'Dough: 2 tsp cinnamon',
-          'Dough: 325g AP Flour',
-          'Dough: 1/2 tsp baking soda',
-          'Dough: 1/2 tsp baking powder',
-          'Dough: 1/2 tsp salt',
-          'Streusel: 56g butter, softened',
-          'Streusel: 54g Light Brown Sugar',
-          'Streusel: 46g-65g AP Flour',
-          'Streusel: 1/2 tsp Cinnamon',
-          'Streusel: Pinch of salt',
-          'Icing: 56g Powdered Sugar',
-          'Icing: 1 tbsp Cream Cheese, softened',
-          'Icing: 1/4-1/2 tsp Cardamom Powder',
-          'Icing: 1/4 tsp Vanilla Extract',
-          'Icing: 1 tbsp milk'
-        ],
-        steps: [
-          { text: 'Preheat the oven to 350°F. To make the dough, combine the butter, oil and brown sugar. Mix for a couple minutes until it is smooth. The mixture should be lighter in color and fluffy. Add the egg and vanilla and mix again. AddThat explains exactly what is happening—your header is visible and functional, but the rest of your website is stuck perfectly invisible! 
+    // --- DYNAMIC CART LOGIC ---
+    window.menuItems = [
+      { id: 'cc1', name: 'Classic Cookies (Half Dozen)', price: 25.00 },
+      { id: 'cc2', name: 'Classic Cookies (Dozen)', price: 48.00 },
+      { id: 'c1', name: 'Brown Butter Espresso Cookie', price: 4.50 },
+      { id: 'c2', name: 'Spiced Cardamom Crumb Cookie', price: 4.50 },
+      { id: 'c3', name: 'Golden Dubai Cookie', price: 6.00 },
+      { id: 'c4', name: 'Retro Cookie Dip Set', price: 8.50 },
+      { id: 'c5', name: 'Artisan Dunking Cookie Fries (Half-Dozen + Dip)', price: 10.00 },
+      { id: 'm1', name: 'Half-Dozen Macarons (Saffron Pistachio)', price: 16.00 },
+      { id: 'm2', name: 'Half-Dozen Macarons (Salted Caramel)', price: 16.00 },
+      { id: 'm3', name: 'Half-Dozen Macarons (Pistachio)', price: 16.00 },
+      { id: 'm4', name: 'Half-Dozen Macarons (Cookies & Cream)', price: 16.00 },
+      { id: 'm5', name: 'Half-Dozen Macarons (Cinnamon)', price: 16.00 },
+      { id: 'm6', name: 'Half-Dozen Macarons (Vanilla)', price: 16.00 },
+      { id: 'p1', name: 'Fluffy Cinnamon Rolls (Box of 4)', price: 22.00 },
+      { id: 'p2', name: 'Velvet Crinkle Brown Butter Brownie', price: 5.00 },
+      { id: 'p3', name: 'Signature Fudgy Brookie', price: 5.00 },
+      { id: 'd1', name: 'Cloud Nine Tiramisu Cup', price: 7.50, isCup: true },
+      { id: 'd2', name: 'Crispy Baklava Cheesecake Cup', price: 7.50, isCup: true },
+      { id: 'd3', name: 'Midnight Oreo Mousse Cup', price: 7.50, isCup: true },
+      { id: 'd4', name: 'Biscoff Dream Mousse Cup', price: 7.50, isCup: true },
+      { id: 'd5', name: 'Nutella Hazelnut Mousse Cup', price: 7.50, isCup: true },
+      { id: 'med1', name: 'Golden Crisp Cheese Kunafa', price: 8.00 },
+      { id: 'med2', name: 'Honey-Soaked Luqaimat Bites (Dozen)', price: 7.00 }
+    ];
 
-*   **The Cause:** Your campus Wi-Fi network (or a browser ad-blocker) is blocking the Firebase database link at the very top of your script. 
-*   **The Glitch:** Because the script crashes instantly when Firebase is blocked, it never reaches the animation trigger at the bottom of the file. Your website content is there, but the animation code is permanently keeping it stuck at 0% opacity.
+    window.currentCart = [];
 
-Instead of pasting the entire massive file again and risking another loading glitch, we are going to make your CSS bulletproof so the site always appears immediately, even if the university Wi-Fi drops the script.
+    window.addSelectedToCart = function() {
+      const select = document.getElementById('itemDropdown');
+      const qtyInput = document.getElementById('itemQty');
+      const id = select.value;
+      const qty = parseInt(qtyInput.value);
 
-**1. Scroll to the very top of your file into the `<style>` section.**
-**2. Find this exact block of code (around line 22):**
+      if(!id) return window.showToast("Please select an item first!");
+      if(qty < 1) return;
 
-```css
-    .reveal-on-scroll {
-      opacity: 0;
-      filter: blur(3px);
-      transform: scale(0.97);
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                  transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                  filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: opacity, transform, filter;
-    }
+      const item = window.menuItems.find(i => i.id === id);
+      
+      const existing = window.currentCart.find(i => i.id === id);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        window.currentCart.push({ ...item, qty });
+      }
+
+      select.value = "";
+      qtyInput.value = 1;
+      window.updateCartUI();
+    };
+
+    window.removeFromCart = function(index) {
+      window.currentCart.splice(index, 1);
+      window.updateCartUI();
+    };
+
+    window.updateCartUI = function() {
+      const display = document.getElementById('activeCartDisplay');
+      let total = 0;
+      let cupCount = 0;
+
+      if (window.currentCart.length === 0) {
+        display.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; font-style: italic; margin-top: 10px;">Your cart is empty.</p>';
+      } else {
+        display.innerHTML = window.currentCart.map((item, index) => {
+          let itemTotal = item.price * item.qty;
+          return `
+            <div class="cart-item-row">
+              <div class="cart-item-info">
+                <span class="cart-item-name">${item.qty}x ${item.name}</span>
+                <span class="cart-item-price">$${itemTotal.toFixed(2)}</span>
+              </div>
+              <button type="button" class="cart-item-remove" onclick="removeFromCart(${index})">Remove</button>
+            </div>
+          `;
+        }).join('');
+      }
+
+      window.currentCart.forEach(item => {
+        if (item.isCup) cupCount += item.qty;
+        else total += (item.price * item.qty);
+      });
+
+      // Apply Dessert Cup Flight Discount (4 for $27)
+      let flights = Math.floor(cupCount / 4);
+      let looseCups = cupCount % 4;
+      total += (flights * 27.00) + (looseCups * 7.50);
+
+      const formattedTotal = '$' + total.toFixed(2);
+      document.getElementById('cartTotalDisplay').innerText = formattedTotal;
+      
+      const submitBtn = document.getElementById('submitOrderBtn');
+      const minWarning = document.getElementById('minWarningDisplay');
+      
+      if (total === 0) {
+        submitBtn.disabled = true;
+        minWarning.style.display = 'block';
+      } else if (total < 20) {
+        submitBtn.disabled = true;
+        minWarning.style.display = 'block';
+      } else {
+        submitBtn.disabled = false;
+        minWarning.style.display = 'none';
+      }
+    };
+
+    window.handleOrderSubmit = async function(event) {
+      event.preventDefault();
+      
+      if (window.currentCart.length === 0) {
+        return window.showToast("Your cart is empty!");
+      }
+
+      let orderString = "";
+      window.currentCart.forEach(item => {
+        orderString += `${item.qty}x ${item.name}\n`;
+      });
+      
+      let totalAmount = document.getElementById('cartTotalDisplay').innerText;
+      
+      document.getElementById('hiddenOrderDetails').value = orderString + `\nCalculated Total: ${totalAmount}`;
+      document.getElementById('hiddenTotalAmount').value = totalAmount;
+      document.getElementById('displayTotalAmount').innerText = totalAmount;
+
+      const form = event.target;
+      const btn = document.getElementById('submitOrderBtn');
+      const originalText = btn.innerText;
+      btn.innerText = "Processing...";
+      
+      const formData = new FormData(form);
+      
+      try {
+        await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        document.getElementById('orderFormFields').style.display = 'none';
+        document.getElementById('paymentInstructions').style.display = 'block';
+        form.reset();
+        
+        window.currentCart = [];
+        window.updateCartUI();
+        btn.innerText = originalText;
+      } catch (error) {
+        window.showToast("Error submitting order. Please try again.");
+        btn.innerText = originalText;
+      }
+    };
+
+    // LIGHTBOX LOGIC FOR IMAGES
+    window.openLightbox = function(src) {
+      const lightbox = document.getElementById('imageLightbox');
+      const img = document.getElementById('lightboxImg');
+      img.src = src;
+      lightbox.style.display = 'flex';
+      setTimeout(() => lightbox.classList.add('show'), 10);
+    };
+    window.closeLightbox = function() {
+      const lightbox = document.getElementById('imageLightbox');
+      lightbox.classList.remove('show');
+      setTimeout(() => lightbox.style.display = 'none', 300);
+    };
+
+    window.addEventListener('click', function(event) {
+      if (event.target.classList.contains('modal-overlay')) {
+        event.target.style.display = 'none';
+      }
+    });
+
+    window.showToast = function(message) {
+      const toast = document.getElementById('customToast');
+      document.getElementById('toastMessage').innerText = message;
+      toast.style.display = 'flex';
+      setTimeout(() => { toast.style.display = 'none'; }, 4000);
+    };
+
+    let confirmCallback = null;
+    window.showCustomConfirm = function(message, onConfirm) {
+      document.getElementById('confirmText').innerText = message;
+      document.getElementById('customConfirmModal').style.display = 'flex';
+      confirmCallback = onConfirm;
+    };
+    window.closeConfirmModal = function(result) {
+      document.getElementById('customConfirmModal').style.display = 'none';
+      if (result && confirmCallback) confirmCallback();
+      confirmCallback = null;
+    };
+
+    window.updateTimerUI = function() {
+      const globalTimer = document.getElementById('globalTimer');
+      const globalTimerText = document.getElementById('globalTimerText');
+      const modalTimerContainer = document.getElementById('modalTimerContainer');
+
+      if (!window.activeTimer) {
+        if (globalTimer) globalTimer.style.display = 'none';
+        if (modalTimerContainer) modalTimerContainer.innerHTML = '';
+        return;
+      }
+
+      const m = Math.floor(window.activeTimer.seconds / 60).toString().padStart(2, '0');
+      const s = (window.activeTimer.seconds % 60).toString().padStart(2, '0');
+      const timeString = `${m}:${s}`;
+      const label = window.activeTimer.label;
+
+      if (globalTimer) {
+        globalTimer.style.display = 'flex';
+        globalTimerText.innerText = `${label} - ${timeString}`;
+      }
+
+      if (modalTimerContainer) {
+        modalTimerContainer.innerHTML = `
+          <div class="timer-widget">
+            <div>
+              <div class="timer-label">${label}</div>
+              <div class="timer-time">${timeString}</div>
+            </div>
+            <button class="timer-stop" onclick="stopTimer()">Stop</button>
+          </div>
+        `;
+      }
+    };
+
+    window.triggerTimer = function(seconds, label) {
+      if (window.timerInterval) clearInterval(window.timerInterval);
+      window.activeTimer = { seconds: seconds, label: label };
+      window.updateTimerUI();
+
+      window.timerInterval = setInterval(() => {
+        window.activeTimer.seconds--;
+        if (window.activeTimer.seconds <= 0) {
+          clearInterval(window.timerInterval);
+          window.activeTimer = null;
+          window.showToast("Timer Complete! 🔔 " + label + " is done!");
+          window.updateTimerUI();
+        } else {
+          window.updateTimerUI();
+        }
+      }, 1000);
+    };
+
+    window.stopTimer = function() {
+      if (window.timerInterval) clearInterval(window.timerInterval);
+      window.activeTimer = null;
+      window.updateTimerUI();
+    };
+
+    window.initScrollAnimations = function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          } else {
+            if (entry.boundingClientRect.top > 0) {
+              entry.target.classList.remove('is-visible');
+            }
+          }
+        });
+      }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      window.currentUser = user;
+      const mainLoginBtn = document.getElementById('mainLoginBtn');
+      if (user) {
+        const nameToShow = user.displayName || user.email?.split('@')[0] || user.phoneNumber || "Member";
+        mainLoginBtn.innerText = "Log Out (" + nameToShow + ")";
+        mainLoginBtn.onclick = () => {
+          window.showCustomConfirm("Are you sure you want to log out of your account?", () => {
+            signOut(auth).then(() => {
+              window.showToast("You have been signed out successfully.");
+            });
+          });
+        };
+        window.closeModal('loginModal');
+      } else {
+        mainLoginBtn.innerText = "Login / Sign Up";
+        mainLoginBtn.onclick = () => window.openLoginModal();
+      }
+      
+      if (window.recipes && document.getElementById('recipeGrid').innerHTML === "") {
+        window.renderRecipes(window.recipes);
+      }
+    });
+
+    window.showPhoneAuthView = function() {
+      document.getElementById('mainAuthView').style.display = 'none';
+      document.getElementById('phoneAuthView').style.display = 'block';
+    };
+    window.showMainAuthView = function() {
+      document.getElementById('phoneAuthView').style.display = 'none';
+      document.getElementById('mainAuthView').style.display = 'block';
+    };
+
+    window.formatWebsitePhone = function(input) {
+      const cleaned = input.value.replace(/\D/g, '');
+      if (cleaned.length === 0) { input.value = ''; return; }
+      let formatted = '+1 ';
+      const coreNumber = cleaned.startsWith('1') ? cleaned.substring(1) : cleaned;
+      if (coreNumber.length > 0) formatted += `(${coreNumber.substring(0, 3)}`;
+      if (coreNumber.length >= 4) formatted += `) ${coreNumber.substring(3, 6)}`;
+      if (coreNumber.length >= 7) formatted += `-${coreNumber.substring(6, 10)}`;
+      input.value = formatted;
+    };
+
+    window.handleGoogleLogin = async () => {
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const userName = result.user.displayName || "there";
+        window.showToast("Welcome back, " + userName + "! 🎉");
+        window.closeModal('loginModal');
+      } catch(error) {
+        window.showToast("Google Login Error: " + error.message);
+      }
+    };
+
+    window.handleAppleLogin = async () => {
+      const provider = new OAuthProvider('apple.com');
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const userName = result.user.displayName || "there";
+        window.showToast("Welcome back, " + userName + "! 🎉");
+        window.closeModal('loginModal');
+      } catch(error) {
+        window.showToast("Apple Login Error: " + error.message);
+      }
+    };
+
+    window.confirmationResultObj = null;
+
+    window.sendSmsCode = async () => {
+      let rawInput = document.getElementById('authPhone').value.trim();
+      let phoneNumber = rawInput.replace(/[\s-()]/g, '');
+      if (phoneNumber.length === 10 && !phoneNumber.startsWith('+')) phoneNumber = '+1' + phoneNumber;
+
+      if (!phoneNumber || phoneNumber.length < 11) {
+        return window.showToast("Please enter a valid 10-digit phone number.");
+      }
+
+      if (!document.getElementById('recaptcha-container')) {
+        const recaptchaDiv = document.createElement('div');
+        recaptchaDiv.setAttribute('id', 'recaptcha-container');
+        recaptchaDiv.style.marginTop = '10px';
+        document.getElementById('loginModal').querySelector('.vip-box').appendChild(recaptchaDiv);
+      }
+
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+      }
+
+      try {
+        window.confirmationResultObj = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+        document.getElementById('sendSmsBtn').style.display = 'none';
+        document.getElementById('smsCodeSection').style.display = 'block';
+        window.showToast("Code Sent 📱 Check your phone for the SMS verification code.");
+        setTimeout(() => document.getElementById('phoneUserName').focus(), 100);
+      } catch (error) {
+        window.showToast("Phone Login Error: " + error.message);
+      }
+    };
+
+    window.verifySmsCode = async () => {
+      const code = document.getElementById('authCode').value;
+      const userName = document.getElementById('phoneUserName').value.trim();
+      
+      if (!userName) {
+        return window.showToast("Please enter your name to continue.");
+      }
+      if (!code) {
+        return window.showToast("Please enter the 6-digit code.");
+      }
+      if (!window.confirmationResultObj) return;
+
+      try {
+        const result = await window.confirmationResultObj.confirm(code);
+        await updateProfile(result.user, { displayName: userName });
+        
+        const mainLoginBtn = document.getElementById('mainLoginBtn');
+        mainLoginBtn.innerText = "Log Out (" + userName + ")";
+        
+        window.showToast("Welcome back! 🎉 You are now signed in.");
+        window.closeModal('loginModal');
+      } catch (error) {
+        window.showToast("Invalid code: " + error.message);
+      }
+    };
+
+    window.handleEmailAuth = async () => {
+      const name = document.getElementById('authName').value.trim();
+      const email = document.getElementById('authEmail').value.trim();
+      const pass = document.getElementById('authPass').value.trim();
+      const confirmPass = document.getElementById('authConfirmPass').value.trim();
+      const errorDiv = document.getElementById('passwordError');
+
+      if (!email || !pass) return window.showToast("Please enter both an email and password.");
+      errorDiv.style.display = 'none';
+
+      try {
+        const userCred = await signInWithEmailAndPassword(auth, email, pass);
+        const displayName = userCred.user.displayName || email.split('@')[0];
+        window.showToast("Welcome back, " + displayName + "! 🎉");
+        window.closeModal('loginModal');
+      } catch(error) {
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential' || error.code === 'auth/invalid-login-credentials') {
+          if (confirmPass && pass !== confirmPass) {
+            errorDiv.style.display = 'block';
+            return;
+          }
+          try {
+            const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+            if (name) {
+              await updateProfile(userCred.user, { displayName: name });
+            }
+            await sendEmailVerification(userCred.user);
+            const finalName = name || email.split('@')[0];
+            window.showToast("Welcome to Sally's Sweets, " + finalName + "! 🎉 Check your email for verification.");
+            window.closeModal('loginModal');
+          } catch(createError) {
+            if (createError.code === 'auth/email-already-in-use') {
+              window.showToast("An account with this email already exists. Please log in instead.");
+            } else {
+              window.showToast("Error: " + createError.message);
+            }
+          }
+        } else if (error.code === 'auth/email-already-in-use') {
+          window.showToast("An account with this email already exists. Please log in instead.");
+        } else {
+          window.showToast("Login Error: " + error.message);
+        }
+      }
+    };
+
+    window.openRecipeModal = function(id) {
+      const recipe = window.recipes.find(r => r.id === id);
+      const modalBody = document.getElementById('modalBody');
+      const baseIngredients = window.activeUnitMode === 'US' ? recipe.ingredientsUS : recipe.ingredientsM;
+
+      let instructionsHtml = "";
+      if (!window.currentUser) {
+        instructionsHtml = `
+          <div class="locked-container">
+            <div class="blurred-text">
+              <ol style="padding-left: 1.5rem; line-height: 2;">
+                <li>Preheat oven and prepare your baking pans with parchment paper.</li>
+                <li>In a large bowl, whisk together the dry ingredients until fully combined.</li>
+                <li>Carefully fold the wet ingredients into the dry. Do not overmix the batter.</li>
+                <li>Bake for the specified time. Let cool completely before serving.</li>
+              </ol>
+            </div>
+            <div class="unlock-overlay">
+              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-brown); margin-bottom: 5px;">Unlock the Full Recipe</h3>
+              <p style="color: var(--text-main); font-weight: 500; font-size: 0.95rem; margin-bottom: 5px;">Sign in to view full instructions!</p>
+              <button class="app-download-btn" onclick="openLoginModal()">Login / Sign Up</button>
+            </div>
+          </div>
+        `;
+      } else {
+        instructionsHtml = `
+          <ol style="padding-left: 1.5rem; line-height: 2; margin-top: 1rem; color: var(--text-main);">
+            ${recipe.steps.map(stepObj => `
+              <li style="margin-bottom: 0.8rem;">
+                ${stepObj.text}
+                ${stepObj.timer ? `<br><button class="inline-timer-btn" onclick="triggerTimer(${stepObj.timer}, '${stepObj.timerLabel}')">⏱️ Start Timer</button>` : ''}
+              </li>
+            `).join('')}
+          </ol>
+        `;
+      }
+
+      modalBody.innerHTML = `
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; color: var(--accent-brown); margin-bottom: 0.25rem;">${recipe.title}</h2>
+        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Prep: ${recipe.time} &nbsp;|&nbsp; Yield: ${recipe.yield}</p>
+        
+        <div id="modalTimerContainer"></div>
+
+        <div class="macro-row" style="margin-top: 10px;">
+          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.cal} kcal</span>
+          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.pro}g Protein</span>
+          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.carb}g Carbs</span>
+          <span class="macro-pill" style="font-size: 0.9rem;">${recipe.macros.fat}g Fat</span>
+        </div>
+        
+        <div class="controls-row">
+          <div class="unit-switcher">
+            <span class="control-label">Units:</span>
+            <button class="btn-toggle ${window.activeUnitMode === 'US' ? 'active' : ''}" onclick="switchUnits(${recipe.id}, 'US')">US</button>
+            <button class="btn-toggle ${window.activeUnitMode === 'M' ? 'active' : ''}" onclick="switchUnits(${recipe.id}, 'M')">Metric</button>
+          </div>
+        </div>
+
+        <img src="${recipe.img}" style="width:100%; height:320px; object-fit:cover; border-radius:12px; margin: 1rem 0;" alt="${recipe.title}">
+        
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin: 1.5rem 0 0.5rem;">Ingredients</h3>
+        <ul class="ingredient-list">
+          ${baseIngredients.map(item => `<li><label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox"> <span>${item}</span></label></li>`).join('')}
+        </ul>
+
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin: 1.5rem 0 0.5rem;">Instructions</h3>
+        ${instructionsHtml}
+
+        <button class="login-btn" style="width: 100%; margin-top: 2rem; padding: 12px; background: var(--pill-bg); border: none;" onclick="closeModal('recipeModal')">← Back to Recipes</button>
+      `;
+      document.getElementById('recipeModal').style.display = 'flex';
+      
+      window.updateTimerUI();
+    };
+
+    window.switchUnits = function(recipeId, unit) {
+      window.activeUnitMode = unit;
+      window.openRecipeModal(recipeId);
+    };
+
+    window.openAboutModal = function() { document.getElementById('aboutModal').style.display = 'flex'; };
+    window.openRequestModal = function() {
+      document.getElementById('orderFormFields').style.display = 'block';
+      document.getElementById('paymentInstructions').style.display = 'none';
+      document.getElementById('requestModal').style.display = 'flex'; 
+    };
+    window.openLoginModal = function() { 
+      document.getElementById('recipeModal').style.display = 'none';
+      document.getElementById('loginModal').style.display = 'flex';
+      window.showMainAuthView();
+    };
+    window.closeModal = function(modalId) { document.getElementById(modalId).style.display = 'none'; };
+
+    // Initial renders
+    window.addEventListener('DOMContentLoaded', () => {
+      window.renderRecipes(window.recipes);
+      window.initScrollAnimations();
+    });
+  </script>
+</body>
+</html>
