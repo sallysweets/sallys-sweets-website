@@ -603,39 +603,57 @@
     </div>
   </div>
 
-  <!-- Pre-Order / Request Modal -->
+  <!-- Pre-Order / Request Modal WITH ZELLE AUTOMATION -->
   <div class="modal-overlay" id="requestModal">
     <div class="modal-content vip-box" style="text-align: left; max-width: 600px;">
       <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
-      <div style="text-align: center; margin-bottom: 1.2rem;">
-        <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS</span>
-        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Submit Your Order</h2>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">You will receive an email invoice shortly after submitting. Payment secures your spot!</p>
-      </div>
       
-      <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
-        <input type="hidden" name="_autoresponse" value="Thank you for ordering with Sally's Sweets! Your request has been received. You will receive an invoice shortly to finalize your spot.">
-        <input type="hidden" name="_subject" value="New Pre-Order or Inquiry from Sally's Sweets!">
-        <input type="hidden" name="_next" value="https://sweetsbysally.com/?submitted=true">
+      <!-- STEP 1: The Order Form -->
+      <div id="orderFormFields">
+        <div style="text-align: center; margin-bottom: 1.2rem;">
+          <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS</span>
+          <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Submit Your Order</h2>
+        </div>
+        
+        <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST" onsubmit="handleOrderSubmit(event)">
+          <input type="hidden" name="_autoresponse" value="Thank you for ordering with Sally's Sweets! Your request has been received. Please complete your Zelle payment to finalize your spot.">
+          <input type="hidden" name="_subject" value="New Pre-Order from Sally's Sweets!">
+          <input type="hidden" name="_captcha" value="false">
 
-        <label style="font-weight: 600; font-size: 0.9rem;">Order Type</label>
-        <select name="Type" class="vip-input" style="background: #FFF; margin-bottom: 1rem;" required>
-          <option value="Weekly Pre-Order (Saturday Pickup)">Weekly Pre-Order (Saturday Pickup)</option>
-          <option value="Custom Event Order">Custom Event Order</option>
-          <option value="General Inquiry">General Question</option>
-        </select>
+          <label style="font-weight: 600; font-size: 0.9rem;">Order Type</label>
+          <select name="Type" class="vip-input" style="background: #FFF; margin-bottom: 1rem;" required>
+            <option value="Weekly Pre-Order (Saturday Pickup)">Weekly Pre-Order (Saturday Pickup)</option>
+            <option value="Custom Event Order">Custom Event Order</option>
+            <option value="General Inquiry">General Question</option>
+          </select>
 
-        <label style="font-weight: 600; font-size: 0.9rem;">Your Name</label>
-        <input type="text" name="Name" class="vip-input" style="margin-bottom: 1rem;" required>
+          <label style="font-weight: 600; font-size: 0.9rem;">Your Name</label>
+          <input type="text" name="Name" class="vip-input" style="margin-bottom: 1rem;" required>
 
-        <label style="font-weight: 600; font-size: 0.9rem;">Your Email (For Invoice)</label>
-        <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
+          <label style="font-weight: 600; font-size: 0.9rem;">Your Email</label>
+          <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
 
-        <label style="font-weight: 600; font-size: 0.9rem;">Order Details (Quantities & Items)</label>
-        <textarea name="Message" class="vip-input" rows="4" style="margin-bottom: 1rem; resize: vertical;" placeholder="Example: 1x Dubai Cookie, 1x Tiramisu Cup..." required></textarea>
+          <label style="font-weight: 600; font-size: 0.9rem;">Order Details (Quantities & Items)</label>
+          <textarea name="Message" class="vip-input" rows="4" style="margin-bottom: 1rem; resize: vertical;" placeholder="Example: 1x Dubai Cookie, 1x Tiramisu Cup..." required></textarea>
 
-        <button type="submit" class="app-download-btn" style="width: 100%; margin-top: 0; background: var(--accent-gold);">Submit Order Request</button>
-      </form>
+          <button type="submit" class="app-download-btn" style="width: 100%; margin-top: 0; background: var(--accent-gold);">Submit Order & Checkout</button>
+        </form>
+      </div>
+
+      <!-- STEP 2: The Zelle Checkout Screen -->
+      <div id="paymentInstructions" style="display: none; text-align: center;">
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); margin-bottom: 10px;">Order Received! 🎉</h2>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">Your spot is officially reserved. To complete your pre-order, please submit your payment within 24 hours.</p>
+        
+        <div style="background: var(--pill-bg); padding: 20px; border-radius: 12px; margin-bottom: 1.5rem;">
+          <h3 style="color: var(--accent-brown); font-size: 1.2rem; margin-bottom: 10px;">Pay securely via Zelle</h3>
+          <p style="font-weight: 700; font-size: 1.1rem;">sallysweets.co@gmail.com</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;">Name on account: Sally Al Khayyat</p>
+        </div>
+
+        <button class="app-download-btn" style="width: 100%; background: var(--text-main);" onclick="closeModal('requestModal')">I Have Sent Payment</button>
+      </div>
+
     </div>
   </div>
 
@@ -709,13 +727,35 @@
       confirmCallback = null;
     };
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('submitted') === 'true') {
-        window.showToast("Thank you for your order! Please check your email for confirmation.");
-        window.history.replaceState(null, '', window.location.pathname);
+    // ZELLE AUTOMATED SUBMISSION LOGIC
+    window.handleOrderSubmit = async function(event) {
+      event.preventDefault();
+      const form = event.target;
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.innerText;
+      btn.innerText = "Processing...";
+      
+      const formData = new FormData(form);
+      
+      try {
+        await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
+        // Hide form, show Zelle checkout
+        document.getElementById('orderFormFields').style.display = 'none';
+        document.getElementById('paymentInstructions').style.display = 'block';
+        form.reset();
+        btn.innerText = originalText;
+      } catch (error) {
+        window.showToast("Error submitting order. Please try again.");
+        btn.innerText = originalText;
       }
-    });
+    };
 
     window.updateTimerUI = function() {
       const globalTimer = document.getElementById('globalTimer');
@@ -1296,7 +1336,12 @@
     };
 
     window.openAboutModal = function() { document.getElementById('aboutModal').style.display = 'flex'; };
-    window.openRequestModal = function() { document.getElementById('requestModal').style.display = 'flex'; };
+    window.openRequestModal = function() {
+      // Reset modal to show form just in case they are opening it again
+      document.getElementById('orderFormFields').style.display = 'block';
+      document.getElementById('paymentInstructions').style.display = 'none';
+      document.getElementById('requestModal').style.display = 'flex'; 
+    };
     window.openLoginModal = function() { 
       document.getElementById('recipeModal').style.display = 'none';
       document.getElementById('loginModal').style.display = 'flex';
