@@ -183,28 +183,13 @@
     .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; margin: auto; }
     .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--pill-bg); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
 
-    .controls-row { display: flex; justify-content: space-between; align-items: center; margin: 1rem 0; padding: 0.8rem 1rem; background: var(--pill-bg); border-radius: 12px; }
-    .unit-switcher { display: flex; align-items: center; gap: 0.4rem; }
-    .control-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
-    .btn-toggle { padding: 0.35rem 0.75rem; border-radius: 16px; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
-    .btn-toggle.active { background: var(--accent-brown); color: #FFF; border-color: var(--accent-brown); }
-
-    .ingredient-list { list-style: none; padding-left: 0; }
-    .ingredient-list li { margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
-
-    .inline-timer-btn { display: inline-flex; align-items: center; background: var(--accent-gold); color: #FFF; padding: 6px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; border: none; cursor: pointer; margin-left: 10px; box-shadow: 0 2px 8px rgba(200, 150, 62, 0.3); transition: transform 0.1s; }
-    .inline-timer-btn:active { transform: scale(0.95); }
-
-    .locked-container { position: relative; margin-top: 1.5rem; border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); }
-    .blurred-text { filter: blur(6px); opacity: 0.4; user-select: none; padding: 2rem; background: #FAFAFA; }
-    .unlock-overlay {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.95) 30%); padding: 2rem; text-align: center;
-    }
-
     .vip-box { text-align: center; padding: 1rem; }
     .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: #FFF; }
     
+    .app-download-btn { background: var(--accent-gold); color: #FFF; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(200, 150, 62, 0.3); transition: transform 0.2s; }
+    .app-download-btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .app-download-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+
     .social-btn { width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0.5rem; border: 1px solid var(--soft-border); background: #FFF; color: var(--text-main); }
     .social-btn:hover { background: var(--pill-bg); }
     .social-btn.apple { background: #000; color: #FFF; border: none; }
@@ -377,9 +362,9 @@
         <div class="menu-item">
           <div class="menu-item-header">
             <span class="menu-item-name">Artisan Dunking Cookie Fries</span>
-            <span class="menu-item-price">$8.00 / box</span>
+            <span class="menu-item-price">$10.00 / Half-Dz</span>
           </div>
-          <p class="menu-item-desc">Crisp golden cookie strips with a signature whipped dip. (Dunkaroo, Cinnamon Toast Crunch, Biscoff & more!)</p>
+          <p class="menu-item-desc">Crisp golden cookie strips served with your choice of signature whipped dip.</p>
         </div>
       </div>
 
@@ -398,7 +383,7 @@
         <div class="menu-item">
           <div class="menu-item-header">
             <span class="menu-item-name">Sally's Famous Fluffy Cinnamon Rolls</span>
-            <span class="menu-item-price">$6.00 / jumbo</span>
+            <span class="menu-item-price">$22.00 / Box of 4</span>
           </div>
           <p class="menu-item-desc">Cloud-like dough swirled with rich cinnamon sugar and velvety cream cheese glaze.</p>
         </div>
@@ -587,7 +572,7 @@
     </div>
   </div>
 
-  <!-- Pre-Order / Request Modal WITH DROP-DOWN CART CALCULATOR -->
+  <!-- Pre-Order / Request Modal WITH DROP-DOWN CART CALCULATOR & PHONE FIELD -->
   <div class="modal-overlay" id="requestModal">
     <div class="modal-content vip-box" style="text-align: left; max-width: 650px;">
       <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
@@ -603,24 +588,30 @@
           <input type="hidden" name="_autoresponse" value="Thank you for ordering with Sally's Sweets! Your request has been received. Please complete your payment to finalize your spot.">
           <input type="hidden" name="_subject" value="New Pre-Order from Sally's Sweets!">
           <input type="hidden" name="_captcha" value="false">
+          <!-- Hidden inputs to send order data and total calculation to your email -->
           <input type="hidden" name="Order_Details" id="hiddenOrderDetails">
           <input type="hidden" name="Total_Amount" id="hiddenTotalAmount">
 
+          <!-- WEEKLY MINIMUMS HIGHLIGHT BOX -->
           <div style="background: rgba(200, 150, 62, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 1.5rem; border: 1px solid rgba(200, 150, 62, 0.3);">
             <h3 style="color: var(--accent-brown); font-size: 1rem; margin-bottom: 8px;">Weekly Rules & Minimums</h3>
             <ul style="font-size: 0.85rem; color: var(--text-main); margin-left: 20px; line-height: 1.5;">
-              <li><strong>Macarons & Classic Cookies:</strong> Sold perfectly bundled by the half-dozen.</li>
+              <li><strong>Macarons, Cookie Fries & Cinnamon Rolls:</strong> Sold perfectly bundled by the half-dozen or box!</li>
               <li><strong>Dessert Cups:</strong> Every 4 cups automatically discounts to $27 at checkout.</li>
               <li><strong>Cart Minimum:</strong> $20 overall order minimum required to checkout.</li>
             </ul>
           </div>
 
           <label style="font-weight: 600; font-size: 0.9rem;">Your Name</label>
-          <input type="text" name="Name" class="vip-input" style="margin-bottom: 1rem;" required>
+          <input type="text" name="Name" id="orderName" class="vip-input" style="margin-bottom: 1rem;" required onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('orderPhone').focus();}">
+
+          <label style="font-weight: 600; font-size: 0.9rem;">Phone Number (For Pickup Updates)</label>
+          <input type="tel" name="Phone" id="orderPhone" class="vip-input" placeholder="(555) 000-0000" style="margin-bottom: 1rem;" required oninput="formatWebsitePhone(this)" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('orderEmail').focus();}">
 
           <label style="font-weight: 600; font-size: 0.9rem;">Your Email</label>
-          <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
+          <input type="email" name="Email" id="orderEmail" class="vip-input" style="margin-bottom: 1.5rem;" required onkeydown="if(event.key === 'Enter'){event.preventDefault();}">
 
+          <!-- CART BUILDER UI -->
           <label style="font-weight: 600; font-size: 0.9rem;">Add Items to Cart</label>
           <div class="cart-add-row">
             <select id="itemDropdown">
@@ -634,7 +625,7 @@
                 <option value="c2">Spiced Cardamom Crumb Cookie ($4.50)</option>
                 <option value="c3">Golden Dubai Cookie ($6.00)</option>
                 <option value="c4">Retro Cookie Dip Set ($8.50)</option>
-                <option value="c5">Artisan Dunking Cookie Fries ($8.00)</option>
+                <option value="c5">Artisan Dunking Cookie Fries - Half Dozen + Dip ($10.00)</option>
               </optgroup>
               <optgroup label="Macarons (Strictly 6 Per Flavor)">
                 <option value="m1">Half-Dozen Macarons - Saffron Pistachio ($16.00)</option>
@@ -645,7 +636,7 @@
                 <option value="m6">Half-Dozen Macarons - Vanilla ($16.00)</option>
               </optgroup>
               <optgroup label="Pastries & Bars">
-                <option value="p1">Fluffy Cinnamon Roll - Jumbo ($6.00)</option>
+                <option value="p1">Fluffy Cinnamon Rolls - Box of 4 ($22.00)</option>
                 <option value="p2">Velvet Crinkle Brown Butter Brownie ($5.00)</option>
                 <option value="p3">Signature Fudgy Brookie ($5.00)</option>
               </optgroup>
@@ -665,7 +656,9 @@
             <button type="button" onclick="addSelectedToCart()">Add</button>
           </div>
 
+          <!-- Active Cart Display -->
           <div class="active-cart-list" id="activeCartDisplay">
+            <!-- Items appear here -->
             <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; font-style: italic; margin-top: 10px;">Your cart is empty.</p>
           </div>
 
@@ -683,7 +676,7 @@
       <!-- STEP 2: The Zelle & Venmo Checkout Screen -->
       <div id="paymentInstructions" style="display: none; text-align: center;">
         <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); margin-bottom: 10px;">Order Received! 🎉</h2>
-        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">Your spot is officially reserved. To complete your pre-order, please scan or use the details below to submit your payment within 24 hours.</p>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">Your spot is officially reserved. Please scan or use the details below to submit your payment within 24 hours.</p>
         
         <div style="background: var(--bg-main); padding: 15px; border-radius: 12px; margin-bottom: 1.5rem; border: 2px dashed var(--accent-gold);">
           <span style="font-weight: 600; font-size: 1.1rem; color: var(--text-main);">Amount Due: </span>
@@ -692,6 +685,7 @@
 
         <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem;">
           
+          <!-- Zelle Card -->
           <div style="background: var(--pill-bg); padding: 1.5rem; border-radius: 12px; flex: 1; min-width: 240px; text-align: center; border: 1px solid var(--soft-border);">
             <p style="font-weight: 800; color: #7451eb; font-size: 1.3rem; margin-bottom: 5px;">🟣 Zelle</p>
             <img src="sweetszelle.jpg" alt="Zelle QR Code" style="width: 150px; height: 150px; border-radius: 8px; margin: 10px auto; display: block; border: 4px solid white;">
@@ -699,6 +693,7 @@
             <p style="font-size: 0.85rem; color: var(--text-muted);">Name: Sally Al Khayyat</p>
           </div>
 
+          <!-- Venmo Card -->
           <div style="background: var(--pill-bg); padding: 1.5rem; border-radius: 12px; flex: 1; min-width: 240px; text-align: center; border: 1px solid var(--soft-border);">
             <p style="font-weight: 800; color: #008CFF; font-size: 1.3rem; margin-bottom: 5px;">🔵 Venmo</p>
             <img src="Sweetsvenmo.jpg" alt="Venmo QR Code" style="width: 150px; height: 150px; border-radius: 8px; margin: 10px auto; display: block; border: 4px solid white;">
@@ -741,200 +736,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // --- RESTORED RECIPE ARRAY ---
-    window.recipes = [
-      {
-        id: 1, category: 'brownies',
-        title: "Sally's Signature Brown Butter Espresso Brownies",
-        desc: 'Rich, ultra-fudgy brownies topped with Oreo cookies, paper-thin crinkle tops, and dark chocolate pools.',
-        time: '50 mins', yield: '16 squares', img: 'Signature Brownies Espresso Pic.jpg',
-        macros: { cal: 340, pro: 4, carb: 42, fat: 18 },
-        ingredientsUS: ['3/4 cup (1.5 sticks) unsalted butter, browned', '3/4 cup Dutch-process cocoa powder', '2 tsp instant espresso powder', '1 tsp pure vanilla extract', '3 large eggs (room temperature)', '1 3/4 cups light brown sugar', '3/4 cup + 2 tbsp all-purpose flour', '1/2 tsp sea salt', '3.5 oz chopped Ghirardelli semisweet chocolate bar', '1/2 cup dark chocolate chips', 'Whole Oreo cookies (for topping)'],
-        ingredientsM: ['170g unsalted butter, browned', '75g Dutch-process cocoa powder', '2 tsp instant espresso powder', '1 tsp vanilla extract', '3 large eggs', '350g light brown sugar', '94g all-purpose flour', '1/2 tsp sea salt', '100g chopped chocolate bar', '85g dark chocolate chips', 'Whole Oreo cookies (for topping)'],
-        steps: [
-          { text: 'Brown the butter in a saucepan over medium heat until nutty and golden brown milk solids appear at the bottom. Remove from heat.' },
-          { text: 'Let the browned butter cool until it is warm but not hot (around 120°F or 50°C), then whisk in the cocoa powder and instant espresso until smooth.' },
-          { text: 'In a stand mixer with a whisk attachment, beat the eggs and light brown sugar on medium-high speed for a full 4-5 minutes until pale, thick, and doubled in volume.', timer: 300, timerLabel: 'Whip Eggs & Sugar' },
-          { text: 'Using a rubber spatula, gently fold the warm cocoa-butter mixture into the whipped eggs until just combined. Do not overmix.' },
-          { text: 'Sift in the flour and salt, folding gently. Once mostly combined, fold in the chopped chocolate bar and chocolate chips.' },
-          { text: 'Pour the batter into a parchment-lined 8x8 metal pan. Press whole Oreo cookies evenly into the top of the batter.' },
-          { text: 'Bake at 350°F (175°C) for 45-50 minutes. Let cool completely in the pan before slicing into 16 equal squares.', timer: 2700, timerLabel: 'Bake Brownies' }
-        ]
-      },
-      {
-        id: 2, category: 'cookies',
-        title: "Sally's Chewy Chocolate Chip Cookies",
-        desc: 'Super chewy bakery-style cookies with a signature two-temperature bake technique for golden crispy edges.',
-        time: '35 mins (+ chilling)', yield: '12 cookies', img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
-        macros: { cal: 280, pro: 3, carb: 38, fat: 14 },
-        ingredientsUS: ['3/4 cup unsalted butter (softened)', '2/3 cup granulated sugar', '3/4 cup light brown sugar', '2 large eggs (room temperature)', '1 tsp pure vanilla extract', '2 2/3 cups all-purpose flour', '1 tsp baking soda', '1 tsp fine salt', '1.5 cups chocolate chips', 'Flaky sea salt (for finishing)'],
-        ingredientsM: ['190g unsalted butter', '130g granulated sugar', '165g light brown sugar', '2 large eggs', '1 tsp vanilla extract', '330g all-purpose flour', '1 tsp baking soda', '1 tsp fine salt', '250g chocolate chips', 'Flaky sea salt'],
-        steps: [
-          { text: 'In a large bowl, whisk the softened butter, granulated sugar, and light brown sugar vigorously for 2-3 minutes until smooth and slightly pale.' },
-          { text: 'Add the eggs one at a time, followed by the vanilla extract, whisking until the mixture is glossy and well emulsified.' },
-          { text: 'Switch to a rubber spatula. Fold in the flour, baking soda, and salt just until no dry streaks of flour remain.' },
-          { text: 'Portion the dough into large 3-tablespoon (approx 55g) balls. Place on a baking sheet and chill in the fridge for exactly 30 minutes.', timer: 1800, timerLabel: 'Chill Cookie Dough' },
-          { text: 'Place chilled dough balls on a parchment-lined baking sheet spaced 2 inches apart. Bake at 350°F (175°C) for 14 minutes.', timer: 840, timerLabel: 'Bake Cookies' },
-          { text: 'Increase oven temperature to 370°F (185°C) and bake for a final 2 minutes to crisp the edges. Top with flaky sea salt immediately after removing from the oven.', timer: 120, timerLabel: 'Crisp Edges' }
-        ]
-      },
-      {
-        id: 3, category: 'cookies',
-        title: "Sally's Brown Butter Chocolate Chip Cookies",
-        desc: 'Rich browned butter infused with bloomed espresso powder, packed with dark chocolate chunks and edible gold leaf.',
-        time: '30 mins (+ chilling)', yield: '14 cookies', img: 'Brown Butter Choc Chip.jpg',
-        macros: { cal: 310, pro: 3, carb: 40, fat: 16 },
-        ingredientsUS: ['3/4 cup unsalted butter, browned', '2 tsp instant espresso powder', '1 cup light brown sugar', '1/3 cup granulated sugar', '1 large egg + 1 egg yolk', '1 tbsp vanilla bean paste', '1 3/4 cups all-purpose flour', '1/2 tsp baking soda', '1/2 tsp salt', '1.5 cups dark chocolate chunks', 'Edible gold leaf flakes & flaky sea salt'],
-        ingredientsM: ['170g unsalted butter, browned', '2 tsp instant espresso powder', '200g light brown sugar', '65g granulated sugar', '1 large egg + 1 egg yolk', '1 tbsp vanilla bean paste', '220g all-purpose flour', '1/2 tsp baking soda', '1/2 tsp salt', '220g dark chocolate chunks', 'Edible gold leaf flakes & flaky sea salt'],
-        steps: [
-          { text: 'Melt butter in a saucepan over medium or medium-low heat until it foams, browns, and releases a nutty aroma. Remove from heat.' },
-          { text: 'Let the browned butter cool for 2-4 minutes, then stir in the instant espresso powder until dissolved.' },
-          { text: 'In a large bowl, vigorously whisk the granulated sugar, light brown sugar, and warm browned butter together for 1-2 minutes until glossy.' },
-          { text: 'Add the egg, egg yolk, and vanilla bean paste, whisking until the mixture is completely smooth and falls in ribbons off the whisk.' },
-          { text: 'Gently fold in the flour, baking soda, and salt with a spatula. Fold in the dark chocolate chunks until evenly distributed.' },
-          { text: 'Portion into 2.5-tablespoon (approx 45g) balls using a cookie scoop. Chill the dough in the fridge for 1 hour.', timer: 3600, timerLabel: 'Chill Dough' },
-          { text: 'Bake at 350°F (175°C) for 12 minutes on a parchment-lined baking sheet. Once slightly cooled, decorate with edible gold leaf flakes and flaky sea salt.', timer: 720, timerLabel: 'Bake Cookies' }
-        ]
-      },
-      {
-        id: 4, category: 'cookies',
-        title: 'Coffee Cake Cookies with Cardamom Icing',
-        desc: 'Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.',
-        time: '40 mins', yield: '12 large cookies', img: 'Coffee Cake Pic.jpg',
-        macros: { cal: 320, pro: 4, carb: 45, fat: 15 },
-        ingredientsUS: [
-          'Dough: 1/2 cup (113g) softened butter',
-          'Dough: 1/2 cup oil (100g)',
-          'Dough: 1 cup Light Brown Sugar (215g)',
-          'Dough: 1 Large Egg (room temp)',
-          'Dough: 1 tsp vanilla',
-          'Dough: 2 tsp cinnamon',
-          'Dough: 2 1/2 cups AP Flour (325g)',
-          'Dough: 1/2 tsp baking soda',
-          'Dough: 1/2 tsp baking powder',
-          'Dough: 1/2 tsp salt',
-          'Streusel: 1/4 cup butter (56g, softened)',
-          'Streusel: 1/4 cup Light Brown Sugar (54g)',
-          'Streusel: 1/3-1/2 cup AP Flour (46g-65g)',
-          'Streusel: 1/2 tsp Cinnamon',
-          'Streusel: Pinch of salt',
-          'Icing: 1/2 cup Powdered Sugar (56g)',
-          'Icing: 1 tbsp Cream Cheese (softened)',
-          'Icing: 1/4-1/2 tsp Cardamom Powder',
-          'Icing: 1/4 tsp Vanilla Extract',
-          'Icing: 1 tbsp milk'
-        ],
-        ingredientsM: [
-          'Dough: 113g softened butter',
-          'Dough: 100g oil',
-          'Dough: 215g Light Brown Sugar',
-          'Dough: 1 Large Egg',
-          'Dough: 1 tsp vanilla',
-          'Dough: 2 tsp cinnamon',
-          'Dough: 325g AP Flour',
-          'Dough: 1/2 tsp baking soda',
-          'Dough: 1/2 tsp baking powder',
-          'Dough: 1/2 tsp salt',
-          'Streusel: 56g butter, softened',
-          'Streusel: 54g Light Brown Sugar',
-          'Streusel: 46g-65g AP Flour',
-          'Streusel: 1/2 tsp Cinnamon',
-          'Streusel: Pinch of salt',
-          'Icing: 56g Powdered Sugar',
-          'Icing: 1 tbsp Cream Cheese, softened',
-          'Icing: 1/4-1/2 tsp Cardamom Powder',
-          'Icing: 1/4 tsp Vanilla Extract',
-          'Icing: 1 tbsp milk'
-        ],
-        steps: [
-          { text: 'Preheat the oven to 350°F. To make the dough, combine the butter, oil and brown sugar. Mix for a couple minutes until it is smooth. The mixture should be lighter in color and fluffy. Add the egg and vanilla and mix again. Add the remaining ingredients and mix until just combined.' },
-          { text: 'To make the streusel, combine all the ingredients in a bowl and mix with a spoon or your hand. Start with 1/3 cup of flour. The mixture should stick together, but should also crumble when you run it through your fingers. If it isn\'t crumbling, add 1 tbsp additions of flour until it crumbles.' },
-          { text: 'Using a large (1/4 cup) cookie scoop, scoop a ball of dough onto a lined baking sheet. Using the back of your cookie scoop or your fingers, make an indent on the top of the dough. Sprinkle a couple tablespoons of the streusel on the top of the cookie, into the indent.' },
-          { text: 'Bake the cookies at 350 for 18-20 minutes, it took me 19 minutes to bake first time. While they are baking, make the icing. Combine the 1/2 cup powdered sugar and 1 tbsp cream cheese together until well combined, then add 1 tbsp milk, and 1/4 tsp vanilla in a small bowl and whisk until it\'s smooth and runny. After well combined add as much cardamom until it tastes good. Once the cookies have cooled slightly, drizzle on lots of icing! Enjoy!', timer: 1140, timerLabel: 'Bake Cookies' }
-        ]
-      },
-      {
-        id: 5, category: 'macarons',
-        title: "Cookies 'n Cream Oreos Macarons",
-        desc: 'Delicate Swiss meringue macaron shells with scraped Oreo crumbs, filled with cookies & cream buttercream or white chocolate ganache.',
-        time: '1 hr 15 mins', yield: '18 macarons', img: 'Cookie n Cream Macaron Pic.jpg',
-        macros: { cal: 150, pro: 3, carb: 22, fat: 7 },
-        ingredientsUS: [
-          'For Shells: 100g egg whites',
-          '100g sugar',
-          '100g almond flour',
-          '100g powdered sugar',
-          '20g crushed Oreo cookie shells (no cream)',
-          '1/4 tsp cream of tartar',
-          'Option 1 Buttercream: 1/2 cup butter',
-          '1/2 cup powdered sugar',
-          '5 ground Oreos',
-          '1 tsp vanilla',
-          'Option 2 Ganache: 100g white chocolate',
-          '50g heavy whipping cream',
-          '3 crushed Oreos'
-        ],
-        ingredientsM: [
-          'For Shells: 100g egg whites',
-          '100g sugar',
-          '100g almond flour',
-          '100g powdered sugar',
-          '20g crushed Oreo shells',
-          '1g cream of tartar',
-          'Option 1 Buttercream: 113g butter',
-          '50g powdered sugar',
-          '5 ground Oreos',
-          '1 tsp vanilla',
-          'Option 2 Ganache: 100g white chocolate',
-          '50g heavy cream',
-          '3 crushed Oreos'
-        ],
-        steps: [
-          { text: 'Carefully scrape all the cream filling off the Oreos. Pulse the dry cookie wafers in a food processor until they are fine powder crumbs.' },
-          { text: 'Sift the almond flour, powdered sugar, and Oreo crumbs through a fine-mesh sieve twice. Discard any large chunks left behind.' },
-          { text: 'In a heat-proof bowl set over a pot of simmering water (double boiler), whisk the egg whites and granulated sugar until the sugar is completely dissolved (test by rubbing between your fingers).' },
-          { text: 'Transfer to a stand mixer and whip on medium-high speed until you achieve stiff, glossy peaks that stand straight up.', timer: 300, timerLabel: 'Whip Meringue' },
-          { text: 'Add the sifted dry ingredients into the meringue. Gently fold with a spatula by scraping the bowl edges and pressing through the center until the batter flows off the spatula in a continuous thick ribbon (figure-8 test).' },
-          { text: 'Transfer to a piping bag with a medium round tip. Pipe 1.5-inch circles onto a silicone mat. Tap the tray firmly on the counter 3 times to release air bubbles. Let rest at room temperature for 30-40 minutes until a dry skin forms (it should not stick to your finger when lightly touched).', timer: 2100, timerLabel: 'Rest Macaron Shells' },
-          { text: 'Bake at 325°F (160°C) for 15 minutes. Let cool completely before filling with your choice of buttercream or ganache.', timer: 900, timerLabel: 'Bake Shells' }
-        ]
-      },
-      {
-        id: 6, category: 'creami',
-        title: 'High-Protein Dark Chocolate Oreo Creami',
-        desc: 'A thick, ultra-creamy protein pint packed with rich cocoa and crunchy Oreo cookies—without the guilt!',
-        time: '5 mins prep (+ 24hr freeze)', yield: '1 Ninja Creami pint', img: 'oreo-creami.jpg',
-        macros: { cal: 250, pro: 26, carb: 18, fat: 6 },
-        ingredientsUS: [
-          '1.5 cups Fairlife milk',
-          '2 tbsp Dutch-process cocoa powder',
-          '3 tbsp monk fruit sweetener',
-          '1/4 tsp xanthan gum',
-          '1/2 tsp vanilla bean paste',
-          'Pinch of salt',
-          'Mix-in: 3 Oreo cookies (cream removed)'
-        ],
-        ingredientsM: [
-          '360ml Fairlife milk',
-          '15g Dutch-process cocoa powder',
-          '35g monk fruit sweetener',
-          '1g xanthan gum',
-          '1/2 tsp vanilla bean paste',
-          'Pinch of salt',
-          'Mix-in: 3 Oreo cookies'
-        ],
-        steps: [
-          { text: 'Pour the Fairlife milk into your Ninja Creami pint container. Add the cocoa powder, monk fruit sweetener, xanthan gum, vanilla bean paste, and salt.' },
-          { text: 'Use a milk frother or small whisk to vigorously blend the ingredients directly in the pint until completely smooth and no cocoa lumps remain.' },
-          { text: 'Place the lid on the pint and freeze on a completely level surface in your freezer for a full 24 hours.' },
-          { text: 'Remove from the freezer and run the sides of the pint under hot tap water for 60 seconds to loosen the icy edges.' },
-          { text: 'Place the pint in the Ninja Creami machine and process on the LITE ICE CREAM setting.' },
-          { text: 'Remove the pint, scrape down the icy sides with a butter knife, and if the mixture looks powdery, run it on the RESPIN setting until perfectly creamy.' },
-          { text: 'Use a spoon to hollow out a 1-inch hole in the center of the ice cream. Add the crushed cream-less Oreos into the hole and run the MIX-IN setting.' }
-        ]
-      }
-    ];
-
     // --- DYNAMIC CART LOGIC ---
     window.menuItems = [
       { id: 'cc1', name: 'Classic Cookies (Half Dozen)', price: 25.00 },
@@ -943,14 +744,14 @@
       { id: 'c2', name: 'Spiced Cardamom Crumb Cookie', price: 4.50 },
       { id: 'c3', name: 'Golden Dubai Cookie', price: 6.00 },
       { id: 'c4', name: 'Retro Cookie Dip Set', price: 8.50 },
-      { id: 'c5', name: 'Artisan Dunking Cookie Fries', price: 8.00 },
+      { id: 'c5', name: 'Artisan Dunking Cookie Fries (Half-Dozen + Dip)', price: 10.00 },
       { id: 'm1', name: 'Half-Dozen Macarons (Saffron Pistachio)', price: 16.00 },
       { id: 'm2', name: 'Half-Dozen Macarons (Salted Caramel)', price: 16.00 },
       { id: 'm3', name: 'Half-Dozen Macarons (Pistachio)', price: 16.00 },
       { id: 'm4', name: 'Half-Dozen Macarons (Cookies & Cream)', price: 16.00 },
       { id: 'm5', name: 'Half-Dozen Macarons (Cinnamon)', price: 16.00 },
       { id: 'm6', name: 'Half-Dozen Macarons (Vanilla)', price: 16.00 },
-      { id: 'p1', name: 'Fluffy Cinnamon Roll (Jumbo)', price: 6.00 },
+      { id: 'p1', name: 'Fluffy Cinnamon Rolls (Box of 4)', price: 22.00 },
       { id: 'p2', name: 'Velvet Crinkle Brown Butter Brownie', price: 5.00 },
       { id: 'p3', name: 'Signature Fudgy Brookie', price: 5.00 },
       { id: 'd1', name: 'Cloud Nine Tiramisu Cup', price: 7.50, isCup: true },
@@ -1019,6 +820,7 @@
         else total += (item.price * item.qty);
       });
 
+      // Apply Dessert Cup Flight Discount (4 for $27)
       let flights = Math.floor(cupCount / 4);
       let looseCups = cupCount % 4;
       total += (flights * 27.00) + (looseCups * 7.50);
@@ -1086,6 +888,7 @@
       }
     };
 
+    // LIGHTBOX LOGIC FOR IMAGES
     window.openLightbox = function(src) {
       const lightbox = document.getElementById('imageLightbox');
       const img = document.getElementById('lightboxImg');
@@ -1216,7 +1019,6 @@
         mainLoginBtn.onclick = () => window.openLoginModal();
       }
       
-      // Safety check: ensure recipes render even if auth state changes
       if (window.recipes && document.getElementById('recipeGrid').innerHTML === "") {
         window.renderRecipes(window.recipes);
       }
@@ -1368,50 +1170,6 @@
           window.showToast("Login Error: " + error.message);
         }
       }
-    };
-
-    window.renderRecipes = function(items) {
-      const grid = document.getElementById('recipeGrid');
-      grid.innerHTML = items.map(r => `
-        <div class="recipe-card reveal-on-scroll" onclick="openRecipeModal(${r.id})">
-          <div class="card-img-wrapper">
-            <span class="card-tag">${r.category}</span>
-            <img src="${r.img}" alt="${r.title}">
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">${r.title}</h3>
-            <p class="card-desc">${r.desc}</p>
-            <div class="macro-row">
-              <span class="macro-pill">${r.macros.cal} kcal</span>
-              <span class="macro-pill">${r.macros.pro}g Protein</span>
-              <span class="macro-pill">${r.macros.carb}g Carbs</span>
-              <span class="macro-pill">${r.macros.fat}g Fat</span>
-            </div>
-            <div class="card-meta">
-              <span>Prep: ${r.time}</span>
-              <span>Yield: ${r.yield}</span>
-            </div>
-          </div>
-        </div>
-      `).join('');
-      window.initScrollAnimations();
-    };
-
-    window.handleSearch = function() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = window.recipes.filter(r => {
-        const matchesCat = window.currentCategory === 'all' || r.category === window.currentCategory;
-        const matchesSearch = r.title.toLowerCase().includes(query) || r.desc.toLowerCase().includes(query);
-        return matchesCat && matchesSearch;
-      });
-      window.renderRecipes(filtered);
-    };
-
-    window.filterRecipes = function(cat) {
-      window.currentCategory = cat;
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      window.handleSearch();
     };
 
     window.openRecipeModal = function(id) {
