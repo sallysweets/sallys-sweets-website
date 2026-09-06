@@ -603,9 +603,9 @@
     </div>
   </div>
 
-  <!-- Pre-Order / Request Modal WITH ZELLE AUTOMATION -->
+  <!-- Pre-Order / Request Modal WITH SIDE-BY-SIDE QR CHECKOUT -->
   <div class="modal-overlay" id="requestModal">
-    <div class="modal-content vip-box" style="text-align: left; max-width: 600px;">
+    <div class="modal-content vip-box" style="text-align: left; max-width: 750px;">
       <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
       
       <!-- STEP 1: The Order Form -->
@@ -616,9 +616,19 @@
         </div>
         
         <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST" onsubmit="handleOrderSubmit(event)">
-          <input type="hidden" name="_autoresponse" value="Thank you for ordering with Sally's Sweets! Your request has been received. Please complete your Zelle payment to finalize your spot.">
+          <input type="hidden" name="_autoresponse" value="Thank you for ordering with Sally's Sweets! Your request has been received. Please complete your payment to finalize your spot.">
           <input type="hidden" name="_subject" value="New Pre-Order from Sally's Sweets!">
           <input type="hidden" name="_captcha" value="false">
+
+          <!-- WEEKLY MINIMUMS HIGHLIGHT BOX -->
+          <div style="background: rgba(200, 150, 62, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 1.5rem; border: 1px solid rgba(200, 150, 62, 0.3);">
+            <h3 style="color: var(--accent-brown); font-size: 1rem; margin-bottom: 8px;">Weekly Order Minimums</h3>
+            <ul style="font-size: 0.85rem; color: var(--text-main); margin-left: 20px; line-height: 1.5;">
+              <li><strong>Macarons:</strong> Strictly half-dozen (6) minimum per flavor.</li>
+              <li><strong>Dessert Cups:</strong> Minimum of 4 cups per order (Mix & Match allowed).</li>
+              <li><strong>Cart Minimum:</strong> $20 overall order minimum.</li>
+            </ul>
+          </div>
 
           <label style="font-weight: 600; font-size: 0.9rem;">Order Type</label>
           <select name="Type" class="vip-input" style="background: #FFF; margin-bottom: 1rem;" required>
@@ -634,21 +644,36 @@
           <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
 
           <label style="font-weight: 600; font-size: 0.9rem;">Order Details (Quantities & Items)</label>
-          <textarea name="Message" class="vip-input" rows="4" style="margin-bottom: 1rem; resize: vertical;" placeholder="Example: 1x Dubai Cookie, 1x Tiramisu Cup..." required></textarea>
+          <textarea name="Message" class="vip-input" rows="4" style="margin-bottom: 1rem; resize: vertical;" placeholder="Example: 1x Half-Dozen Pistachio Macarons, 4x Tiramisu Cups..." required></textarea>
 
           <button type="submit" class="app-download-btn" style="width: 100%; margin-top: 0; background: var(--accent-gold);">Submit Order & Checkout</button>
         </form>
       </div>
 
-      <!-- STEP 2: The Zelle Checkout Screen -->
+      <!-- STEP 2: The Zelle & Venmo Checkout Screen with QR Codes -->
       <div id="paymentInstructions" style="display: none; text-align: center;">
         <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); margin-bottom: 10px;">Order Received! 🎉</h2>
-        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">Your spot is officially reserved. To complete your pre-order, please submit your payment within 24 hours.</p>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">Your spot is officially reserved. To complete your pre-order, please scan or use the details below to submit your payment within 24 hours.</p>
         
-        <div style="background: var(--pill-bg); padding: 20px; border-radius: 12px; margin-bottom: 1.5rem;">
-          <h3 style="color: var(--accent-brown); font-size: 1.2rem; margin-bottom: 10px;">Pay securely via Zelle</h3>
-          <p style="font-weight: 700; font-size: 1.1rem;">sallysweets.co@gmail.com</p>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;">Name on account: Sally Al Khayyat</p>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem;">
+          
+          <!-- Zelle Card -->
+          <div style="background: var(--pill-bg); padding: 1.5rem; border-radius: 12px; flex: 1; min-width: 240px; text-align: center; border: 1px solid var(--soft-border);">
+            <p style="font-weight: 800; color: #7451eb; font-size: 1.3rem; margin-bottom: 5px;">🟣 Zelle</p>
+            <img src="sweetszelle.jpg" alt="Zelle QR Code" style="width: 150px; height: 150px; border-radius: 8px; margin: 10px auto; display: block; border: 4px solid white;">
+            <p style="font-weight: 700; font-size: 1.1rem; margin: 4px 0;">480-242-5583</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Name: Sally Al Khayyat</p>
+          </div>
+
+          <!-- Venmo Card -->
+          <div style="background: var(--pill-bg); padding: 1.5rem; border-radius: 12px; flex: 1; min-width: 240px; text-align: center; border: 1px solid var(--soft-border);">
+            <p style="font-weight: 800; color: #008CFF; font-size: 1.3rem; margin-bottom: 5px;">🔵 Venmo</p>
+            <img src="Sweetsvenmo.jpg" alt="Venmo QR Code" style="width: 150px; height: 150px; border-radius: 8px; margin: 10px auto; display: block; border: 4px solid white;">
+            <p style="font-weight: 700; font-size: 1.1rem; margin: 4px 0;">@sallysweets_official</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Business Account</p>
+            <a href="https://venmo.com/u/sallysweets_official" target="_blank" style="display: inline-block; margin-top: 8px; font-size: 0.85rem; color: #008CFF; text-decoration: none; font-weight: 600;">Tap here if on mobile &rarr;</a>
+          </div>
+
         </div>
 
         <button class="app-download-btn" style="width: 100%; background: var(--text-main);" onclick="closeModal('requestModal')">I Have Sent Payment</button>
@@ -727,7 +752,7 @@
       confirmCallback = null;
     };
 
-    // ZELLE AUTOMATED SUBMISSION LOGIC
+    // ZELLE & VENMO AUTOMATED SUBMISSION LOGIC
     window.handleOrderSubmit = async function(event) {
       event.preventDefault();
       const form = event.target;
@@ -746,7 +771,7 @@
           }
         });
         
-        // Hide form, show Zelle checkout
+        // Hide form, show checkout instructions
         document.getElementById('orderFormFields').style.display = 'none';
         document.getElementById('paymentInstructions').style.display = 'block';
         form.reset();
