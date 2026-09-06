@@ -25,7 +25,6 @@
 
     html { scroll-behavior: smooth; }
 
-    /* Pure Effortless Fade & Subtle Scale (No Jumping Up/Down) */
     .reveal-on-scroll {
       opacity: 0;
       filter: blur(3px);
@@ -74,7 +73,6 @@
       display: none;
     }
 
-    /* Custom Toast Notification Banner */
     #customToast {
       position: fixed; top: 20px; right: 20px;
       background: var(--accent-brown); color: #FFF;
@@ -88,7 +86,6 @@
       to { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
     }
 
-    /* Custom Confirm Modal */
     #customConfirmModal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(44, 37, 35, 0.6); backdrop-filter: blur(4px);
@@ -122,6 +119,31 @@
     .hero-subtitle { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.75rem; }
     .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 400; color: var(--accent-brown); line-height: 1.15; margin-bottom: 1rem; }
 
+    /* --- BEAUTIFUL MENU SECTION --- */
+    .menu-section {
+      background-color: var(--card-bg);
+      padding: 5rem 1.5rem;
+      border-top: 1px solid var(--soft-border);
+      border-bottom: 1px solid var(--soft-border);
+      margin-bottom: 4rem;
+    }
+    .menu-header { text-align: center; margin-bottom: 4rem; }
+    .menu-badge { background: var(--pill-bg); color: var(--accent-brown); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 1rem; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 3rem; max-width: 1100px; margin: 0 auto; }
+    .menu-category { margin-bottom: 1rem; }
+    .menu-category-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); border-bottom: 1px solid var(--soft-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;}
+    
+    .menu-item { margin-bottom: 1.5rem; }
+    .menu-item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem; }
+    .menu-item-name { font-weight: 600; color: var(--text-main); font-size: 1.05rem; flex: 1; padding-right: 10px; }
+    .menu-item-price { font-weight: 700; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap; }
+    .menu-item-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+    
+    .preorder-btn-container { text-align: center; margin-top: 3rem; }
+    .preorder-action-btn { background: var(--accent-brown); color: #FFF; border: none; padding: 16px 36px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; box-shadow: 0 8px 20px rgba(92, 61, 46, 0.2); }
+    .preorder-action-btn:hover { transform: translateY(-3px); background: #4a3024; }
+
+    /* Recipe Grid */
     .search-container { margin: 2rem auto 1.5rem; max-width: 500px; }
     .search-input { width: 100%; padding: 0.85rem 1.25rem; border-radius: 30px; border: 1px solid var(--soft-border); background: #FFF; font-size: 0.95rem; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
     .search-input:focus { border-color: var(--accent-gold); }
@@ -145,8 +167,9 @@
     .macro-pill { background: rgba(200, 150, 62, 0.1); color: var(--accent-gold); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; }
     .card-meta { display: flex; justify-content: space-between; border-top: 1px solid var(--soft-border); padding-top: 1rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 37, 35, 0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
-    .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; }
+    /* Modals */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 37, 35, 0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; overflow-y: auto; }
+    .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; margin: auto; }
     .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--pill-bg); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
 
     .controls-row { display: flex; justify-content: space-between; align-items: center; margin: 1rem 0; padding: 0.8rem 1rem; background: var(--pill-bg); border-radius: 12px; }
@@ -243,26 +266,6 @@
     }
     .icon-container:hover { background: rgba(255, 255, 255, 0.2); }
     .icon-container svg { width: 20px; height: 20px; fill: #FFF; }
-    
-    .signup-button {
-      background: #6A3B3B; color: #FAF7F2; padding: 14px 32px;
-      border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.15);
-      font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
-      margin-bottom: 3rem;
-    }
-    .signup-button:hover { background: #7c4545; transform: translateY(-2px); }
-    
-    .app-store-container {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 2rem; max-width: 400px; margin: 0 auto;
-    }
-    .app-store-text { color: #D4C5BE; font-size: 0.9rem; margin-bottom: 1rem; }
-    .app-store-button {
-      display: inline-flex; align-items: center; background: #000;
-      color: #FFF; padding: 12px 24px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
-      font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s; text-decoration: none;
-    }
-    .app-store-button:hover { transform: translateY(-2px); }
   </style>
 </head>
 <body>
@@ -273,12 +276,10 @@
     <button onclick="stopTimer()" style="background: rgba(0,0,0,0.2); border: none; color: white; padding: 6px 12px; border-radius: 10px; cursor: pointer; font-weight: bold;">Stop</button>
   </div>
 
-  <!-- Custom Toast Notification Banner -->
   <div id="customToast">
     <span id="toastMessage">Notification message here</span>
   </div>
 
-  <!-- Custom Confirmation Modal -->
   <div id="customConfirmModal">
     <div class="confirm-card">
       <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Sign Out?</h3>
@@ -290,50 +291,191 @@
     </div>
   </div>
 
-  <!-- Header -->
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
+      <a href="#menu">Pre-Orders</a>
       <a href="#recipes">Recipes</a>
       <a onclick="openAboutModal()">About Sally</a>
-      <a onclick="openRequestModal()">Custom Orders</a>
       <button class="login-btn" id="mainLoginBtn" onclick="openLoginModal()">Login / Sign Up</button>
       
       <div class="social-links">
         <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="social-icon" title="Instagram">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
-        <a href="https://www.snapchat.com/add/sallysweets_ofc" target="_blank" class="social-icon" title="Snapchat">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.126 1.706c-2.368 0-4.542 1.488-4.542 4.148 0 1.056.402 1.954.996 2.656-.376.196-.658.55-.78.966-.192.05-.382.164-.492.352-.164.28-.15.658.07.896.064.068.14.12.22.162-.124.4-.298.882-.53 1.36-.106.216-.034.482.17.592.05.026.104.044.156.05-.008.028-.016.056-.026.084-.336.886-.968 1.49-2.072 1.776-.328.084-.57.374-.57.712 0 .584 1.144.974 2.378 1.134.464.06 1.036.088 1.62.088 1.196 0 2.45-.164 2.806-.474.348.654.836 1.436 1.412 2.108.102.118.256.184.412.184.158 0 .31-.066.412-.184.576-.672 1.064-1.454 1.412-2.108.356.31 1.61.474 2.806.474.584 0 1.156-.028 1.62-.088 1.234-.16 2.378-.55 2.378-1.134 0-.338-.242-.628-.57-.712-1.104-.286-1.736-.89-2.072-1.776-.01-.028-.018-.056-.026-.084.052-.006.106-.024.156-.05.204-.11.276-.376.17-.592-.232-.478-.406-.96-.53-1.36.08-.042.156-.094.22-.162.22-.238.234-.616.07-.896-.11-.188-.3-.302-.492-.352-.122-.416-.404-.77-.78-.966.594-.702.996-1.6.996-2.656 0-2.66-2.174-4.148-4.542-4.148z"/></svg>
-        </a>
       </div>
     </nav>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-subtitle reveal-on-scroll">Decadent • Simple • Aesthetic</div>
-    <h1 class="reveal-on-scroll">Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
-    
-    <div class="search-container reveal-on-scroll">
-      <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by ingredient or bake..." oninput="handleSearch()">
+    <h1 class="reveal-on-scroll">Perfected recipes &amp; artisan weekly bakes.</h1>
+  </section>
+
+  <!-- BEAUTIFUL PRE-ORDER MENU SECTION -->
+  <section id="menu" class="menu-section reveal-on-scroll">
+    <div class="menu-header">
+      <span class="menu-badge">This Week's Drop</span>
+      <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--accent-brown); margin-bottom: 0.5rem;">The Bakery Menu</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Pickups strictly Saturday 10AM - 12PM in East Gilbert. Order below!</p>
     </div>
 
-    <div class="filters reveal-on-scroll" id="recipes">
-      <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
-      <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami</button>
-      <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
-      <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies &amp; Bars</button>
-      <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
+    <div class="menu-grid">
+      <!-- Signature Cookies -->
+      <div class="menu-category">
+        <h3 class="menu-category-title">Signature Cookies & Bites</h3>
+        
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Signature Brown Butter Espresso Cookie</span>
+            <span class="menu-item-price">$4.50 / large</span>
+          </div>
+          <p class="menu-item-desc">Deep, caramelized flavors with a rich espresso kick and dark chocolate pools.</p>
+        </div>
+        
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Spiced Cardamom Crumb Cookie</span>
+            <span class="menu-item-price">$4.50 / large</span>
+          </div>
+          <p class="menu-item-desc">A comforting, elevated twist on a bakery classic with warm Mediterranean spices.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Golden Dubai Cookie</span>
+            <span class="menu-item-price">$6.00 / large</span>
+          </div>
+          <p class="menu-item-desc">Decadent, thick-style cookies filled with rich pistachio cream and crispy toasted kunafa.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Retro Cookie Dip Set</span>
+            <span class="menu-item-price">$8.50 / set</span>
+          </div>
+          <p class="menu-item-desc">Nostalgic mini vanilla bean cookies served with your choice of any signature whipped dip.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Artisan Dunking Cookie Fries</span>
+            <span class="menu-item-price">$8.00 / box</span>
+          </div>
+          <p class="menu-item-desc">Crisp golden cookie strips with a signature whipped dip. (Dunkaroo, Cinnamon Toast Crunch, Biscoff & more!)</p>
+        </div>
+      </div>
+
+      <!-- Pastries & Macarons -->
+      <div class="menu-category">
+        <h3 class="menu-category-title">Pastries, Bars & Macarons</h3>
+        
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The East-Valley Macaron Collection</span>
+            <span class="menu-item-price">$16.00 / half-dz</span>
+          </div>
+          <p class="menu-item-desc">Flavors: Saffron Pistachio, Salted Caramel, Pistachio, Cookies & Cream, Cinnamon, Vanilla.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Sally's Famous Fluffy Cinnamon Rolls</span>
+            <span class="menu-item-price">$6.00 / jumbo</span>
+          </div>
+          <p class="menu-item-desc">Cloud-like dough swirled with rich cinnamon sugar and velvety cream cheese glaze.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Velvet Crinkle Brown Butter Brownies</span>
+            <span class="menu-item-price">$5.00 / large</span>
+          </div>
+          <p class="menu-item-desc">Ultra-fudgy, dark Dutch-processed cocoa brownies finished with a flawless glossy crinkle top.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Signature Fudgy Brookie</span>
+            <span class="menu-item-price">$5.00 / large</span>
+          </div>
+          <p class="menu-item-desc">The perfect hybrid: a rich brownie base baked perfectly into a chewy, crinkle-topped cookie.</p>
+        </div>
+      </div>
+
+      <!-- Dessert Cups & Mediterranean -->
+      <div class="menu-category">
+        <h3 class="menu-category-title">Artisan Cups & Mediterranean</h3>
+        
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Dessert Flight</span>
+            <span class="menu-item-price">$27.00 / 4 cups</span>
+          </div>
+          <p class="menu-item-desc">Mix & Match any 4 of our 8oz artisan dessert cups below.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Cloud Nine Tiramisu Cup</span>
+            <span class="menu-item-price">$7.50 / cup</span>
+          </div>
+          <p class="menu-item-desc">Classic Italian layers of bold espresso-soaked ladyfingers and airy whipped mascarpone.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Crispy Baklava Cheesecake Cup</span>
+            <span class="menu-item-price">$7.50 / cup</span>
+          </div>
+          <p class="menu-item-desc">Creamy vanilla bean cheesecake topped with honey-soaked walnuts and crispy golden phyllo.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Golden Crisp Cheese Kunafa</span>
+            <span class="menu-item-price">$8.00 / 6" pan</span>
+          </div>
+          <p class="menu-item-desc">Sweet cheese layered with crispy shredded phyllo, soaked in fragrant syrup.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Honey-Soaked Luqaimat Bites</span>
+            <span class="menu-item-price">$7.00 / dozen</span>
+          </div>
+          <p class="menu-item-desc">Golden Mediterranean sweet fritters drizzled with rich syrup and sesame seeds.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="preorder-btn-container">
+      <button class="preorder-action-btn" onclick="openRequestModal()">Place Your Pre-Order Now</button>
     </div>
   </section>
 
-  <!-- Main Recipe Grid -->
+  <!-- Recipe Section Header -->
+  <div style="text-align: center; margin-bottom: 2rem;" class="reveal-on-scroll" id="recipes">
+    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">The Recipe Vault</h2>
+    <p style="color: var(--text-muted);">Bake Sally's favorites at home.</p>
+  </div>
+
+  <div class="search-container reveal-on-scroll">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search recipes..." oninput="handleSearch()">
+  </div>
+
+  <div class="filters reveal-on-scroll">
+    <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
+    <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami</button>
+    <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
+    <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies &amp; Bars</button>
+    <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
+  </div>
+
   <main class="container">
     <div class="recipe-grid" id="recipeGrid"></div>
   </main>
 
-  <!-- Baking Basics & Newsletter Section -->
   <section class="landing-extras">
     <div class="basics-section">
       <div class="category-tag reveal-on-scroll">BAKING BASICS</div>
@@ -352,31 +494,6 @@
           <h3 class="card-title">Trust the timer, but use your eyes.</h3>
           <p class="card-body">Every oven is completely different! Start checking a few minutes early, and let the golden edges be your final answer.</p>
         </div>
-      </div>
-    </div>
-
-    <!-- Newsletter & App Promo -->
-    <div class="newsletter-section reveal-on-scroll">
-      <h2 class="newsletter-heading">A little sweetness in your inbox.</h2>
-      <p class="newsletter-sub">New recipes, baking notes, and seasonal favorites—sent when they're fresh.</p>
-
-      <div class="social-icons-row">
-        <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="icon-container">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-        </a>
-        <a href="https://www.snapchat.com/add/sallysweets_ofc" target="_blank" class="icon-container">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.126 1.706c-2.368 0-4.542 1.488-4.542 4.148 0 1.056.402 1.954.996 2.656-.376.196-.658.55-.78.966-.192.05-.382.164-.492.352-.164.28-.15.658.07.896.064.068.14.12.22.162-.124.4-.298.882-.53 1.36-.106.216-.034.482.17.592.05.026.104.044.156.05-.008.028-.016.056-.026.084-.336.886-.968 1.49-2.072 1.776-.328.084-.57.374-.57.712 0 .584 1.144.974 2.378 1.134.464.06 1.036.088 1.62.088 1.196 0 2.45-.164 2.806-.474.348.654.836 1.436 1.412 2.108.102.118.256.184.412.184.158 0 .31-.066.412-.184.576-.672 1.064-1.454 1.412-2.108.356.31 1.61.474 2.806.474.584 0 1.156-.028 1.62-.088 1.234-.16 2.378-.55 2.378-1.134 0-.338-.242-.628-.57-.712-1.104-.286-1.736-.89-2.072-1.776-.01-.028-.018-.056-.026-.084.052-.006.106-.024.156-.05.204-.11.276-.376.17-.592-.232-.478-.406-.96-.53-1.36.08-.042.156-.094.22-.162.22-.238.234-.616.07-.896-.11-.188-.3-.302-.492-.352-.122-.416-.404-.77-.78-.966.594-.702.996-1.6.996-2.656 0-2.66-2.174-4.148-4.542-4.148z"/></svg>
-        </a>
-      </div>
-
-      <button class="signup-button" onclick="openLoginModal()">Send me sweets ✨</button>
-
-      <div class="app-store-container">
-        <p class="app-store-text">Take Sally's Sweets with you</p>
-        <button class="app-store-button" onclick="showToast('App coming soon to the App Store!')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" style="margin-right: 8px;"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.15 2.65.72 3.4 1.8-3.12 1.87-2.53 5.95.42 7.15-.75 1.86-1.6 3.42-2.47 4.06zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.3 2.31-1.89 4.13-3.74 4.25z"/></svg>
-          Download on the App Store
-        </button>
       </div>
     </div>
   </section>
@@ -402,20 +519,11 @@
 
       <div id="mainAuthView">
         <button class="social-btn apple" onclick="handleAppleLogin()"> Continue with Apple</button>
-        <button class="social-btn" onclick="handleGoogleLogin()">
-          <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-          </svg>
-          Continue with Google
-        </button>
+        <button class="social-btn" onclick="handleGoogleLogin()">Continue with Google</button>
         <button class="social-btn" onclick="showPhoneAuthView()">📱 Continue with Phone Number</button>
 
         <div class="divider">OR</div>
 
-        <!-- Autocomplete Off & Enter Key Support Added -->
         <input type="text" id="authName" class="vip-input" placeholder="Full Name (optional for sign up)..." style="margin-bottom: 0.5rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authEmail').focus();}">
         <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authPass').focus();}">
         <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;" autocomplete="new-password" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); handleEmailAuth();}">
@@ -425,7 +533,6 @@
         <button class="app-download-btn" style="width: 100%; margin-top: 0.5rem;" onclick="handleEmailAuth()">Log In / Create Account</button>
       </div>
 
-      <!-- Phone Auth View with Name Collection Step and Enter Key Support -->
       <div id="phoneAuthView" style="display: none;">
         <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your phone number:</p>
         <input type="tel" id="authPhone" class="vip-input" placeholder="+1 (555) 000-0000" maxlength="17" style="margin-bottom: 1rem;" autocomplete="off" data-lpignore="true" oninput="formatWebsitePhone(this)" onkeydown="if(event.key === 'Enter'){event.preventDefault(); sendSmsCode();}">
@@ -451,48 +558,49 @@
       <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">MEET THE BAKER</span>
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; color: var(--accent-brown); margin: 0.5rem 0 1.5rem;">About Sally</h2>
       <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
-        Hi there! I’m <strong>Sally</strong>. I’m 20 years old, originally born in <strong>Baghdad, Iraq</strong>, and I'm currently a junior majoring in Biomedical Sciences at Arizona State University, working towards my dream of becoming an Anesthesiologist! Outside of the kitchen and my pre-med classes, my absolute biggest obsession is soccer. Honestly, if I didn't have to study or work, I would drop everything to be a pro soccer player and just live on the field! ⚽✨
+        Hi there! I’m <strong>Sally</strong>. I’m 20 years old, originally born in <strong>Baghdad, Iraq</strong>, and I'm currently a junior majoring in Biomedical Sciences at Arizona State University, working towards my dream of becoming an Anesthesiologist!
       </p>
       <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
-        My baking journey actually started out of pure boredom during winter break of my sophomore year in high school. I wanted a challenge, so I decided to tackle one of the notoriously hardest things you can bake: French macarons. Armed with nothing but determination and countless YouTube videos, I taught myself completely from scratch. Once I finally perfected them, I made my own business cards and started selling them to my teachers and classmates. They absolutely loved them, and just like that, <strong>Sally's Sweets</strong> was officially born!
+        My baking journey actually started out of pure boredom during winter break of my sophomore year in high school. Armed with nothing but determination and countless YouTube videos, I taught myself completely from scratch. Once I finally perfected French macarons, I started selling them, and just like that, <strong>Sally's Sweets</strong> was officially born!
       </p>
       <p style="text-align: left; font-size: 1rem; color: var(--text-main); margin-bottom: 1.2rem; line-height: 1.7;">
-        Since those early macaron days, I've continuously pushed myself to expand my menu, learning how to make from-scratch cookies, rich brownies, tiramisu, custom cakes, and even baked Alaska. Everything I make is 100% self-taught, heavily researched, and baked with a whole lot of passion.
+        Since those early days, I've pushed myself to expand my menu, learning how to make from-scratch cookies, rich brownies, tiramisu, and more. Everything I make is 100% self-taught and baked with passion.
       </p>
     </div>
   </div>
 
-  <!-- Custom Order / Request Modal -->
+  <!-- Pre-Order / Request Modal -->
   <div class="modal-overlay" id="requestModal">
     <div class="modal-content vip-box" style="text-align: left; max-width: 600px;">
       <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
       <div style="text-align: center; margin-bottom: 1.2rem;">
-        <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS PORTAL</span>
-        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Message / Request Sally</h2>
+        <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS</span>
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Submit Your Order</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">You will receive an email invoice shortly after submitting. Payment secures your spot!</p>
       </div>
       
       <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST">
-        <input type="hidden" name="_autoresponse" value="Thank you for reaching out to Sally's Sweets! We have received your message and will get back to you shortly.">
-        <input type="hidden" name="_subject" value="New Inquiry from Sally's Sweets!">
+        <input type="hidden" name="_autoresponse" value="Thank you for ordering with Sally's Sweets! Your request has been received. You will receive an invoice shortly to finalize your spot.">
+        <input type="hidden" name="_subject" value="New Pre-Order or Inquiry from Sally's Sweets!">
         <input type="hidden" name="_next" value="https://sweetsbysally.com/?submitted=true">
 
-        <label style="font-weight: 600; font-size: 0.9rem;">Select Message Type</label>
+        <label style="font-weight: 600; font-size: 0.9rem;">Order Type</label>
         <select name="Type" class="vip-input" style="background: #FFF; margin-bottom: 1rem;" required>
-          <option value="Custom Order Inquiry">Custom Order Inquiry</option>
-          <option value="Recipe Request">Recipe Request (What should I make next?)</option>
+          <option value="Weekly Pre-Order (Saturday Pickup)">Weekly Pre-Order (Saturday Pickup)</option>
+          <option value="Custom Event Order">Custom Event Order</option>
           <option value="General Inquiry">General Question</option>
         </select>
 
         <label style="font-weight: 600; font-size: 0.9rem;">Your Name</label>
         <input type="text" name="Name" class="vip-input" style="margin-bottom: 1rem;" required>
 
-        <label style="font-weight: 600; font-size: 0.9rem;">Your Email</label>
+        <label style="font-weight: 600; font-size: 0.9rem;">Your Email (For Invoice)</label>
         <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
 
-        <label style="font-weight: 600; font-size: 0.9rem;">Message Details</label>
-        <textarea name="Message" class="vip-input" rows="4" style="margin-bottom: 1rem; resize: vertical;" placeholder="Please describe your order, recipe request, or question here..." required></textarea>
+        <label style="font-weight: 600; font-size: 0.9rem;">Order Details (Quantities & Items)</label>
+        <textarea name="Message" class="vip-input" rows="4" style="margin-bottom: 1rem; resize: vertical;" placeholder="Example: 1x Dubai Cookie, 1x Tiramisu Cup..." required></textarea>
 
-        <button type="submit" class="app-download-btn" style="width: 100%; margin-top: 0; background: var(--accent-gold);">Send Message</button>
+        <button type="submit" class="app-download-btn" style="width: 100%; margin-top: 0; background: var(--accent-gold);">Submit Order Request</button>
       </form>
     </div>
   </div>
@@ -504,18 +612,10 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import {  
-      getAuth, 
-      onAuthStateChanged, 
-      GoogleAuthProvider, 
-      OAuthProvider,
-      signInWithPopup,
-      RecaptchaVerifier,
-      signInWithPhoneNumber,
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword,
-      sendEmailVerification,
-      updateProfile,
-      signOut
+      getAuth, onAuthStateChanged, GoogleAuthProvider, OAuthProvider,
+      signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber,
+      signInWithEmailAndPassword, createUserWithEmailAndPassword,
+      sendEmailVerification, updateProfile, signOut
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -564,7 +664,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('submitted') === 'true') {
-        window.showToast("Thank you for your message! Please check your email for a confirmation receipt.");
+        window.showToast("Thank you for your order! Please check your email for confirmation.");
         window.history.replaceState(null, '', window.location.pathname);
       }
     });
@@ -716,7 +816,7 @@
       try {
         const result = await signInWithPopup(auth, provider);
         const userName = result.user.displayName || "there";
-        window.showToast("Welcome back, " + userName + "! 🎉 Enjoy exploring Sally's recipes.");
+        window.showToast("Welcome back, " + userName + "! 🎉");
         window.closeModal('loginModal');
       } catch(error) {
         window.showToast("Apple Login Error: " + error.message);
@@ -734,7 +834,6 @@
         return window.showToast("Please enter a valid 10-digit phone number.");
       }
 
-      // RECAPTCHA CRASH FIX: Inject container before Firebase looks for it
       if (!document.getElementById('recaptcha-container')) {
         const recaptchaDiv = document.createElement('div');
         recaptchaDiv.setAttribute('id', 'recaptcha-container');
@@ -764,16 +863,13 @@
       if (!userName) {
         return window.showToast("Please enter your name to continue.");
       }
-      
       if (!code) {
         return window.showToast("Please enter the 6-digit code.");
       }
-      
       if (!window.confirmationResultObj) return;
 
       try {
         const result = await window.confirmationResultObj.confirm(code);
-        
         await updateProfile(result.user, { displayName: userName });
         
         const mainLoginBtn = document.getElementById('mainLoginBtn');
