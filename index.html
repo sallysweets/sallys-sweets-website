@@ -151,7 +151,20 @@
     
     .preorder-btn-container { text-align: center; margin-top: 3rem; }
     .preorder-action-btn { background: var(--accent-brown); color: #FFF; border: none; padding: 16px 36px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; box-shadow: 0 8px 20px rgba(92, 61, 46, 0.2); }
-    .preorder-action-btn:hover { transform: translateY(-3px); background: #4a3024; }
+    .preorder-action-btn:hover:not(:disabled) { transform: translateY(-3px); background: #4a3024; }
+    .preorder-action-btn:disabled { background: var(--text-muted); cursor: not-allowed; box-shadow: none; opacity: 0.6; }
+
+    /* Interactive Order Builder Items */
+    .order-builder-list { max-height: 350px; overflow-y: auto; padding-right: 10px; border-top: 1px solid var(--soft-border); border-bottom: 1px solid var(--soft-border); margin-bottom: 1.5rem; }
+    .order-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--soft-border); }
+    .order-row:last-child { border-bottom: none; }
+    .order-info { flex: 1; padding-right: 15px; }
+    .order-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); display: block; }
+    .order-price { font-size: 0.85rem; color: var(--accent-gold); font-weight: 700; }
+    .qty-controls { display: flex; align-items: center; gap: 12px; }
+    .qty-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--accent-brown); background: transparent; color: var(--accent-brown); font-weight: bold; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; padding-bottom: 2px; transition: all 0.2s; }
+    .qty-btn:hover { background: var(--accent-brown); color: #FFF; }
+    .qty-val { font-weight: 700; font-size: 1rem; width: 20px; text-align: center; }
 
     /* Recipe Grid */
     .search-container { margin: 2rem auto 1.5rem; max-width: 500px; }
@@ -484,7 +497,7 @@
     </div>
 
     <div class="preorder-btn-container">
-      <button class="preorder-action-btn" onclick="openRequestModal()">Place Your Pre-Order Now</button>
+      <button class="preorder-action-btn" onclick="openRequestModal()">Build Your Pre-Order Now</button>
     </div>
   </section>
 
@@ -603,39 +616,33 @@
     </div>
   </div>
 
-  <!-- Pre-Order / Request Modal WITH SIDE-BY-SIDE QR CHECKOUT -->
+  <!-- Pre-Order / Request Modal WITH SMART CALCULATOR -->
   <div class="modal-overlay" id="requestModal">
     <div class="modal-content vip-box" style="text-align: left; max-width: 750px;">
       <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
       
-      <!-- STEP 1: The Order Form -->
+      <!-- STEP 1: The Interactive Order Form -->
       <div id="orderFormFields">
         <div style="text-align: center; margin-bottom: 1.2rem;">
           <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS</span>
-          <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Submit Your Order</h2>
+          <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">Build Your Order</h2>
         </div>
         
         <form action="https://formsubmit.co/sallysweets.co@gmail.com" method="POST" onsubmit="handleOrderSubmit(event)">
           <input type="hidden" name="_autoresponse" value="Thank you for ordering with Sally's Sweets! Your request has been received. Please complete your payment to finalize your spot.">
           <input type="hidden" name="_subject" value="New Pre-Order from Sally's Sweets!">
           <input type="hidden" name="_captcha" value="false">
+          <!-- Hidden inputs to send order data and total calculation to your email -->
+          <input type="hidden" name="Order_Details" id="hiddenOrderDetails">
+          <input type="hidden" name="Total_Amount" id="hiddenTotalAmount">
 
-          <!-- WEEKLY MINIMUMS HIGHLIGHT BOX -->
           <div style="background: rgba(200, 150, 62, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 1.5rem; border: 1px solid rgba(200, 150, 62, 0.3);">
-            <h3 style="color: var(--accent-brown); font-size: 1rem; margin-bottom: 8px;">Weekly Order Minimums</h3>
+            <h3 style="color: var(--accent-brown); font-size: 1rem; margin-bottom: 8px;">Weekly Order Rules</h3>
             <ul style="font-size: 0.85rem; color: var(--text-main); margin-left: 20px; line-height: 1.5;">
-              <li><strong>Macarons:</strong> Strictly half-dozen (6) minimum per flavor.</li>
-              <li><strong>Dessert Cups:</strong> Minimum of 4 cups per order (Mix & Match allowed).</li>
-              <li><strong>Cart Minimum:</strong> $20 overall order minimum.</li>
+              <li><strong>Dessert Cups:</strong> Every 4 cups automatically discounts to $27 at checkout.</li>
+              <li><strong>Cart Minimum:</strong> $20 overall order minimum required to checkout.</li>
             </ul>
           </div>
-
-          <label style="font-weight: 600; font-size: 0.9rem;">Order Type</label>
-          <select name="Type" class="vip-input" style="background: #FFF; margin-bottom: 1rem;" required>
-            <option value="Weekly Pre-Order (Saturday Pickup)">Weekly Pre-Order (Saturday Pickup)</option>
-            <option value="Custom Event Order">Custom Event Order</option>
-            <option value="General Inquiry">General Question</option>
-          </select>
 
           <label style="font-weight: 600; font-size: 0.9rem;">Your Name</label>
           <input type="text" name="Name" class="vip-input" style="margin-bottom: 1rem;" required>
@@ -643,18 +650,34 @@
           <label style="font-weight: 600; font-size: 0.9rem;">Your Email</label>
           <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
 
-          <label style="font-weight: 600; font-size: 0.9rem;">Order Details (Quantities & Items)</label>
-          <textarea name="Message" class="vip-input" rows="4" style="margin-bottom: 1rem; resize: vertical;" placeholder="Example: 1x Half-Dozen Pistachio Macarons, 4x Tiramisu Cups..." required></textarea>
+          <label style="font-weight: 600; font-size: 0.9rem;">Select Your Items</label>
+          
+          <!-- Interactive Scrollable Cart Builder -->
+          <div class="order-builder-list" id="cartContainer">
+            <!-- Items injected by JS -->
+          </div>
 
-          <button type="submit" class="app-download-btn" style="width: 100%; margin-top: 0; background: var(--accent-gold);">Submit Order & Checkout</button>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 10px; background: var(--pill-bg); border-radius: 8px;">
+            <span style="font-weight: 700; font-size: 1.1rem;">Cart Total:</span>
+            <span id="cartTotalDisplay" style="font-weight: 800; font-size: 1.4rem; color: var(--accent-gold);">$0.00</span>
+          </div>
+          
+          <div id="minWarningDisplay" style="color: #FF453A; font-size: 0.85rem; font-weight: 600; text-align: center; margin-bottom: 0.8rem; display: none;">Cart minimum is $20.00 to checkout.</div>
+
+          <button type="submit" id="submitOrderBtn" class="preorder-action-btn" style="width: 100%; margin-top: 0; box-shadow: none;" disabled>Submit Order & Proceed to Pay</button>
         </form>
       </div>
 
-      <!-- STEP 2: The Zelle & Venmo Checkout Screen with QR Codes -->
+      <!-- STEP 2: The Zelle & Venmo Checkout Screen -->
       <div id="paymentInstructions" style="display: none; text-align: center;">
         <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); margin-bottom: 10px;">Order Received! 🎉</h2>
-        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">Your spot is officially reserved. To complete your pre-order, please scan or use the details below to submit your payment within 24 hours.</p>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">Your spot is officially reserved. Please scan or use the details below to submit your payment within 24 hours.</p>
         
+        <div style="background: var(--bg-main); padding: 15px; border-radius: 12px; margin-bottom: 1.5rem; border: 2px dashed var(--accent-gold);">
+          <span style="font-weight: 600; font-size: 1.1rem; color: var(--text-main);">Amount Due: </span>
+          <span id="displayTotalAmount" style="font-weight: 800; font-size: 1.6rem; color: var(--accent-brown);">$0.00</span>
+        </div>
+
         <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem;">
           
           <!-- Zelle Card -->
@@ -712,6 +735,152 @@
     window.activeTimer = null;
     window.timerInterval = null;
 
+    // CART CALCULATOR LOGIC
+    const cartMenu = [
+      { id: 'c1', name: 'Brown Butter Espresso Cookie', price: 4.50 },
+      { id: 'c2', name: 'Spiced Cardamom Crumb Cookie', price: 4.50 },
+      { id: 'c3', name: 'Golden Dubai Cookie', price: 6.00 },
+      { id: 'c4', name: 'Retro Cookie Dip Set', price: 8.50 },
+      { id: 'c5', name: 'Artisan Dunking Cookie Fries', price: 8.00 },
+      { id: 'm1', name: 'Half-Dozen Macarons (Saffron Pistachio)', price: 16.00 },
+      { id: 'm2', name: 'Half-Dozen Macarons (Salted Caramel)', price: 16.00 },
+      { id: 'm3', name: 'Half-Dozen Macarons (Pistachio)', price: 16.00 },
+      { id: 'm4', name: 'Half-Dozen Macarons (Cookies & Cream)', price: 16.00 },
+      { id: 'm5', name: 'Half-Dozen Macarons (Cinnamon)', price: 16.00 },
+      { id: 'm6', name: 'Half-Dozen Macarons (Vanilla)', price: 16.00 },
+      { id: 'p1', name: 'Fluffy Cinnamon Roll (Jumbo)', price: 6.00 },
+      { id: 'p2', name: 'Velvet Crinkle Brownie', price: 5.00 },
+      { id: 'p3', name: 'Signature Fudgy Brookie', price: 5.00 },
+      { id: 'd1', name: 'Cloud Nine Tiramisu Cup', price: 7.50, isCup: true },
+      { id: 'd2', name: 'Crispy Baklava Cheesecake Cup', price: 7.50, isCup: true },
+      { id: 'd3', name: 'Midnight Oreo Mousse Cup', price: 7.50, isCup: true },
+      { id: 'd4', name: 'Biscoff Dream Mousse Cup', price: 7.50, isCup: true },
+      { id: 'd5', name: 'Nutella Hazelnut Mousse Cup', price: 7.50, isCup: true },
+      { id: 'med1', name: 'Golden Crisp Cheese Kunafa', price: 8.00 },
+      { id: 'med2', name: 'Honey-Soaked Luqaimat Bites (Dozen)', price: 7.00 }
+    ];
+
+    window.cartState = {};
+
+    window.initCart = function() {
+      const container = document.getElementById('cartContainer');
+      container.innerHTML = '';
+      cartMenu.forEach(item => {
+        window.cartState[item.id] = { ...item, qty: 0 };
+        container.innerHTML += `
+          <div class="order-row">
+            <div class="order-info">
+              <span class="order-name">${item.name}</span>
+              <span class="order-price">$${item.price.toFixed(2)}</span>
+            </div>
+            <div class="qty-controls">
+              <button type="button" class="qty-btn" onclick="updateQty('${item.id}', -1)">-</button>
+              <span class="qty-val" id="qty_${item.id}">0</span>
+              <button type="button" class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+            </div>
+          </div>
+        `;
+      });
+    };
+
+    window.updateQty = function(id, change) {
+      window.cartState[id].qty += change;
+      if (window.cartState[id].qty < 0) window.cartState[id].qty = 0;
+      document.getElementById('qty_' + id).innerText = window.cartState[id].qty;
+      window.recalculateCart();
+    };
+
+    window.recalculateCart = function() {
+      let total = 0;
+      let cupCount = 0;
+
+      for (let id in window.cartState) {
+        let item = window.cartState[id];
+        if (item.qty > 0) {
+          if (item.isCup) {
+            cupCount += item.qty;
+          } else {
+            total += item.qty * item.price;
+          }
+        }
+      }
+
+      // Apply Dessert Cup Flight Discount (4 for $27)
+      let flights = Math.floor(cupCount / 4);
+      let looseCups = cupCount % 4;
+      total += (flights * 27.00) + (looseCups * 7.50);
+
+      document.getElementById('cartTotalDisplay').innerText = '$' + total.toFixed(2);
+      
+      const submitBtn = document.getElementById('submitOrderBtn');
+      const minWarning = document.getElementById('minWarningDisplay');
+      
+      if (total > 0 && total < 20) {
+        submitBtn.disabled = true;
+        minWarning.style.display = 'block';
+      } else if (total >= 20) {
+        submitBtn.disabled = false;
+        minWarning.style.display = 'none';
+      } else {
+        submitBtn.disabled = true;
+        minWarning.style.display = 'none';
+      }
+    };
+
+    // Initialize cart on page load
+    window.addEventListener('DOMContentLoaded', () => { window.initCart(); });
+
+    // ZELLE & VENMO AUTOMATED SUBMISSION LOGIC
+    window.handleOrderSubmit = async function(event) {
+      event.preventDefault();
+      
+      let orderString = "";
+      let totalAmount = document.getElementById('cartTotalDisplay').innerText;
+      
+      for (let id in window.cartState) {
+        if (window.cartState[id].qty > 0) {
+          orderString += `${window.cartState[id].qty}x ${window.cartState[id].name}\n`;
+        }
+      }
+
+      if (orderString === "") {
+        return window.showToast("Please add items to your cart first!");
+      }
+
+      document.getElementById('hiddenOrderDetails').value = orderString + `\nCalculated Total: ${totalAmount}`;
+      document.getElementById('hiddenTotalAmount').value = totalAmount;
+      document.getElementById('displayTotalAmount').innerText = totalAmount;
+
+      const form = event.target;
+      const btn = document.getElementById('submitOrderBtn');
+      const originalText = btn.innerText;
+      btn.innerText = "Processing...";
+      
+      const formData = new FormData(form);
+      
+      try {
+        await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        document.getElementById('orderFormFields').style.display = 'none';
+        document.getElementById('paymentInstructions').style.display = 'block';
+        form.reset();
+        
+        // Reset Cart
+        for(let id in window.cartState) window.cartState[id].qty = 0;
+        document.querySelectorAll('.qty-val').forEach(el => el.innerText = '0');
+        window.recalculateCart();
+        
+        btn.innerText = originalText;
+      } catch (error) {
+        window.showToast("Error submitting order. Please try again.");
+        btn.innerText = originalText;
+      }
+    };
+
     // LIGHTBOX LOGIC FOR IMAGES
     window.openLightbox = function(src) {
       const lightbox = document.getElementById('imageLightbox');
@@ -752,35 +921,13 @@
       confirmCallback = null;
     };
 
-    // ZELLE & VENMO AUTOMATED SUBMISSION LOGIC
-    window.handleOrderSubmit = async function(event) {
-      event.preventDefault();
-      const form = event.target;
-      const btn = form.querySelector('button[type="submit"]');
-      const originalText = btn.innerText;
-      btn.innerText = "Processing...";
-      
-      const formData = new FormData(form);
-      
-      try {
-        await fetch(form.action, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-        
-        // Hide form, show checkout instructions
-        document.getElementById('orderFormFields').style.display = 'none';
-        document.getElementById('paymentInstructions').style.display = 'block';
-        form.reset();
-        btn.innerText = originalText;
-      } catch (error) {
-        window.showToast("Error submitting order. Please try again.");
-        btn.innerText = originalText;
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('submitted') === 'true') {
+        window.showToast("Thank you for your order! Please check your email for confirmation.");
+        window.history.replaceState(null, '', window.location.pathname);
       }
-    };
+    });
 
     window.updateTimerUI = function() {
       const globalTimer = document.getElementById('globalTimer');
