@@ -154,22 +154,30 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 30%; /* Zooms perfectly on the cookies and cuts out the box edges/blue bag */
+      object-position: center 30%;
       transition: transform 0.6s ease;
     }
     .hero-img-wrapper:hover img {
       transform: scale(1.02);
     }
 
-    /* Interactive Cart Styles */
-    .cart-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--soft-border); }
-    .cart-item-info { flex: 1; }
-    .cart-item-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
-    .cart-item-price { font-size: 0.85rem; color: var(--text-muted); }
-    .cart-item-controls { display: flex; align-items: center; gap: 10px; }
-    .qty-btn { background: var(--pill-bg); border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; color: var(--text-main); cursor: pointer; transition: background 0.2s; }
-    .qty-btn:hover { background: var(--soft-border); }
-    .qty-display { font-weight: 600; width: 20px; text-align: center; color: var(--text-main); }
+    /* Menu & Gallery Styles */
+    .menu-section { background-color: var(--card-bg); padding: 5rem 1.5rem 2rem; margin-top: 2rem; }
+    .menu-header { text-align: center; margin-bottom: 4rem; }
+    .menu-badge { background: var(--pill-bg); color: var(--accent-brown); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 1rem; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 3rem; max-width: 1100px; margin: 0 auto; }
+    .menu-category { margin-bottom: 1rem; }
+    .menu-category-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); border-bottom: 1px solid var(--soft-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;}
+    .menu-item { margin-bottom: 1.5rem; }
+    .menu-item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem; }
+    .menu-item-name { font-weight: 600; color: var(--text-main); font-size: 1.05rem; flex: 1; padding-right: 10px; }
+    .menu-item-price { font-weight: 700; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap; }
+    .menu-item-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+    
+    .preorder-btn-container { text-align: center; margin-top: 4rem; margin-bottom: 4rem; }
+    .preorder-action-btn { background: var(--accent-brown); color: #FFF; border: none; padding: 16px 36px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; box-shadow: 0 8px 20px rgba(92, 61, 46, 0.2); }
+    .preorder-action-btn:hover { transform: translateY(-3px); background: #4a3024; }
+    .preorder-action-btn:disabled { background: var(--text-muted); cursor: not-allowed; box-shadow: none; transform: none; }
 
     .digital-menu-gallery { display: flex; justify-content: center; gap: 2rem; padding: 2rem 1.5rem 4rem; flex-wrap: wrap; }
     .menu-page-wrapper { width: 100%; max-width: 450px; cursor: zoom-in; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s; }
@@ -186,23 +194,17 @@
     .lightbox-close { position: absolute; top: 2rem; right: 2.5rem; background: rgba(255,255,255,0.15); color: #FFF; border: none; width: 44px; height: 44px; border-radius: 50%; font-size: 1.8rem; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background 0.2s; }
     .lightbox-close:hover { background: rgba(255,255,255,0.3); }
 
-    .menu-section { background-color: var(--card-bg); padding: 2rem 1.5rem 5rem; border-bottom: 1px solid var(--soft-border); margin-bottom: 4rem; }
-    .menu-header { text-align: center; margin-bottom: 4rem; }
-    .menu-badge { background: var(--pill-bg); color: var(--accent-brown); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 1rem; }
-    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 3rem; max-width: 1100px; margin: 0 auto; }
-    .menu-category { margin-bottom: 1rem; }
-    .menu-category-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); border-bottom: 1px solid var(--soft-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;}
-    .menu-item { margin-bottom: 1.5rem; }
-    .menu-item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem; }
-    .menu-item-name { font-weight: 600; color: var(--text-main); font-size: 1.05rem; flex: 1; padding-right: 10px; }
-    .menu-item-price { font-weight: 700; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap; }
-    .menu-item-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
-    
-    .preorder-btn-container { text-align: center; margin-top: 3rem; }
-    .preorder-action-btn { background: var(--accent-brown); color: #FFF; border: none; padding: 16px 36px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; box-shadow: 0 8px 20px rgba(92, 61, 46, 0.2); }
-    .preorder-action-btn:hover { transform: translateY(-3px); background: #4a3024; }
-    .preorder-action-btn:disabled { background: var(--text-muted); cursor: not-allowed; box-shadow: none; transform: none; }
+    /* Interactive Cart Styles */
+    .cart-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--soft-border); }
+    .cart-item-info { flex: 1; }
+    .cart-item-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+    .cart-item-price { font-size: 0.85rem; color: var(--text-muted); }
+    .cart-item-controls { display: flex; align-items: center; gap: 10px; }
+    .qty-btn { background: var(--pill-bg); border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; color: var(--text-main); cursor: pointer; transition: background 0.2s; }
+    .qty-btn:hover { background: var(--soft-border); }
+    .qty-display { font-weight: 600; width: 20px; text-align: center; color: var(--text-main); }
 
+    /* Recipe UI */
     .search-container { margin: 3rem auto 1.5rem; max-width: 500px; }
     .search-input { width: 100%; padding: 0.85rem 1.25rem; border-radius: 30px; border: 1px solid var(--soft-border); background: var(--card-bg); color: var(--text-main); font-size: 0.95rem; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
     .search-input:focus { border-color: var(--accent-gold); }
@@ -381,9 +383,9 @@
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
+      <a href="#menu">Pre-Orders</a>
       <a href="#recipes">Recipes</a>
       <a onclick="openAboutModal()">About Sally</a>
-      <a onclick="openRequestModal()">Custom Orders</a>
       <button class="login-btn" id="mainLoginBtn" onclick="openLoginModal()">Login / Sign Up</button>
       
       <div class="social-links">
@@ -406,21 +408,186 @@
     
     <!-- FEATURED HERO IMAGE -->
     <div class="hero-img-wrapper reveal-on-scroll">
-      <img src="IMAGE 2026-09-06 17:40:30.jpg" alt="Sally's Sweets Signature Cookies">
-    </div>
-
-    <div class="search-container reveal-on-scroll">
-      <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by ingredient or bake..." oninput="handleSearch()">
-    </div>
-
-    <div class="filters reveal-on-scroll" id="recipes">
-      <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
-      <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami</button>
-      <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
-      <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies &amp; Bars</button>
-      <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
+      <img src="hero-cookies.jpg" alt="Sally's Sweets Signature Cookies">
     </div>
   </section>
+
+  <!-- TEXT PRE-ORDER MENU SECTION -->
+  <section id="menu" class="menu-section reveal-on-scroll">
+    <div class="menu-header">
+      <span class="menu-badge">This Week's Drop</span>
+      <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Order Form Details</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Delivery ($10 in East Gilbert) or free pickup strictly Saturday/Sunday. Place your request below!</p>
+    </div>
+
+    <div class="menu-grid">
+      <!-- Signature Cookies -->
+      <div class="menu-category">
+        <h3 class="menu-category-title">Signature Cookies & Bites</h3>
+        
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Signature Brown Butter Espresso Cookie</span>
+            <span class="menu-item-price">$4.50 / large</span>
+          </div>
+          <p class="menu-item-desc">Deep, caramelized flavors with a rich espresso kick and dark chocolate pools.</p>
+        </div>
+        
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Spiced Cardamom Crumb Cookie</span>
+            <span class="menu-item-price">$4.50 / large</span>
+          </div>
+          <p class="menu-item-desc">A comforting, elevated twist on a bakery classic with warm Mediterranean spices.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Golden Dubai Cookie</span>
+            <span class="menu-item-price">$6.00 / large</span>
+          </div>
+          <p class="menu-item-desc">Decadent, thick-style cookies filled with rich pistachio cream and crispy toasted kunafa.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Retro Cookie Dip Set</span>
+            <span class="menu-item-price">$8.50 / set</span>
+          </div>
+          <p class="menu-item-desc">Nostalgic mini vanilla bean cookies served with your choice of any signature whipped dip.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Artisan Dunking Cookie Fries</span>
+            <span class="menu-item-price">$8.00 / box</span>
+          </div>
+          <p class="menu-item-desc">Crisp golden cookie strips with a signature whipped dip. (Dunkaroo, Cinnamon Toast Crunch, Biscoff & more!)</p>
+        </div>
+      </div>
+
+      <!-- Pastries & Macarons -->
+      <div class="menu-category">
+        <h3 class="menu-category-title">Pastries, Bars & Macarons</h3>
+        
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The East-Valley Macaron Collection</span>
+            <span class="menu-item-price">$16.00 / half-dz</span>
+          </div>
+          <p class="menu-item-desc">Flavors: Saffron Pistachio, Salted Caramel, Pistachio, Cookies & Cream, Cinnamon, Vanilla.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Sally's Famous Fluffy Cinnamon Rolls</span>
+            <span class="menu-item-price">$6.00 / jumbo</span>
+          </div>
+          <p class="menu-item-desc">Cloud-like dough swirled with rich cinnamon sugar and velvety cream cheese glaze.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Velvet Crinkle Brown Butter Brownies</span>
+            <span class="menu-item-price">$5.00 / large</span>
+          </div>
+          <p class="menu-item-desc">Ultra-fudgy, dark Dutch-processed cocoa brownies finished with a flawless glossy crinkle top.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Signature Fudgy Brookie</span>
+            <span class="menu-item-price">$5.00 / large</span>
+          </div>
+          <p class="menu-item-desc">The perfect hybrid: a rich brownie base baked perfectly into a chewy, crinkle-topped cookie.</p>
+        </div>
+      </div>
+
+      <!-- Dessert Cups & Mediterranean -->
+      <div class="menu-category">
+        <h3 class="menu-category-title">Artisan Cups & Mediterranean</h3>
+        
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Dessert Flight</span>
+            <span class="menu-item-price">$27.00 / 4 cups</span>
+          </div>
+          <p class="menu-item-desc">Mix & Match any 4 of our 8oz artisan dessert cups below.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Cloud Nine Tiramisu Cup</span>
+            <span class="menu-item-price">$7.50 / cup</span>
+          </div>
+          <p class="menu-item-desc">Classic Italian layers of bold espresso-soaked ladyfingers and airy whipped mascarpone.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Crispy Baklava Cheesecake Cup</span>
+            <span class="menu-item-price">$7.50 / cup</span>
+          </div>
+          <p class="menu-item-desc">Creamy vanilla bean cheesecake topped with honey-soaked walnuts and crispy golden phyllo.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Golden Crisp Cheese Kunafa</span>
+            <span class="menu-item-price">$8.00 / 6" pan</span>
+          </div>
+          <p class="menu-item-desc">Sweet cheese layered with crispy shredded phyllo, soaked in fragrant syrup.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Honey-Soaked Luqaimat Bites</span>
+            <span class="menu-item-price">$7.00 / dozen</span>
+          </div>
+          <p class="menu-item-desc">Golden Mediterranean sweet fritters drizzled with rich syrup and sesame seeds.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="preorder-btn-container">
+      <button class="preorder-action-btn" onclick="openRequestModal()">Place Your Pre-Order Now</button>
+    </div>
+  </section>
+
+  <!-- CHIC DIGITAL MENU GALLERY -->
+  <section class="reveal-on-scroll" style="text-align: center; padding-bottom: 4rem;">
+    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Visual Menu</h3>
+    <p style="color: var(--text-muted); font-size: 0.95rem;">Click to enlarge the menu cards.</p>
+    
+    <div class="digital-menu-gallery">
+      <div class="menu-page-wrapper" onclick="openLightbox('SweetsMenu1.jpg')">
+        <img src="SweetsMenu1.jpg" alt="Sweets By Sally Menu Page 1">
+        <div class="click-to-enlarge">🔍 Enlarge</div>
+      </div>
+      <div class="menu-page-wrapper" onclick="openLightbox('SweetsMenu2.jpg')">
+        <img src="SweetsMenu2.jpg" alt="Sweets By Sally Menu Page 2">
+        <div class="click-to-enlarge">🔍 Enlarge</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recipe Section Header -->
+  <div style="text-align: center; margin-bottom: 2rem;" class="reveal-on-scroll" id="recipes">
+    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown);">The Recipe Vault</h2>
+    <p style="color: var(--text-muted);">Bake Sally's favorites at home.</p>
+  </div>
+
+  <div class="search-container reveal-on-scroll">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by ingredient or bake..." oninput="handleSearch()">
+  </div>
+
+  <div class="filters reveal-on-scroll">
+    <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
+    <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami</button>
+    <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
+    <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies &amp; Bars</button>
+    <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
+  </div>
 
   <!-- Main Recipe Grid -->
   <main class="container">
