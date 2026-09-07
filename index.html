@@ -281,8 +281,9 @@
     <div class="hero-subtitle reveal-on-scroll" style="margin-top: 15px;">Decadent • Simple • Aesthetic</div>
     <h1 class="reveal-on-scroll">Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
     
+    <!-- FEATURED HERO IMAGE (Brookie.jpg) -->
     <div class="hero-img-wrapper reveal-on-scroll">
-      <img src="hero-cookies.jpg" alt="Sally's Sweets Signature Cookies">
+      <img src="Brookie.jpg" alt="Sally's Sweets Brookies & Cookies">
     </div>
   </section>
 
@@ -291,7 +292,7 @@
     <div class="menu-header">
       <span class="menu-badge">This Week's Drop</span>
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Order Form Details</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem;">Delivery ($10 in East Gilbert) or free pickup strictly Saturday/Sunday. Add items directly to your cart below!</p>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Delivery ($2 in Gilbert, other areas negotiable by distance) or free pickup strictly Saturday/Sunday. Add items directly to your cart below!</p>
     </div>
 
     <div class="menu-grid">
@@ -670,8 +671,8 @@
 
           <div style="margin-bottom: 1.5rem; padding: 10px 0; border-top: 1px solid var(--soft-border);">
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: var(--text-main);">
-              <input type="checkbox" id="deliveryCheck" name="Delivery" value="Yes ($10 East Gilbert Delivery)" onchange="renderCartUI()" style="width: 18px; height: 18px; accent-color: var(--accent-brown);">
-              Add Saturday/Sunday Delivery ($10 - East Gilbert Only)
+              <input type="checkbox" id="deliveryCheck" name="Delivery" value="Yes ($2 Gilbert Delivery / Other Negotiable)" onchange="renderCartUI()" style="width: 18px; height: 18px; accent-color: var(--accent-brown);">
+              Add Delivery ($2 in Gilbert / Other areas negotiable by distance)
             </label>
             <p style="font-size: 0.8rem; color: var(--text-muted); margin-left: 28px; margin-top: 2px;">Leave unchecked for free local pickup on Saturday/Sunday.</p>
           </div>
@@ -834,8 +835,8 @@
       document.getElementById('cartCount').innerText = totalItems;
       if (emptyMsg) emptyMsg.style.display = hasItems ? 'none' : 'block';
 
-      let deliveryFee = document.getElementById('deliveryCheck') && document.getElementById('deliveryCheck').checked ? 10 : 0;
-      if (deliveryFee > 0 && hasItems) orderDetailsString += `1x East Gilbert Delivery ($10)\n`;
+      let deliveryFee = document.getElementById('deliveryCheck') && document.getElementById('deliveryCheck').checked ? 2 : 0;
+      if (deliveryFee > 0 && hasItems) orderDetailsString += `1x Gilbert Delivery ($2 - Other areas negotiable)\n`;
       
       let finalTotal = hasItems ? subtotal + deliveryFee : 0;
 
