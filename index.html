@@ -136,14 +136,16 @@
     }
     .mode-toggle-btn:hover { background: var(--soft-border); }
 
-    .hero { text-align: center; padding: 3.5rem 1.5rem 2rem; max-width: 900px; margin: 0 auto; }
+    /* Fixed Hero Padding & Image Crop */
+    .hero { text-align: center; padding: 5rem 1.5rem 2rem; max-width: 900px; margin: 0 auto; }
     .hero-subtitle { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.75rem; }
     .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 400; color: var(--accent-brown); line-height: 1.15; margin-bottom: 1rem; }
 
-    /* Beautiful Cropped Hero Image */
+    /* Beautiful Portrait/Square Hero Image */
     .hero-img-wrapper {
       width: 100%;
-      height: 420px;
+      max-width: 550px;
+      height: 550px;
       margin: 2.5rem auto 0;
       border-radius: 20px;
       overflow: hidden;
@@ -154,7 +156,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 30%;
+      object-position: center;
       transition: transform 0.6s ease;
     }
     .hero-img-wrapper:hover img {
@@ -383,9 +385,9 @@
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
-      <a href="#menu">Pre-Orders</a>
       <a href="#recipes">Recipes</a>
       <a onclick="openAboutModal()">About Sally</a>
+      <a onclick="openRequestModal()">Custom Orders</a>
       <button class="login-btn" id="mainLoginBtn" onclick="openLoginModal()">Login / Sign Up</button>
       
       <div class="social-links">
@@ -406,7 +408,7 @@
     <div class="hero-subtitle reveal-on-scroll" style="margin-top: 15px;">Decadent • Simple • Aesthetic</div>
     <h1 class="reveal-on-scroll">Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
     
-    <!-- FEATURED HERO IMAGE -->
+    <!-- FEATURED HERO IMAGE (Taller container to prevent ugly cropping) -->
     <div class="hero-img-wrapper reveal-on-scroll">
       <img src="hero-cookies.jpg" alt="Sally's Sweets Signature Cookies">
     </div>
