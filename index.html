@@ -1358,9 +1358,26 @@
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-setPersistence(auth, browserSessionPersistence).catch((error) => {
-  console.error("Auth persistence error:", error);
-});
+// Auto-logout after 2 hours (7200000 milliseconds) of inactivity
+    let inactivityTimer;
+    function resetInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        if (auth.currentUser) {
+          signOut(auth).then(() => {
+            window.showToast("You have been logged out due to inactivity.");
+          });
+        }
+      }, 7200000); 
+    }
+
+    // Reset the timer whenever the user moves their mouse, types, or clicks
+    window.addEventListener('mousemove', resetInactivityTimer);
+    window.addEventListener('keypress', resetInactivityTimer);
+    window.addEventListener('click', resetInactivityTimer);
+    
+    // Start the timer when they load the page
+    resetInactivityTimer();
     
 
     window.currentUser = null;
