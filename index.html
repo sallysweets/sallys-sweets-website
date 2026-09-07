@@ -670,11 +670,12 @@
           <p id="cartWarning" style="color: #FF453A; font-weight: 600; text-align: center; margin-bottom: 15px; font-size: 0.9rem; border: 1px solid rgba(255, 69, 58, 0.3); padding: 10px; border-radius: 8px; background: rgba(255, 69, 58, 0.05); display:none;"></p>
 
           <div style="margin-bottom: 1.5rem; padding: 10px 0; border-top: 1px solid var(--soft-border);">
-            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: var(--text-main);">
-              <input type="checkbox" id="deliveryCheck" name="Delivery" value="Yes ($2 Gilbert Delivery / Other Negotiable)" onchange="renderCartUI()" style="width: 18px; height: 18px; accent-color: var(--accent-brown);">
-              Add Delivery ($2 in Gilbert / Other areas negotiable by distance)
-            </label>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-left: 28px; margin-top: 2px;">Leave unchecked for free local pickup on Saturday/Sunday.</p>
+            <label style="font-weight: 600; font-size: 0.9rem; color: var(--text-main); display: block; margin-bottom: 5px;">Fulfillment Option:</label>
+            <select id="deliverySelect" name="Fulfillment" class="vip-input" onchange="renderCartUI()" style="background: var(--card-bg);">
+              <option value="Free Pickup (Saturday/Sunday)">Free Pickup (Saturday/Sunday) - $0.00</option>
+              <option value="Gilbert Delivery ($2)">Gilbert Delivery - $2.00</option>
+              <option value="Other Area (Distance Negotiable)">Other Area (Chandler, Mesa, Tempe, etc. - Fee Negotiable)</option>
+            </select>
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center; font-size: 1.3rem; font-weight: 700; color: var(--accent-brown); margin-bottom: 15px;">
@@ -835,8 +836,12 @@
       document.getElementById('cartCount').innerText = totalItems;
       if (emptyMsg) emptyMsg.style.display = hasItems ? 'none' : 'block';
 
-      let deliveryFee = document.getElementById('deliveryCheck') && document.getElementById('deliveryCheck').checked ? 2 : 0;
-      if (deliveryFee > 0 && hasItems) orderDetailsString += `1x Gilbert Delivery ($2 - Other areas negotiable)\n`;
+      const fulfillmentVal = document.getElementById('deliverySelect') ? document.getElementById('deliverySelect').value : '';
+      let deliveryFee = 0;
+      if (fulfillmentVal.includes('Gilbert Delivery')) {
+        deliveryFee = 2;
+      }
+      if (deliveryFee > 0 && hasItems) orderDetailsString += `Fulfillment: ${fulfillmentVal}\n`;
       
       let finalTotal = hasItems ? subtotal + deliveryFee : 0;
 
