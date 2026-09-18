@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sally's Sweets | Autumn Collection</title>
+  <title>Sally's Sweets | Decadent Cookie, Brownie & Macaron Recipes</title>
   <link rel="icon" type="image/jpeg" href="sweetsbysally%20logo.jpg?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +21,7 @@
       --pill-bg: #EFEAE1;
     }
 
+    /* Dark Mode Theme Colors */
     html.dark-mode {
       --bg-main: #1C1C1E;
       --card-bg: #2C2C2E;
@@ -45,7 +46,12 @@
                   filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform, filter;
     }
-    .reveal-on-scroll.is-visible { opacity: 1; filter: blur(0); transform: scale(1); }
+
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+    }
 
     body {
       background-color: var(--bg-main);
@@ -53,79 +59,59 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       line-height: 1.6;
       transition: background-color 0.3s, color 0.3s;
-      overflow-x: hidden;
     }
 
-    /* Fall Leaf Aesthetics */
-    .fall-leaf {
-      position: fixed; pointer-events: none; z-index: 50;
-      opacity: 0.4; filter: grayscale(20%) sepia(30%);
-      animation: floatLeaf linear infinite;
-    }
-    html.dark-mode .fall-leaf { opacity: 0.2; }
+    /* Live Timer Widgets */
+    .timer-widget { background: var(--accent-gold); color: #FFF; padding: 12px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; margin: 12px 0; box-shadow: 0 4px 12px rgba(200, 150, 62, 0.25); }
+    .timer-label { font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .timer-time { font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+    .timer-stop { background: rgba(0,0,0,0.15); border: none; color: #FFF; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: background 0.2s; }
+    .timer-stop:hover { background: rgba(0,0,0,0.25); }
+
+    #globalTimer { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--accent-gold); color: #FFF; padding: 12px 24px; border-radius: 30px; box-shadow: 0 10px 25px rgba(200, 150, 62, 0.35); z-index: 3000; font-weight: 700; align-items: center; gap: 15px; display: none; }
+    #customToast { position: fixed; top: 20px; right: 20px; background: var(--accent-brown); color: #FFF; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 2000; display: none; align-items: center; gap: 12px; font-weight: 500; animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     
-    @keyframes floatLeaf {
-      0% { transform: translateY(-10vh) rotate(0deg); }
-      100% { transform: translateY(110vh) rotate(360deg); }
-    }
-    
-    .leaf-1 { left: 2%; animation-duration: 18s; animation-delay: 0s; font-size: 2rem; }
-    .leaf-2 { left: 15%; animation-duration: 24s; animation-delay: 4s; font-size: 1.4rem; }
-    .leaf-3 { right: 5%; animation-duration: 20s; animation-delay: 2s; font-size: 2.2rem; }
-    .leaf-4 { right: 20%; animation-duration: 26s; animation-delay: 7s; font-size: 1.2rem; }
-    .leaf-5 { left: 45%; animation-duration: 22s; animation-delay: 11s; font-size: 1.6rem; }
+    @keyframes slideIn { from { transform: translateY(-20px) scale(0.95); opacity: 0; filter: blur(4px); } to { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); } }
+    @keyframes bump { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
 
-    /* Autumn Pop-Up Animation */
-    #autumnPopup {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
-      background: var(--accent-brown); color: #FFF; padding: 2rem 3rem; border-radius: 20px;
-      z-index: 4000; text-align: center; box-shadow: 0 20px 50px rgba(92, 61, 46, 0.4);
-      pointer-events: none; opacity: 0;
-      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
-    }
-    #autumnPopup.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    .autumn-icon { font-size: 4rem; margin-bottom: 1rem; animation: gentleBounce 1.5s infinite alternate ease-in-out; }
-    @keyframes gentleBounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
-
-    /* Utilities & Header */
-    .timer-widget { background: var(--accent-gold); color: #FFF; padding: 12px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; margin: 12px 0; }
-    .timer-label { font-weight: 700; font-size: 0.8rem; text-transform: uppercase; }
-    .timer-time { font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
-    .timer-stop { background: rgba(0,0,0,0.15); border: none; color: #FFF; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; }
-    #globalTimer { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--accent-gold); color: #FFF; padding: 12px 24px; border-radius: 30px; z-index: 3000; font-weight: 700; display: none; align-items: center; gap: 15px; }
-    #customToast { position: fixed; top: 20px; right: 20px; background: var(--accent-brown); color: #FFF; padding: 1rem 1.5rem; border-radius: 12px; z-index: 2000; display: none; align-items: center; gap: 12px; font-weight: 500; }
     #customConfirmModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 2500; }
     .confirm-card { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; }
     .confirm-btns { display: flex; gap: 10px; margin-top: 1.5rem; }
 
-    header { background: var(--bg-main); border-bottom: 1px solid var(--soft-border); position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    header { background: var(--bg-main); border-bottom: 1px solid var(--soft-border); position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; transition: background-color 0.3s; }
     .brand-logo { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--accent-brown); text-decoration: none; }
     nav { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
     nav a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: color 0.2s ease; }
     nav a:hover { color: var(--accent-gold); }
 
     .social-links { display: flex; align-items: center; gap: 0.8rem; margin-left: 0.5rem; }
-    .social-icon { color: var(--accent-brown); width: 20px; height: 20px; transition: transform 0.2s; cursor: pointer; }
+    .social-icon { color: var(--accent-brown); width: 20px; height: 20px; transition: transform 0.2s, color 0.2s; display: inline-flex; align-items: center; cursor: pointer; }
     .social-icon:hover { transform: scale(1.15); color: var(--accent-gold); }
 
-    .login-btn { background: transparent; color: var(--accent-brown); border: 1px solid var(--accent-brown); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 600; }
+    .login-btn { background: transparent; color: var(--accent-brown); border: 1px solid var(--accent-brown); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 600; transition: all 0.2s; }
     .login-btn:hover { background: var(--accent-brown); color: #FFF; }
-    .cart-nav-btn { background: var(--accent-gold); color: #FFF; border: none; padding: 0.45rem 1.2rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
-    .mode-toggle-btn { background: var(--pill-bg); color: var(--text-main); border: 1px solid var(--soft-border); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 600; }
 
-    /* Hero */
+    .cart-nav-btn { background: var(--accent-gold); color: #FFF; border: none; padding: 0.45rem 1.2rem; border-radius: 20px; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: transform 0.2s, background 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+    .cart-nav-btn:hover { transform: translateY(-2px); background: #b58532; }
+    .cart-bump { animation: bump 0.3s ease-out; }
+
+    .mode-toggle-btn { background: var(--pill-bg); color: var(--text-main); border: 1px solid var(--soft-border); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+    .mode-toggle-btn:hover { background: var(--soft-border); }
+
     .hero { text-align: center; padding: 5rem 1.5rem 2rem; max-width: 900px; margin: 0 auto; }
     .hero-subtitle { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.75rem; }
     .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 400; color: var(--accent-brown); line-height: 1.15; margin-bottom: 1rem; }
-    .hero-img-wrapper { width: 100%; max-width: 550px; height: 550px; margin: 2.5rem auto 0; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-    .hero-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+
+    .hero-img-wrapper { width: 100%; max-width: 550px; height: 550px; margin: 2.5rem auto 0; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; }
+    .hero-img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.6s ease; }
     .hero-img-wrapper:hover img { transform: scale(1.02); }
 
-    /* Menu Grid */
-    .menu-section { background-color: var(--card-bg); padding: 5rem 1.5rem 2rem; margin-top: 2rem; border-top: 1px solid var(--soft-border); border-bottom: 1px solid var(--soft-border); }
+    /* Menu Styles */
+    .menu-section { background-color: var(--card-bg); padding: 5rem 1.5rem 2rem; margin-top: 2rem; }
     .menu-header { text-align: center; margin-bottom: 4rem; }
     .menu-badge { background: var(--pill-bg); color: var(--accent-brown); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 1rem; }
     .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 3rem; max-width: 1100px; margin: 0 auto; }
+    .menu-category { margin-bottom: 1rem; }
     .menu-category-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); border-bottom: 1px solid var(--soft-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;}
     .menu-item { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
     .menu-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem; }
@@ -133,77 +119,127 @@
     .menu-item-price { font-weight: 700; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap; }
     .menu-item-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-top: 5px; }
     
-    .add-to-cart-btn { background: var(--pill-bg); color: var(--accent-brown); border: 1px solid var(--soft-border); padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: all 0.2s; margin-top: 6px; display: inline-block; }
+    .add-to-cart-btn { background: #FFF; color: var(--accent-brown); border: 1px solid var(--soft-border); padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; margin-top: 6px; display: inline-block; }
     .add-to-cart-btn:hover { background: var(--accent-brown); color: #FFF; border-color: var(--accent-brown); }
+    html.dark-mode .add-to-cart-btn { background: var(--card-bg); color: var(--accent-gold); border-color: var(--soft-border); }
+    html.dark-mode .add-to-cart-btn:hover { background: var(--accent-gold); color: #1C1C1E; }
 
     .preorder-btn-container { text-align: center; margin-top: 4rem; margin-bottom: 4rem; }
     .preorder-action-btn { background: var(--accent-brown); color: #FFF; border: none; padding: 16px 36px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; box-shadow: 0 8px 20px rgba(92, 61, 46, 0.2); }
-    .preorder-action-btn:hover:not(:disabled) { transform: translateY(-3px); background: #4a3024; }
+    .preorder-action-btn:hover { transform: translateY(-3px); background: #4a3024; }
     .preorder-action-btn:disabled { background: var(--text-muted); cursor: not-allowed; box-shadow: none; transform: none; }
 
-    /* Recipe Section */
+    /* Cart & Search Styles */
+    .cart-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--soft-border); }
+    .cart-item-info { flex: 1; }
+    .cart-item-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+    .cart-item-price { font-size: 0.85rem; color: var(--text-muted); }
+    .cart-item-controls { display: flex; align-items: center; gap: 10px; }
+    .qty-btn { background: var(--pill-bg); border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; color: var(--text-main); cursor: pointer; transition: background 0.2s; }
+    .qty-btn:hover { background: var(--soft-border); }
+    .qty-display { font-weight: 600; width: 20px; text-align: center; color: var(--text-main); }
+
     .search-container { margin: 3rem auto 1.5rem; max-width: 500px; }
-    .search-input { width: 100%; padding: 0.85rem 1.25rem; border-radius: 30px; border: 1px solid var(--soft-border); background: var(--card-bg); color: var(--text-main); font-size: 0.95rem; outline: none; }
+    .search-input { width: 100%; padding: 0.85rem 1.25rem; border-radius: 30px; border: 1px solid var(--soft-border); background: var(--card-bg); color: var(--text-main); font-size: 0.95rem; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .search-input:focus { border-color: var(--accent-gold); }
     .filters { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 3rem; flex-wrap: wrap; }
     .filter-btn { background: var(--pill-bg); border: 1px solid transparent; color: var(--text-main); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; }
     .filter-btn.active, .filter-btn:hover { background: var(--accent-brown); color: #FFF; }
+
+    /* Recipe Grid */
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 5rem; }
     .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
     .recipe-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); cursor: pointer; position: relative; transition: transform 0.3s ease; }
     .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
     .card-img-wrapper { height: 260px; position: relative; width: 100%; overflow: hidden; }
-    .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+    .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
     .card-tag { position: absolute; top: 1rem; left: 1rem; background: rgba(255,255,255,0.92); color: var(--accent-brown); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
     .card-content { padding: 1.5rem; }
     .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--accent-brown); margin-bottom: 0.5rem; }
+    .card-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
     .macro-row { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
     .macro-pill { background: rgba(200, 150, 62, 0.1); color: var(--accent-gold); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; }
     .card-meta { display: flex; justify-content: space-between; border-top: 1px solid var(--soft-border); padding-top: 1rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
-    /* Modals & VIP Boxes */
+    /* Modals */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; overflow-y: auto;}
-    .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; margin: auto; border: 1px solid var(--soft-border); }
+    .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; margin: auto; }
     .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--pill-bg); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; color: var(--text-main); }
-    .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: var(--card-bg); color: var(--text-main); }
+    .controls-row { display: flex; justify-content: space-between; align-items: center; margin: 1rem 0; padding: 0.8rem 1rem; background: var(--pill-bg); border-radius: 12px; }
+    .unit-switcher { display: flex; align-items: center; gap: 0.4rem; }
+    .control-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+    .btn-toggle { padding: 0.35rem 0.75rem; border-radius: 16px; border: 1px solid var(--soft-border); background: var(--card-bg); color: var(--text-main); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .btn-toggle.active { background: var(--accent-brown); color: #FFF; border-color: var(--accent-brown); }
+    .ingredient-list { list-style: none; padding-left: 0; }
+    .ingredient-list li { margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
+    .inline-timer-btn { display: inline-flex; align-items: center; background: var(--accent-gold); color: #FFF; padding: 6px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; border: none; cursor: pointer; margin-left: 10px; box-shadow: 0 2px 8px rgba(200, 150, 62, 0.3); transition: transform 0.1s; }
+    .inline-timer-btn:active { transform: scale(0.95); }
+
+    .locked-container { position: relative; margin-top: 1.5rem; border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); }
+    html:not(.dark-mode) .blurred-text { background: #FAFAFA; }
+    html.dark-mode .blurred-text { background: #2C2C2E; }
+    .blurred-text { filter: blur(6px); opacity: 0.4; user-select: none; padding: 2rem; }
+    .unlock-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
+    html:not(.dark-mode) .unlock-overlay { background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.95) 30%); }
+    html.dark-mode .unlock-overlay { background: linear-gradient(to bottom, rgba(44,44,46,0.4), rgba(44,44,46,0.95) 30%); }
+
     .app-download-btn { background: var(--accent-gold); color: #FFF; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(200, 150, 62, 0.3); transition: transform 0.2s; }
     .app-download-btn:hover { transform: translateY(-2px); }
     .app-download-btn:disabled { background: var(--text-muted); cursor: not-allowed; box-shadow: none; transform: none; }
+
+    .vip-box { text-align: center; padding: 1rem; }
+    .vip-input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--soft-border); font-size: 1rem; font-family: inherit; background: var(--card-bg); color: var(--text-main); }
     .social-btn { width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0.5rem; border: 1px solid var(--soft-border); background: var(--card-bg); color: var(--text-main); }
     .social-btn:hover { background: var(--pill-bg); }
     .social-btn.apple { background: #000; color: #FFF; border: none; }
-
-    /* Cart Specifics */
-    .cart-add-row { display: flex; gap: 10px; margin-bottom: 1.5rem; }
-    .cart-add-row select, .cart-add-row input { flex: 2; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--accent-brown); background: var(--pill-bg); color: var(--text-main); font-family: inherit;}
-    .cart-add-row input[type="number"] { flex: 0.5; text-align: center; }
-    .cart-add-row button { flex: 1; background: var(--accent-brown); color: #FFF; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .divider { display: flex; align-items: center; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1.5rem 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--soft-border); }
+    .divider:not(:empty)::before { margin-right: .5em; }
+    .divider:not(:empty)::after { margin-left: .5em; }
 
     footer { text-align: center; padding: 3rem 1.5rem; border-top: 1px solid var(--soft-border); color: var(--text-muted); }
+
+    /* Extras & Newsletter */
+    .landing-extras { width: 100%; }
+    .basics-section { padding: 5rem 1.5rem; text-align: center; background-color: var(--bg-main); }
+    .category-tag { font-size: 0.8rem; font-weight: 700; color: #8C5A47; letter-spacing: 2px; margin-bottom: 0.75rem; text-transform: uppercase; }
+    .main-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--text-main); margin-bottom: 3rem; font-weight: 500; }
+    .cards-row { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
+    .basics-card { background: var(--card-bg); border-radius: 16px; padding: 2rem; width: 320px; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--soft-border); }
+    .basics-card .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin-bottom: 0.5rem; }
+    .basics-card .card-body { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+    .newsletter-section { background-color: #442626; padding: 5rem 1.5rem; text-align: center; color: #FAF7F2; }
+    .newsletter-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; margin-bottom: 0.75rem; color: #FAF7F2; font-weight: 500; }
+    .newsletter-sub { font-size: 0.95rem; color: #D4C5BE; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .social-icons-row { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+    .icon-container { width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); display: flex; justify-content: center; align-items: center; transition: background 0.2s; color: #FFF; text-decoration: none; }
+    .icon-container:hover { background: rgba(255, 255, 255, 0.2); }
+    .icon-container svg { width: 20px; height: 20px; fill: #FFF; }
+    
+    .signup-button { background: #6A3B3B; color: #FAF7F2; padding: 14px 32px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.15); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-bottom: 3rem; }
+    .signup-button:hover { background: #7c4545; transform: translateY(-2px); }
+    
+    .app-store-container { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 2rem; max-width: 400px; margin: 0 auto; }
+    .app-store-text { color: #D4C5BE; font-size: 0.9rem; margin-bottom: 1rem; }
+    .app-store-button { display: inline-flex; align-items: center; background: #000; color: #FFF; padding: 12px 24px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s; text-decoration: none; }
+    .app-store-button:hover { transform: translateY(-2px); }
   </style>
 </head>
 <body>
 
-  <!-- Floating Fall Leaves -->
-  <div class="fall-leaf leaf-1">🍁</div>
-  <div class="fall-leaf leaf-2">🍂</div>
-  <div class="fall-leaf leaf-3">🍁</div>
-  <div class="fall-leaf leaf-4">🍂</div>
-  <div class="fall-leaf leaf-5">🍁</div>
-
-  <!-- Autumn Item Pop-up -->
-  <div id="autumnPopup">
-    <div class="autumn-icon">🍂</div>
-    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; margin-bottom: 10px;">Autumn Vibes Unlocked!</h2>
-    <p style="font-size: 1rem; font-weight: 500;">Added a cozy fall favorite to your cart.</p>
-  </div>
-
+  <!-- Floating Global Timer Banner -->
   <div id="globalTimer">
     <span id="globalTimerText">Whip Eggs - 05:00</span>
     <button onclick="stopTimer()" style="background: rgba(0,0,0,0.2); border: none; color: white; padding: 6px 12px; border-radius: 10px; cursor: pointer; font-weight: bold;">Stop</button>
   </div>
 
-  <div id="customToast"><span id="toastMessage">Notification</span></div>
+  <!-- Custom Toast Notification Banner -->
+  <div id="customToast">
+    <span id="toastMessage">Notification message here</span>
+  </div>
 
+  <!-- Custom Confirmation Modal -->
   <div id="customConfirmModal">
     <div class="confirm-card">
       <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Sign Out?</h3>
@@ -215,6 +251,7 @@
     </div>
   </div>
 
+  <!-- Header -->
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
@@ -222,22 +259,29 @@
       <a onclick="openAboutModal()">About Sally</a>
       <button id="mainCartBtn" class="cart-nav-btn" onclick="openRequestModal()">🛒 Cart (<span id="cartCount">0</span>)</button>
       <button class="login-btn" id="mainLoginBtn" onclick="openLoginModal()">Login / Sign Up</button>
+      
       <div class="social-links">
         <button id="darkModeBtn" class="mode-toggle-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
         <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="social-icon" title="Instagram">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
+        <a href="https://www.snapchat.com/add/sallysweets_ofc" target="_blank" class="social-icon" title="Snapchat">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.126 1.706c-2.368 0-4.542 1.488-4.542 4.148 0 1.056.402 1.954.996 2.656-.376.196-.658.55-.78.966-.192.05-.382.164-.492.352-.164.28-.15.658.07.896.064.068.14.12.22.162-.124.4-.298.882-.53 1.36-.106.216-.034.482.17.592.05.026.104.044.156.05-.008.028-.016.056-.026.084-.336.886-.968 1.49-2.072 1.776-.328.084-.57.374-.57.712 0 .584 1.144.974 2.378 1.134.464.06 1.036.088 1.62.088 1.196 0 2.45-.164 2.806-.474.348.654.836 1.436 1.412 2.108.102.118.256.184.412.184.158 0 .31-.066.412-.184.576-.672 1.064-1.454 1.412-2.108.356.31 1.61.474 2.806.474.584 0 1.156-.028 1.62-.088 1.234-.16 2.378-.55 2.378-1.134 0-.338-.242-.628-.57-.712-1.104-.286-1.736-.89-2.072-1.776-.01-.028-.018-.056-.026-.084.052-.006.106-.024.156-.05.204-.11.276-.376.17-.592-.232-.478-.406-.96-.53-1.36.08-.042.156-.094.22-.162.22-.238.234-.616.07-.896-.11-.188-.3-.302-.492-.352-.122-.416-.404-.77-.78-.966.594-.702.996-1.6.996-2.656 0-2.66-2.174-4.148-4.542-4.148z"/></svg>
+        </a>
       </div>
     </nav>
   </header>
 
+  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-subtitle reveal-on-scroll" style="color: var(--accent-brown); font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; text-transform: none; letter-spacing: 0;">
       "A prescription for happiness." <br>
-      <span style="font-size: 1rem; font-family: 'Plus Jakarta Sans', sans-serif; font-style: normal; color: var(--text-muted);">- Sally Al Khayyat</span>
+      <span style="font-size: 1rem; font-family: 'Plus Jakarta Sans', sans-serif; font-style: normal; color: var(--text-muted);">- Sally</span>
     </div>
     <div class="hero-subtitle reveal-on-scroll" style="margin-top: 15px;">Decadent • Simple • Aesthetic</div>
     <h1 class="reveal-on-scroll">Perfected recipes for brown butter bakes &amp; sweet treats.</h1>
+    
+    <!-- FEATURED HERO IMAGE (Brookie.jpg) -->
     <div class="hero-img-wrapper reveal-on-scroll">
       <img src="Brookie.jpg" alt="Sally's Sweets Brookies & Cookies">
     </div>
@@ -248,7 +292,7 @@
     <div class="menu-header">
       <span class="menu-badge">This Week's Autumn Drop</span>
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Order Form Details</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem;">Delivery ($2 in Gilbert) or free pickup strictly Saturday/Sunday. Add items directly to your cart below!</p>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Delivery ($2 in Gilbert, other areas negotiable by distance) or free pickup strictly Saturday/Sunday. Add items directly to your cart below!</p>
     </div>
 
     <div class="menu-grid">
@@ -291,7 +335,7 @@
 
         <div class="menu-item">
           <div class="menu-item-header">
-            <span class="menu-item-name">Pumpkin Spice Brown Butter Cookie 🍁</span>
+            <span class="menu-item-name">Pumpkin Spice Brown Butter Cookie</span>
             <div style="text-align: right;">
               <span class="menu-item-price">$4.50 / large</span><br>
               <button class="add-to-cart-btn" onclick="addDirectToCart('c_ps')">+ Add</button>
@@ -302,34 +346,23 @@
 
         <div class="menu-item">
           <div class="menu-item-header">
-            <span class="menu-item-name">Brown Butter Pumpkin Oatmeal Cream Pie 🍁</span>
-            <div style="text-align: right;">
-              <span class="menu-item-price">$5.00 / pie</span><br>
-              <button class="add-to-cart-btn" onclick="addDirectToCart('c_pie')">+ Add</button>
-            </div>
-          </div>
-          <p class="menu-item-desc">Chewy spiced pumpkin oatmeal cookies sandwiched around a whipped maple marshmallow filling.</p>
-        </div>
-
-        <div class="menu-item">
-          <div class="menu-item-header">
-            <span class="menu-item-name">Coffee Cake Cookies with Cardamom Icing 🍁</span>
+            <span class="menu-item-name">Coffee Cake Cookies</span>
             <div style="text-align: right;">
               <span class="menu-item-price">$4.50 / large</span><br>
-              <button class="add-to-cart-btn" onclick="addDirectToCart('c_coffee')">+ Add</button>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('c_cc')">+ Add</button>
             </div>
           </div>
-          <p class="menu-item-desc">Soft cinnamon brown sugar cookies topped with buttery streusel and cardamom cream cheese drizzle.</p>
+          <p class="menu-item-desc">Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.</p>
         </div>
       </div>
 
       <!-- Pastries & Macarons -->
       <div class="menu-category">
-        <h3 class="menu-category-title">Pastries, Breads & Macarons</h3>
+        <h3 class="menu-category-title">Pastries & Macarons</h3>
         
         <div class="menu-item">
           <div class="menu-item-header">
-            <span class="menu-item-name">Pumpkin Spice Macarons 🍁</span>
+            <span class="menu-item-name">Pumpkin Spice Macarons</span>
             <div style="text-align: right;">
               <span class="menu-item-price">$16.00 / half-dz</span><br>
               <button class="add-to-cart-btn" onclick="addDirectToCart('mac_ps')">+ Add</button>
@@ -340,7 +373,7 @@
 
         <div class="menu-item">
           <div class="menu-item-header">
-            <span class="menu-item-name">Brown Sugar Cinnamon Macarons 🍁</span>
+            <span class="menu-item-name">Brown Sugar Cinnamon Macarons</span>
             <div style="text-align: right;">
               <span class="menu-item-price">$16.00 / half-dz</span><br>
               <button class="add-to-cart-btn" onclick="addDirectToCart('mac_bsc')">+ Add</button>
@@ -351,7 +384,7 @@
 
         <div class="menu-item">
           <div class="menu-item-header">
-            <span class="menu-item-name">Maple Pecan Macarons 🍁</span>
+            <span class="menu-item-name">Maple Pecan Macarons</span>
             <div style="text-align: right;">
               <span class="menu-item-price">$16.00 / half-dz</span><br>
               <button class="add-to-cart-btn" onclick="addDirectToCart('mac_maple')">+ Add</button>
@@ -370,7 +403,7 @@
           </div>
           <p class="menu-item-desc">Sweet and salty perfection featuring homemade gourmet caramel.</p>
         </div>
-        
+
         <div class="menu-item">
           <div class="menu-item-header">
             <span class="menu-item-name">Vanilla Macarons</span>
@@ -384,24 +417,24 @@
 
         <div class="menu-item">
           <div class="menu-item-header">
-            <span class="menu-item-name">Sally's Famous Fluffy Cinnamon Rolls</span>
+            <span class="menu-item-name">Thick-Cut Chocolate Chip Banana Bread</span>
             <div style="text-align: right;">
-              <span class="menu-item-price">$22.00 / box of 4</span><br>
-              <button class="add-to-cart-btn" onclick="addDirectToCart('p_cinn')">+ Add</button>
+              <span class="menu-item-price">$5.00 / slice</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('p_bb')">+ Add</button>
             </div>
           </div>
-          <p class="menu-item-desc">Cloud-like dough swirled with rich cinnamon sugar and velvety cream cheese glaze.</p>
+          <p class="menu-item-desc">Incredibly moist, thick-cut bakery slices loaded with dark chocolate chips.</p>
         </div>
 
         <div class="menu-item">
           <div class="menu-item-header">
-            <span class="menu-item-name">Thick-Cut Chocolate Chip Banana Bread 🍁</span>
+            <span class="menu-item-name">Sally's Famous Fluffy Cinnamon Rolls</span>
             <div style="text-align: right;">
-              <span class="menu-item-price">$4.50 / slice</span><br>
-              <button class="add-to-cart-btn" onclick="addDirectToCart('p_banana')">+ Add</button>
+              <span class="menu-item-price">$6.00 / jumbo</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('p_cinn')">+ Add</button>
             </div>
           </div>
-          <p class="menu-item-desc">Moist, dense bakery-style banana bread loaded with dark chocolate chips.</p>
+          <p class="menu-item-desc">Cloud-like dough swirled with rich cinnamon sugar and velvety cream cheese glaze.</p>
         </div>
 
         <div class="menu-item">
@@ -413,17 +446,6 @@
             </div>
           </div>
           <p class="menu-item-desc">Ultra-fudgy, dark Dutch-processed cocoa brownies finished with a flawless glossy crinkle top.</p>
-        </div>
-        
-        <div class="menu-item">
-          <div class="menu-item-header">
-            <span class="menu-item-name">Signature Fudgy Brookie</span>
-            <div style="text-align: right;">
-              <span class="menu-item-price">$5.00 / large</span><br>
-              <button class="add-to-cart-btn" onclick="addDirectToCart('p_brk')">+ Add</button>
-            </div>
-          </div>
-          <p class="menu-item-desc">The perfect hybrid: a rich brownie base baked perfectly into a chewy, crinkle-topped cookie.</p>
         </div>
       </div>
 
@@ -455,7 +477,7 @@
 
         <div class="menu-item">
           <div class="menu-item-header">
-            <span class="menu-item-name">Caramel Spiced Apple Dessert Cup 🍁</span>
+            <span class="menu-item-name">Caramel Spiced Apple Dessert Cup</span>
             <div style="text-align: right;">
               <span class="menu-item-price">$7.50 / cup</span><br>
               <button class="add-to-cart-btn" onclick="addDirectToCart('cup_apple')">+ Add</button>
@@ -500,9 +522,119 @@
     <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
   </div>
 
+  <!-- Main Recipe Grid -->
   <main class="container">
     <div class="recipe-grid" id="recipeGrid"></div>
   </main>
+
+  <!-- Baking Basics & Newsletter Section -->
+  <section class="landing-extras">
+    <div class="basics-section">
+      <div class="category-tag reveal-on-scroll">BAKING BASICS</div>
+      <h2 class="main-heading reveal-on-scroll" style="transition-delay: 80ms;">Little details, better bakes.</h2>
+
+      <div class="cards-row">
+        <div class="basics-card reveal-on-scroll" style="transition-delay: 150ms;">
+          <h3 class="card-title">Brown butter is a lifestyle.</h3>
+          <p class="card-body">Honestly, taking that extra 5 minutes to brown your butter is a total game changer. It makes everything taste incredibly rich and nutty.</p>
+        </div>
+        <div class="basics-card reveal-on-scroll" style="transition-delay: 300ms;">
+          <h3 class="card-title">Room temp is not a suggestion.</h3>
+          <p class="card-body">I used to skip this when I was rushing, but seriously, cold eggs and butter will completely ruin your dough's texture. Let them chill on the counter first!</p>
+        </div>
+        <div class="basics-card reveal-on-scroll" style="transition-delay: 450ms;">
+          <h3 class="card-title">Trust the timer, but use your eyes.</h3>
+          <p class="card-body">Every oven is completely different! Start checking a few minutes early, and let the golden edges be your final answer.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter & App Promo -->
+    <div class="newsletter-section reveal-on-scroll">
+      <h2 class="newsletter-heading">A little sweetness in your inbox.</h2>
+      <p class="newsletter-sub">New recipes, baking notes, and seasonal favorites—sent when they're fresh.</p>
+
+      <div class="social-icons-row">
+        <a href="https://www.instagram.com/sallysweets_official/" target="_blank" class="icon-container" title="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </a>
+        <a href="https://www.snapchat.com/add/sallysweets_ofc" target="_blank" class="icon-container" title="Snapchat">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.126 1.706c-2.368 0-4.542 1.488-4.542 4.148 0 1.056.402 1.954.996 2.656-.376.196-.658.55-.78.966-.192.05-.382.164-.492.352-.164.28-.15.658.07.896.064.068.14.12.22.162-.124.4-.298.882-.53 1.36-.106.216-.034.482.17.592.05.026.104.044.156.05-.008.028-.016.056-.026.084-.336.886-.968 1.49-2.072 1.776-.328.084-.57.374-.57.712 0 .584 1.144.974 2.378 1.134.464.06 1.036.088 1.62.088 1.196 0 2.45-.164 2.806-.474.348.654.836 1.436 1.412 2.108.102.118.256.184.412.184.158 0 .31-.066.412-.184.576-.672 1.064-1.454 1.412-2.108.356.31 1.61.474 2.806.474.584 0 1.156-.028 1.62-.088 1.234-.16 2.378-.55 2.378-1.134 0-.338-.242-.628-.57-.712-1.104-.286-1.736-.89-2.072-1.776-.01-.028-.018-.056-.026-.084.052-.006.106-.024.156-.05.204-.11.276-.376.17-.592-.232-.478-.406-.96-.53-1.36.08-.042.156-.094.22-.162.22-.238.234-.616.07-.896-.11-.188-.3-.302-.492-.352-.122-.416-.404-.77-.78-.966.594-.702.996-1.6.996-2.656 0-2.66-2.174-4.148-4.542-4.148z"/></svg>
+        </a>
+      </div>
+
+      <button class="signup-button" onclick="handleNewsletter()">Send me sweets ✨</button>
+
+      <div class="app-store-container">
+        <p class="app-store-text">Take Sally's Sweets with you</p>
+        <button class="app-store-button" onclick="showToast('App coming soon to the App Store!')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" style="margin-right: 8px;"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.15 2.65.72 3.4 1.8-3.12 1.87-2.53 5.95.42 7.15-.75 1.86-1.6 3.42-2.47 4.06zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.3 2.31-1.89 4.13-3.74 4.25z"/></svg>
+          Download on the App Store
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recipe Detail Modal -->
+  <div class="modal-overlay" id="recipeModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('recipeModal')">&times;</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-content vip-box" style="max-width: 500px;">
+      <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+      <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS APP</span>
+      <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-brown); margin: 0.5rem 0 1rem;">Unlock the Full Experience</h2>
+      
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+        Log in or sign up to view full step-by-step instructions and access exclusive kitchen features!
+      </p>
+
+      <div id="mainAuthView">
+        <button class="social-btn apple" onclick="handleAppleLogin()"> Continue with Apple</button>
+        <button class="social-btn" onclick="handleGoogleLogin()">
+          <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Continue with Google
+        </button>
+        <button class="social-btn" onclick="showPhoneAuthView()">📱 Continue with Phone Number</button>
+
+        <div class="divider">OR</div>
+
+        <input type="text" id="authName" class="vip-input" placeholder="Full Name (optional for sign up)..." style="margin-bottom: 0.5rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authEmail').focus();}">
+        <input type="email" id="authEmail" class="vip-input" placeholder="Email address..." style="margin-bottom: 0.5rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authPass').focus();}">
+        <input type="password" id="authPass" class="vip-input" placeholder="Password..." style="margin-bottom: 0.5rem;" autocomplete="new-password" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); handleEmailAuth();}">
+        <input type="password" id="authConfirmPass" class="vip-input" placeholder="Confirm password..." style="margin-bottom: 0.3rem;" autocomplete="new-password" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); handleEmailAuth();}">
+        <div id="passwordError" style="color: #FF453A; font-size: 0.85rem; font-weight: 600; text-align: left; margin-bottom: 0.8rem; display: none;">Passwords do not match. Please re-enter.</div>
+
+        <button class="app-download-btn" style="width: 100%; margin-top: 0.5rem;" onclick="handleEmailAuth()">Log In / Create Account</button>
+      </div>
+
+      <div id="phoneAuthView" style="display: none;">
+        <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your phone number:</p>
+        <input type="tel" id="authPhone" class="vip-input" placeholder="+1 (555) 000-0000" maxlength="17" style="margin-bottom: 1rem;" autocomplete="off" data-lpignore="true" oninput="formatWebsitePhone(this)" onkeydown="if(event.key === 'Enter'){event.preventDefault(); sendSmsCode();}">
+        <button class="app-download-btn" id="sendSmsBtn" style="width: 100%; margin-top: 0;" onclick="sendSmsCode()">Send SMS Code</button>
+        
+        <div id="smsCodeSection" style="display: none; margin-top: 1.5rem;">
+          <p style="font-weight: 600; color: var(--accent-brown); margin-bottom: 0.5rem; text-align: left;">Enter your name &amp; the 6-digit code:</p>
+          <input type="text" id="phoneUserName" class="vip-input" placeholder="Your Name (e.g. Sally)..." style="margin-bottom: 0.8rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); document.getElementById('authCode').focus();}">
+          <input type="text" id="authCode" class="vip-input" placeholder="123456" style="margin-bottom: 1rem; text-align: center; letter-spacing: 4px; font-size: 1.2rem;" autocomplete="off" data-lpignore="true" onkeydown="if(event.key === 'Enter'){event.preventDefault(); verifySmsCode();}">
+          <button class="app-download-btn" style="width: 100%; margin-top: 0;" onclick="verifySmsCode()">Verify &amp; Log In</button>
+        </div>
+
+        <button class="login-btn" style="width: 100%; margin-top: 1.5rem; border: none; background: var(--pill-bg);" onclick="showMainAuthView()">← Back to Email / Social</button>
+      </div>
+      
+    </div>
+  </div>
 
   <!-- About Modal -->
   <div class="modal-overlay" id="aboutModal">
@@ -527,6 +659,7 @@
     <div class="modal-content vip-box" style="text-align: left; max-width: 600px;">
       <button class="close-btn" onclick="closeModal('requestModal')">&times;</button>
       
+      <!-- STEP 1: The Interactive Cart Form -->
       <div id="orderFormFields">
         <div style="text-align: center; margin-bottom: 1.2rem;">
           <span style="letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">SALLY'S SWEETS</span>
@@ -576,34 +709,31 @@
         </form>
       </div>
 
+      <!-- STEP 2: Checkout Screen -->
       <div id="paymentInstructions" style="display: none; text-align: center;">
         <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); margin-bottom: 10px;">Order Received! 🎉</h2>
         <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">Your spot is officially reserved. To complete your pre-order, please scan one of the QR codes below and submit your payment within 24 hours.</p>
         
         <div style="background: var(--pill-bg); padding: 20px; border-radius: 12px; margin-bottom: 1.5rem; text-align: center;">
           <h3 style="color: var(--accent-brown); font-size: 1.2rem; margin-bottom: 15px;">Send Payment via Zelle or Venmo</h3>
+          
           <div style="margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid var(--soft-border);">
             <p style="font-weight: 700; color: #7451eb; font-size: 1.1rem;">🟣 Zelle</p>
             <p style="font-weight: 600; font-size: 1.1rem; margin: 4px 0;">480-242-5583</p>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Name on account: Sally Al Khayyat</p>
             <img src="sweetszelle.jpg" alt="Zelle QR Code" style="max-width: 220px; width: 100%; border-radius: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.08);">
           </div>
+
           <div>
             <p style="font-weight: 700; color: #008CFF; font-size: 1.1rem;">🔵 Venmo</p>
             <p style="font-weight: 600; font-size: 1.1rem; margin: 4px 0;">@sallysweets_official</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Search by phone number: 480-242-5583</p>
             <img src="Sweetsvenmo.jpg" alt="Venmo QR Code" style="max-width: 220px; width: 100%; border-radius: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.08);">
           </div>
         </div>
+
         <button class="app-download-btn" style="width: 100%; background: var(--text-main);" onclick="closeModal('requestModal')">I Have Sent Payment</button>
       </div>
-    </div>
-  </div>
-
-  <!-- Recipe Detail Modal -->
-  <div class="modal-overlay" id="recipeModal">
-    <div class="modal-content">
-      <button class="close-btn" onclick="closeModal('recipeModal')">&times;</button>
-      <div id="modalBody"></div>
     </div>
   </div>
 
@@ -612,6 +742,7 @@
   </footer>
 
   <script>
+    // --- Dark Mode Logic ---
     window.toggleDarkMode = function() {
       document.documentElement.classList.toggle('dark-mode');
       const btn = document.getElementById('darkModeBtn');
@@ -629,25 +760,40 @@
       setTimeout(() => { toast.style.display = 'none'; }, 4000);
     };
 
+    let confirmCallback = null;
+    window.showCustomConfirm = function(message, onConfirm) {
+      document.getElementById('confirmText').innerText = message;
+      document.getElementById('customConfirmModal').style.display = 'flex';
+      confirmCallback = onConfirm;
+    };
+    window.closeConfirmModal = function(result) {
+      document.getElementById('customConfirmModal').style.display = 'none';
+      if (result && confirmCallback) confirmCallback();
+      confirmCallback = null;
+    };
+
     window.openAboutModal = function() { document.getElementById('aboutModal').style.display = 'flex'; };
-    window.openLoginModal = function() { window.showToast("Login portal is temporarily disabled for fall updates."); };
+    window.openLoginModal = function() { 
+      document.getElementById('recipeModal').style.display = 'none';
+      document.getElementById('loginModal').style.display = 'flex';
+      window.showMainAuthView();
+    };
     window.closeModal = function(modalId) { document.getElementById(modalId).style.display = 'none'; };
 
     // --- Interactive Cart System ---
     const cartProducts = [
       { id: 'c_bbe', name: "Brown Butter Espresso Cookie", price: 4.50, type: "cookie" },
-      { id: 'c_card', name: "Spiced Cardamom Crumb Cookie", price: 4.50, type: "cookie" },
+      { id: 'c_card', name: "Spiced Cardamom Cookie", price: 4.50, type: "cookie" },
       { id: 'c_dub', name: "Golden Dubai Cookie", price: 6.00, type: "cookie" },
       { id: 'c_ps', name: "Pumpkin Spice Brown Butter Cookie", price: 4.50, type: "cookie" },
-      { id: 'c_pie', name: "Pumpkin Oatmeal Cream Pie", price: 5.00, type: "cookie" },
-      { id: 'c_coffee', name: "Coffee Cake Cardamom Cookie", price: 4.50, type: "cookie" },
-      { id: 'mac_ps', name: "Pumpkin Spice Macarons (Half-Dozen)", price: 16.00, type: "macaron" },
-      { id: 'mac_bsc', name: "Brown Sugar Cinnamon Macarons (Half-Dozen)", price: 16.00, type: "macaron" },
-      { id: 'mac_maple', name: "Maple Pecan Macarons (Half-Dozen)", price: 16.00, type: "macaron" },
-      { id: 'mac_sc', name: "Salted Caramel Macarons (Half-Dozen)", price: 16.00, type: "macaron" },
-      { id: 'mac_van', name: "Vanilla Macarons (Half-Dozen)", price: 16.00, type: "macaron" },
-      { id: 'p_cinn', name: "Fluffy Cinnamon Rolls (Box of 4)", price: 22.00, type: "pastry" },
-      { id: 'p_banana', name: "Thick-Cut Chocolate Chip Banana Bread", price: 4.50, type: "pastry" },
+      { id: 'c_cc', name: "Coffee Cake Cookies", price: 4.50, type: "cookie" },
+      { id: 'mac_ps', name: "Pumpkin Spice Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
+      { id: 'mac_bsc', name: "Brown Sugar Cinnamon Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
+      { id: 'mac_maple', name: "Maple Pecan Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
+      { id: 'mac_sc', name: "Salted Caramel Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
+      { id: 'mac_van', name: "Vanilla Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
+      { id: 'p_bb', name: "Thick-Cut Chocolate Chip Banana Bread", price: 5.00, type: "pastry" },
+      { id: 'p_cinn', name: "Fluffy Cinnamon Roll", price: 6.00, type: "pastry" },
       { id: 'p_brn', name: "Velvet Crinkle Brown Butter Brownie", price: 5.00, type: "pastry" },
       { id: 'p_brk', name: "Signature Fudgy Brookie", price: 5.00, type: "pastry" },
       { id: 'cup_tir', name: "Cloud Nine Tiramisu Cup", price: 7.50, type: "cup" },
@@ -658,25 +804,11 @@
     
     let userCart = {};
 
-    const fallItems = ['c_ps', 'c_pie', 'c_coffee', 'mac_ps', 'mac_bsc', 'mac_maple', 'cup_apple', 'p_banana'];
-
-    window.triggerFallAnimation = function() {
-      const popup = document.getElementById('autumnPopup');
-      popup.classList.add('show');
-      setTimeout(() => { popup.classList.remove('show'); }, 2500);
-    };
-
     window.addDirectToCart = function(id) {
       if (!userCart[id]) userCart[id] = 0;
       userCart[id] += 1;
-      
-      if (fallItems.includes(id)) {
-        window.triggerFallAnimation();
-      } else {
-        window.showToast("Added to your cart! 🛒");
-      }
-
       window.renderCartUI();
+      window.showToast("Added to your cart! 🛒");
       
       const cartBtn = document.getElementById('mainCartBtn');
       cartBtn.classList.remove('cart-bump');
@@ -730,7 +862,9 @@
 
       const fulfillmentVal = document.getElementById('deliverySelect') ? document.getElementById('deliverySelect').value : '';
       let deliveryFee = 0;
-      if (fulfillmentVal.includes('Gilbert Delivery')) deliveryFee = 2;
+      if (fulfillmentVal.includes('Gilbert Delivery')) {
+        deliveryFee = 2;
+      }
       if (deliveryFee > 0 && hasItems) orderDetailsString += `Fulfillment: ${fulfillmentVal}\n`;
       
       let finalTotal = hasItems ? subtotal + deliveryFee : 0;
@@ -789,6 +923,15 @@
       }
     };
 
+    window.handleNewsletter = function() {
+      if (window.currentUser) {
+        const name = window.currentUser.displayName ? window.currentUser.displayName.split(' ')[0] : "there";
+        window.showToast("You're already on the list, " + name + "! ✨");
+      } else {
+        window.openLoginModal();
+      }
+    };
+
     // --- Original Timer & Recipe Render Logic ---
     window.updateTimerUI = function() {
       const globalTimer = document.getElementById('globalTimer');
@@ -810,10 +953,14 @@
         globalTimer.style.display = 'flex';
         globalTimerText.innerText = `${label} - ${timeString}`;
       }
+
       if (modalTimerContainer) {
         modalTimerContainer.innerHTML = `
           <div class="timer-widget">
-            <div><div class="timer-label">${label}</div><div class="timer-time">${timeString}</div></div>
+            <div>
+              <div class="timer-label">${label}</div>
+              <div class="timer-time">${timeString}</div>
+            </div>
             <button class="timer-stop" onclick="stopTimer()">Stop</button>
           </div>
         `;
@@ -824,6 +971,7 @@
       if (window.timerInterval) clearInterval(window.timerInterval);
       window.activeTimer = { seconds: seconds, label: label };
       window.updateTimerUI();
+
       window.timerInterval = setInterval(() => {
         window.activeTimer.seconds--;
         if (window.activeTimer.seconds <= 0) {
@@ -857,6 +1005,32 @@
       }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
 
       document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+    };
+
+    window.showPhoneAuthView = function() {
+      document.getElementById('mainAuthView').style.display = 'none';
+      document.getElementById('phoneAuthView').style.display = 'block';
+      document.getElementById('smsCodeSection').style.display = 'none';
+      document.getElementById('sendSmsBtn').style.display = 'block';
+      document.getElementById('authPhone').value = '';
+      document.getElementById('authCode').value = '';
+      document.getElementById('phoneUserName').value = '';
+    };
+
+    window.showMainAuthView = function() {
+      document.getElementById('phoneAuthView').style.display = 'none';
+      document.getElementById('mainAuthView').style.display = 'block';
+    };
+
+    window.formatWebsitePhone = function(input) {
+      const cleaned = input.value.replace(/\D/g, '');
+      if (cleaned.length === 0) { input.value = ''; return; }
+      let formatted = '+1 ';
+      const coreNumber = cleaned.startsWith('1') ? cleaned.substring(1) : cleaned;
+      if (coreNumber.length > 0) formatted += `(${coreNumber.substring(0, 3)}`;
+      if (coreNumber.length >= 4) formatted += `) ${coreNumber.substring(3, 6)}`;
+      if (coreNumber.length >= 7) formatted += `-${coreNumber.substring(6, 10)}`;
+      input.value = formatted;
     };
 
     window.activeUnitMode = 'US';
@@ -970,7 +1144,7 @@
           { text: 'Preheat the oven to 350°F. To make the dough, combine the butter, oil and brown sugar. Mix for a couple minutes until it is smooth. The mixture should be lighter in color and fluffy. Add the egg and vanilla and mix again. Add the remaining ingredients and mix until just combined.' },
           { text: 'To make the streusel, combine all the ingredients in a bowl and mix with a spoon or your hand. Start with 1/3 cup of flour. The mixture should stick together, but should also crumble when you run it through your fingers. If it isn\'t crumbling, add 1 tbsp additions of flour until it crumbles.' },
           { text: 'Using a large (1/4 cup) cookie scoop, scoop a ball of dough onto a lined baking sheet. Using the back of your cookie scoop or your fingers, make an indent on the top of the dough. Sprinkle a couple tablespoons of the streusel on the top of the cookie, into the indent.' },
-          { text: 'Bake the cookies at 350 for 18-20 minutes. While they are baking, make the icing. Combine the 1/2 cup powdered sugar and 1 tbsp cream cheese together until well combined, then add 1 tbsp milk, and 1/4 tsp vanilla in a small bowl and whisk until it\'s smooth and runny. After well combined add as much cardamom until it tastes good. Once the cookies have cooled slightly, drizzle on lots of icing! Enjoy!', timer: 1140, timerLabel: 'Bake Cookies' }
+          { text: 'Bake the cookies at 350 for 18-20 minutes, it took me 19 minutes to bake first time. While they are baking, make the icing. Combine the 1/2 cup powdered sugar and 1 tbsp cream cheese together until well combined, then add 1 tbsp milk, and 1/4 tsp vanilla in a small bowl and whisk until it\'s smooth and runny. After well combined add as much cardamom until it tastes good. Once the cookies have cooled slightly, drizzle on lots of icing! Enjoy!', timer: 1140, timerLabel: 'Bake Cookies' }
         ]
       },
       {
@@ -1104,7 +1278,9 @@
       const modalBody = document.getElementById('modalBody');
       const baseIngredients = window.activeUnitMode === 'US' ? recipe.ingredientsUS : recipe.ingredientsM;
 
-      let instructionsHtml = `
+      let instructionsHtml = "";
+      if (!window.currentUser) {
+        instructionsHtml = `
           <div class="locked-container">
             <div class="blurred-text">
               <ol style="padding-left: 1.5rem; line-height: 2;">
@@ -1121,6 +1297,17 @@
             </div>
           </div>
         `;
+      } else {
+        instructionsHtml = `
+          <ol style="padding-left: 1.5rem; line-height: 2; margin-top: 1rem; color: var(--text-main);">
+            ${recipe.steps.map(stepObj => `
+              <li style="margin-bottom: 0.8rem;">
+                ${stepObj.text}${stepObj.timer ? `<br><button class="inline-timer-btn" onclick="triggerTimer(${stepObj.timer}, '${stepObj.timerLabel}')">⏱️ Start Timer</button>` : ''}
+              </li>
+            `).join('')}
+          </ol>
+        `;
+      }
 
       modalBody.innerHTML = `
         <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; color: var(--accent-brown); margin-bottom: 0.25rem;">${recipe.title}</h2>
@@ -1169,6 +1356,199 @@
       window.renderRecipes(window.recipes);
       window.initScrollAnimations();
     });
+  </script>
+
+  <!-- Firebase Auth Script -->
+  <script type="module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+   import {  
+  getAuth, onAuthStateChanged, GoogleAuthProvider, OAuthProvider,
+  signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber,
+  signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  sendEmailVerification, updateProfile, signOut,
+  setPersistence, browserSessionPersistence
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2NAV9FP1Ac8EizCyLZW8Oap-AxjdpYQo",
+      authDomain: "sallys-sweets.firebaseapp.com",
+      projectId: "sallys-sweets",
+      storageBucket: "sallys-sweets.firebasestorage.app",
+      messagingSenderId: "294297383937",
+      appId: "1:294297383937:web:a66acf8031233517adfc00",
+      measurementId: "G-5GK0F3D3MW"
+    };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Auto-logout after 2 hours (7200000 milliseconds) of inactivity
+    let inactivityTimer;
+    function resetInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        if (auth.currentUser) {
+          signOut(auth).then(() => {
+            window.showToast("You have been logged out due to inactivity.");
+          });
+        }
+      }, 7200000); 
+    }
+
+    // Reset the timer whenever the user moves their mouse, types, or clicks
+    window.addEventListener('mousemove', resetInactivityTimer);
+    window.addEventListener('keypress', resetInactivityTimer);
+    window.addEventListener('click', resetInactivityTimer);
+    
+    // Start the timer when they load the page
+    resetInactivityTimer();
+    
+
+    window.currentUser = null;
+
+    onAuthStateChanged(auth, (user) => {
+      window.currentUser = user;
+      const mainLoginBtn = document.getElementById('mainLoginBtn');
+      
+      if (user) {
+        const nameToShow = user.displayName || user.email?.split('@')[0] || user.phoneNumber || "Member";
+        mainLoginBtn.innerText = "Log Out (" + nameToShow + ")";
+        mainLoginBtn.onclick = () => {
+          window.showCustomConfirm("Are you sure you want to log out of your account?", () => {
+            signOut(auth).then(() => {
+              window.showToast("You have been signed out successfully.");
+            });
+          });
+        };
+        window.closeModal('loginModal');
+      } else {
+        mainLoginBtn.innerText = "Login / Sign Up";
+        mainLoginBtn.onclick = () => window.openLoginModal();
+      }
+
+      if (window.recipes) {
+        window.renderRecipes(window.recipes);
+      }
+    });
+
+    window.handleGoogleLogin = async () => {
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const userName = result.user.displayName || "there";
+        window.showToast("Welcome back, " + userName + "! 🎉");
+        window.closeModal('loginModal');
+      } catch(error) {
+        window.showToast("Google Login Error: " + error.message);
+      }
+    };
+
+    window.handleAppleLogin = async () => {
+      const provider = new OAuthProvider('apple.com');
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const userName = result.user.displayName || "there";
+        window.showToast("Welcome back, " + userName + "! 🎉");
+        window.closeModal('loginModal');
+      } catch(error) {
+        window.showToast("Apple Login Error: " + error.message);
+      }
+    };
+
+    window.confirmationResultObj = null;
+
+    window.sendSmsCode = async () => {
+      let rawInput = document.getElementById('authPhone').value.trim();
+      let phoneNumber = rawInput.replace(/[\s-()]/g, '');
+      if (phoneNumber.length === 10 && !phoneNumber.startsWith('+')) phoneNumber = '+1' + phoneNumber;
+
+      if (!phoneNumber || phoneNumber.length < 11) {
+        return window.showToast("Please enter a valid 10-digit phone number.");
+      }
+
+      if (!document.getElementById('recaptcha-container')) {
+        const recaptchaDiv = document.createElement('div');
+        recaptchaDiv.setAttribute('id', 'recaptcha-container');
+        recaptchaDiv.style.marginTop = '10px';
+        document.getElementById('loginModal').querySelector('.vip-box').appendChild(recaptchaDiv);
+      }
+
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+      }
+
+      try {
+        window.confirmationResultObj = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+        document.getElementById('sendSmsBtn').style.display = 'none';
+        document.getElementById('smsCodeSection').style.display = 'block';
+        window.showToast("Code Sent 📱 Check your phone for the SMS verification code.");
+        setTimeout(() => document.getElementById('phoneUserName').focus(), 100);
+      } catch (error) {
+        window.showToast("Phone Login Error: " + error.message);
+      }
+    };
+
+    window.verifySmsCode = async () => {
+      const code = document.getElementById('authCode').value;
+      const userName = document.getElementById('phoneUserName').value.trim();
+      
+      if (!userName) { return window.showToast("Please enter your name to continue."); }
+      if (!code) { return window.showToast("Please enter the 6-digit code."); }
+      if (!window.confirmationResultObj) return;
+
+      try {
+        const result = await window.confirmationResultObj.confirm(code);
+        await updateProfile(result.user, { displayName: userName });
+        const mainLoginBtn = document.getElementById('mainLoginBtn');
+        mainLoginBtn.innerText = "Log Out (" + userName + ")";
+        window.showToast("Welcome back! 🎉 You are now signed in.");
+        window.closeModal('loginModal');
+      } catch (error) {
+        window.showToast("Invalid code: " + error.message);
+      }
+    };
+
+    window.handleEmailAuth = async () => {
+      const name = document.getElementById('authName').value.trim();
+      const email = document.getElementById('authEmail').value.trim();
+      const pass = document.getElementById('authPass').value.trim();
+      const confirmPass = document.getElementById('authConfirmPass').value.trim();
+      const errorDiv = document.getElementById('passwordError');
+
+      if (!email || !pass) return window.showToast("Please enter both an email and password.");
+      errorDiv.style.display = 'none';
+
+      try {
+        const userCred = await signInWithEmailAndPassword(auth, email, pass);
+        const displayName = userCred.user.displayName || email.split('@')[0];
+        window.showToast("Welcome back, " + displayName + "! 🎉");
+        window.closeModal('loginModal');
+      } catch(error) {
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential' || error.code === 'auth/invalid-login-credentials') {
+          if (confirmPass && pass !== confirmPass) {
+            errorDiv.style.display = 'block';
+            return;
+          }
+          try {
+            const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+            if (name) { await updateProfile(userCred.user, { displayName: name }); }
+            await sendEmailVerification(userCred.user);
+            const finalName = name || email.split('@')[0];
+            window.showToast("Welcome to Sally's Sweets, " + finalName + "! 🎉 Check your email for verification.");
+            window.closeModal('loginModal');
+          } catch(createError) {
+            if (createError.code === 'auth/email-already-in-use') {
+              window.showToast("An account with this email already exists. Please log in instead.");
+            } else {
+              window.showToast("Error: " + createError.message);
+            }
+          }
+        } else if (error.code === 'auth/email-already-in-use') {
+          window.showToast("An account with this email already exists. Please log in instead.");
+        } else {
+          window.showToast("Login Error: " + error.message);
+        }
+      }
+    };
   </script>
 </body>
 </html>
