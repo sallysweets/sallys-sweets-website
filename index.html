@@ -1,16 +1,3 @@
-Adding a **Catering & Large Orders** section is a fantastic idea for a bakery business! It opens the door for higher-ticket sales—like birthdays, ASU student events, graduation parties, and family gatherings—where customers order in bulk rather than just single items.
-
-### What to Offer in a Catering & Large Orders Section:
-
-1. **The Dessert Grazing / Cookie Spread Box:** A curated assortment of your signature cookies (Brown Butter Espresso, Pumpkin Spice, Coffee Cake, and Cinnamon Sugar Pumpkin Butter Sugar Cookies) arranged nicely for sharing.
-2. **Macaron Towers & Gift Boxes:** Half-dozen or dozen boxes in custom flavor assortments (like Pumpkin Spice, Brown Sugar Cinnamon, Maple Pecan, and Salted Caramel) packaged securely for events.
-3. **Mini Artisan Cup Platters:** Multipacks of your popular artisan dessert cups (like the Cloud Nine Tiramisu Cups and Biscoff Cheesecake Cups) configured for party hosting.
-
----
-
-Here is your complete, updated code with the Biscoff Cheesecake Cups restored right under the Tiramisu Cup, the Oreo Krispie thumbnail image linked, and the brand-new **Catering & Large Orders** section added right above the checkout form!
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -205,23 +192,18 @@ Here is your complete, updated code with the Biscoff Cheesecake Cups restored ri
     }
 
     /* Menu Styles */
-    .menu-section { background-color: var(--card-bg); padding: 4rem 1.5rem 2rem; margin-top: 2rem; }
-    .menu-header { text-align: center; margin-bottom: 3.5rem; }
+    .menu-section { background-color: var(--card-bg); padding: 5rem 1.5rem 2rem; margin-top: 2rem; }
+    .menu-header { text-align: center; margin-bottom: 4rem; }
     .menu-badge { background: var(--pill-bg); color: var(--accent-brown); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; margin-bottom: 1rem; }
     .menu-badge svg { margin-right: 6px; color: var(--accent-gold); }
     .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 3rem; max-width: 1100px; margin: 0 auto; }
     .menu-category { margin-bottom: 1rem; }
     .menu-category-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); border-bottom: 1px solid var(--soft-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;}
-    
-    /* Menu Item Thumbnail Layout */
-    .menu-item { display: flex; gap: 15px; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 1px solid rgba(0,0,0,0.06); }
-    .menu-item-thumb { width: 75px; height: 75px; border-radius: 12px; object-fit: cover; flex-shrink: 0; border: 1px solid var(--soft-border); cursor: pointer; transition: transform 0.2s; }
-    .menu-item-thumb:hover { transform: scale(1.05); }
-    .menu-item-details { flex: 1; }
-    .menu-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.2rem; }
+    .menu-item { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .menu-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem; }
     .menu-item-name { font-weight: 600; color: var(--text-main); font-size: 1.05rem; flex: 1; padding-right: 10px; }
     .menu-item-price { font-weight: 700; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap; }
-    .menu-item-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-top: 2px; }
+    .menu-item-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-top: 5px; }
     
     .add-to-cart-btn { background: #FFF; color: var(--accent-brown); border: 1px solid var(--soft-border); padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; margin-top: 6px; display: inline-block; }
     .add-to-cart-btn:hover { background: var(--accent-brown); color: #FFF; border-color: var(--accent-brown); }
@@ -232,13 +214,6 @@ Here is your complete, updated code with the Biscoff Cheesecake Cups restored ri
     .preorder-action-btn { background: var(--accent-brown); color: #FFF; border: none; padding: 16px 36px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; box-shadow: 0 8px 20px rgba(84, 51, 37, 0.2); }
     .preorder-action-btn:hover { transform: translateY(-3px); background: #3d2319; }
     .preorder-action-btn:disabled { background: var(--text-muted); cursor: not-allowed; box-shadow: none; transform: none; }
-
-    /* Lightbox Modal for Menu Item Image Zoom */
-    .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: center; z-index: 4000; padding: 1.5rem; }
-    .lightbox-content { max-width: 600px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.3); background: #000; text-align: center; }
-    .lightbox-content img { width: 100%; max-height: 80vh; object-fit: contain; display: block; }
-    .lightbox-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); color: #FFF; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: background 0.2s; }
-    .lightbox-close:hover { background: rgba(0,0,0,0.9); }
 
     /* Aesthetic Reviews Carousel Section */
     .reviews-section {
@@ -453,14 +428,6 @@ Here is your complete, updated code with the Biscoff Cheesecake Cups restored ri
     </div>
   </div>
 
-  <!-- Lightbox Modal for Menu Item Previews -->
-  <div class="lightbox-overlay" id="lightboxModal" onclick="closeLightbox()">
-    <div class="lightbox-content" onclick="event.stopPropagation()">
-      <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-      <img id="lightboxImg" src="" alt="Menu Item Preview">
-    </div>
-  </div>
-
   <!-- Header -->
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
@@ -498,13 +465,13 @@ Here is your complete, updated code with the Biscoff Cheesecake Cups restored ri
   </section>
 
   <!-- WEEKLY FEATURE / COMBO OF THE WEEK BANNER -->
-  <div class="weekly-feature-banner reveal-on-scroll">
+  <div class="weekly-feature-banner reveal-on-scroll" style="max-width: 1000px; margin: 3rem auto 1rem; background: linear-gradient(135deg, var(--accent-brown), #3d2319); color: #FAF7F2; border-radius: 20px; padding: 2rem 2.5rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(84, 51, 37, 0.2); flex-wrap: wrap; gap: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
     <div>
-      <span class="weekly-badge">⭐ Flavor of the Week Feature</span>
-      <h3 class="weekly-title">Pumpkin Spice Cookie &amp; Tiramisu Cup Combo</h3>
-      <p class="weekly-desc">Pair our cozy Pumpkin Spice Brown Butter Cookie with our signature Cloud Nine Tiramisu Cup for the ultimate fall treat experience!</p>
+      <span class="weekly-badge" style="background: var(--accent-gold); color: #FFF; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 0.5rem;">⭐ Flavor of the Week Feature</span>
+      <h3 class="weekly-title" style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 500; margin-bottom: 0.25rem;">Pumpkin Spice Cookie &amp; Tiramisu Cup Combo</h3>
+      <p class="weekly-desc" style="font-size: 0.95rem; color: #D4C5BE;">Pair our cozy Pumpkin Spice Brown Butter Cookie with our signature Cloud Nine Tiramisu Cup for the ultimate fall treat experience!</p>
     </div>
-    <button class="weekly-action" onclick="openRequestModal()">Order Weekly Combo</button>
+    <button class="weekly-action" onclick="openRequestModal()" style="background: var(--accent-gold); color: #FFF; border: none; padding: 12px 24px; border-radius: 30px; font-weight: 700; cursor: pointer;">Order Weekly Combo</button>
   </div>
 
   <!-- INTERACTIVE TEXT PRE-ORDER MENU -->
@@ -524,101 +491,80 @@ Here is your complete, updated code with the Biscoff Cheesecake Cups restored ri
         <h3 class="menu-category-title">Signature Cookies & Bars</h3>
         
         <div class="menu-item">
-          <img src="Biscoff Krispie.jpg" alt="Biscoff Krispie" class="menu-item-thumb" onclick="openLightbox('Biscoff Krispie.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Homemade Biscoff Cookie Butter Krispie</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$4.50 / large sq.</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('rk_bisc')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Homemade Biscoff Cookie Butter Krispie</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$4.50 / large sq.</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('rk_bisc')">+ Add</button>
             </div>
-            <p class="menu-item-desc">A massive, thick-cut marshmallow treat loaded with melted cookie butter and crushed Biscoff.</p>
           </div>
+          <p class="menu-item-desc">A massive, thick-cut marshmallow treat loaded with melted cookie butter and crushed Biscoff.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Cookies n Cream Krispie.jpg" alt="Cookies & Cream Krispie" class="menu-item-thumb" onclick="openLightbox('Cookies n Cream Krispie.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Cookies & Cream Oreo Krispie</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$4.50 / large sq.</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('rk_cnc')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Cookies & Cream Oreo Krispie</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$4.50 / large sq.</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('rk_cnc')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Our thick gourmet Krispie loaded with crushed Oreos and white chocolate drizzle.</p>
           </div>
+          <p class="menu-item-desc">Our thick gourmet Krispie loaded with crushed Oreos and white chocolate drizzle.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Brown Butter Krispie.jpg" alt="Brown Butter Krispie" class="menu-item-thumb" onclick="openLightbox('Brown Butter Krispie.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Brown Butter Sea Salt Krispie</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$4.00 / large sq.</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('rk_bb')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Brown Butter Sea Salt Krispie</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$4.00 / large sq.</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('rk_bb')">+ Add</button>
             </div>
-            <p class="menu-item-desc">A sophisticated take on the classic using deeply browned butter and flaky sea salt.</p>
           </div>
+          <p class="menu-item-desc">A sophisticated take on the classic using deeply browned butter and flaky sea salt.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Brown Butter Choc Chip.jpg" alt="Brown Butter Espresso Cookie" class="menu-item-thumb" onclick="openLightbox('Brown Butter Choc Chip.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">The Signature Brown Butter Espresso Cookie</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$4.50 / large</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('c_bbe')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">The Signature Brown Butter Espresso Cookie</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$4.50 / large</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('c_bbe')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Deep, caramelized flavors with a rich espresso kick and dark chocolate pools.</p>
           </div>
+          <p class="menu-item-desc">Deep, caramelized flavors with a rich espresso kick and dark chocolate pools.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Pumpkin Spice Cookie.jpg" alt="Pumpkin Spice Cookie" class="menu-item-thumb" onclick="openLightbox('Pumpkin Spice Cookie.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Pumpkin Spice Brown Butter Cookie</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$4.50 / large</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('c_ps')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Pumpkin Spice Brown Butter Cookie</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$4.50 / large</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('c_ps')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Rich brown butter dough packed with warm autumn spices, blotted pumpkin puree, and semi-sweet chocolate.</p>
           </div>
+          <p class="menu-item-desc">Rich brown butter dough packed with warm autumn spices, blotted pumpkin puree, and semi-sweet chocolate.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Pumpkin Sugar Cookie.jpg" alt="Pumpkin Sugar Cookie" class="menu-item-thumb" onclick="openLightbox('Pumpkin Sugar Cookie.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Cinnamon Sugar Pumpkin Butter Sugar Cookies</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$4.50 / large</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('c_psug')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Cinnamon Sugar Pumpkin Butter Sugar Cookies</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$4.50 / large</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('c_psug')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Tender sugar cookies centered with rich pumpkin butter and rolled in cinnamon sugar.</p>
           </div>
+          <p class="menu-item-desc">Tender sugar cookies centered with rich pumpkin butter and rolled in cinnamon sugar.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Coffee Cake Pic.jpg" alt="Coffee Cake Cookies" class="menu-item-thumb" onclick="openLightbox('Coffee Cake Pic.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Coffee Cake Cookies</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$4.50 / large</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('c_cc')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Coffee Cake Cookies</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$4.50 / large</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('c_cc')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.</p>
           </div>
+          <p class="menu-item-desc">Soft cinnamon brown sugar cookies topped with buttery crumble streusel and a fragrant cardamom cream cheese drizzle.</p>
         </div>
       </div>
 
@@ -627,115 +573,91 @@ Here is your complete, updated code with the Biscoff Cheesecake Cups restored ri
         <h3 class="menu-category-title">Pastries & Macarons</h3>
         
         <div class="menu-item">
-          <img src="Pumpkin Macarons.jpg" alt="Pumpkin Spice Macarons" class="menu-item-thumb" onclick="openLightbox('Pumpkin Macarons.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Pumpkin Spice Macarons</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$16.00 / half-dz</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('mac_ps')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Pumpkin Spice Macarons</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$16.00 / half-dz</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('mac_ps')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Delicate shells filled with a spiced pumpkin buttercream.</p>
           </div>
+          <p class="menu-item-desc">Delicate shells filled with a spiced pumpkin buttercream.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Brown Sugar Cinnamon Macarons.jpg" alt="Brown Sugar Cinnamon Macarons" class="menu-item-thumb" onclick="openLightbox('Brown Sugar Cinnamon Macarons.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Brown Sugar Cinnamon Macarons</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$16.00 / half-dz</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('mac_bsc')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Brown Sugar Cinnamon Macarons</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$16.00 / half-dz</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('mac_bsc')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Warm, cozy notes of dark brown sugar and cinnamon spice.</p>
           </div>
+          <p class="menu-item-desc">Warm, cozy notes of dark brown sugar and cinnamon spice.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Maple Pecan Macarons.jpg" alt="Maple Pecan Macarons" class="menu-item-thumb" onclick="openLightbox('Maple Pecan Macarons.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Maple Pecan Macarons</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$16.00 / half-dz</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('mac_maple')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Maple Pecan Macarons</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$16.00 / half-dz</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('mac_maple')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Rich maple buttercream centered with toasted pecans.</p>
           </div>
+          <p class="menu-item-desc">Rich maple buttercream centered with toasted pecans.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Salted Caramel Macarons.jpg" alt="Salted Caramel Macarons" class="menu-item-thumb" onclick="openLightbox('Salted Caramel Macarons.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Salted Caramel Macarons</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$16.00 / half-dz</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('mac_sc')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Salted Caramel Macarons</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$16.00 / half-dz</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('mac_sc')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Sweet and salty perfection featuring homemade gourmet caramel.</p>
           </div>
+          <p class="menu-item-desc">Sweet and salty perfection featuring homemade gourmet caramel.</p>
         </div>
         
         <div class="menu-item">
-          <img src="Vanilla Macarons.jpg" alt="Vanilla Macarons" class="menu-item-thumb" onclick="openLightbox('Vanilla Macarons.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Vanilla Macarons</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$16.00 / half-dz</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('mac_van')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Vanilla Macarons</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$16.00 / half-dz</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('mac_van')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Elegant and simple with pure vanilla bean paste.</p>
           </div>
+          <p class="menu-item-desc">Elegant and simple with pure vanilla bean paste.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Banana Bread.jpg" alt="Banana Bread" class="menu-item-thumb" onclick="openLightbox('Banana Bread.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Thick-Cut Chocolate Chip Banana Bread</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$5.00 / slice</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('p_bb')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Thick-Cut Chocolate Chip Banana Bread</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$5.00 / slice</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('p_bb')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Incredibly moist, thick-cut bakery slices loaded with dark chocolate chips.</p>
           </div>
+          <p class="menu-item-desc">Incredibly moist, thick-cut bakery slices loaded with dark chocolate chips.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Cinnamon Rolls.jpg" alt="Cinnamon Rolls" class="menu-item-thumb" onclick="openLightbox('Cinnamon Rolls.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Sally's Famous Fluffy Cinnamon Rolls</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$6.00 / jumbo</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('p_cinn')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Sally's Famous Fluffy Cinnamon Rolls</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$6.00 / jumbo</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('p_cinn')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Cloud-like dough swirled with rich cinnamon sugar and velvety cream cheese glaze.</p>
           </div>
+          <p class="menu-item-desc">Cloud-like dough swirled with rich cinnamon sugar and velvety cream cheese glaze.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Signature Brownies Espresso Pic.jpg" alt="Brownies" class="menu-item-thumb" onclick="openLightbox('Signature Brownies Espresso Pic.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Velvet Crinkle Brown Butter Brownies</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$5.00 / large</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('p_brn')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Velvet Crinkle Brown Butter Brownies</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$5.00 / large</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('p_brn')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Ultra-fudgy, dark Dutch-processed cocoa brownies finished with a flawless glossy crinkle top.</p>
           </div>
+          <p class="menu-item-desc">Ultra-fudgy, dark Dutch-processed cocoa brownies finished with a flawless glossy crinkle top.</p>
         </div>
       </div>
 
@@ -744,69 +666,60 @@ Here is your complete, updated code with the Biscoff Cheesecake Cups restored ri
         <h3 class="menu-category-title">Artisan Cups & Mediterranean</h3>
         
         <div class="menu-item">
-          <img src="Tiramisu Cup.jpg" alt="Tiramisu Cup" class="menu-item-thumb" onclick="openLightbox('Tiramisu Cup.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Cloud Nine Tiramisu Cup</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$7.50 / cup</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('cup_tir')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Cloud Nine Tiramisu Cup</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$7.50 / cup</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('cup_tir')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Classic Italian layers of bold espresso-soaked ladyfingers and airy whipped mascarpone.</p>
           </div>
+          <p class="menu-item-desc">Classic Italian layers of bold espresso-soaked ladyfingers and airy whipped mascarpone.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Biscoff Cheesecake Cup.jpg" alt="Biscoff Cheesecake Cup" class="menu-item-thumb" onclick="openLightbox('Biscoff Cheesecake Cup.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Biscoff Dream Cheesecake Cup</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$7.50 / cup</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('cup_bisc')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Biscoff Dream Cheesecake Cup</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$7.50 / cup</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('cup_bisc')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Rich vanilla bean cheesecake layered with melted Biscoff cookie butter and crushed Biscoff bits.</p>
           </div>
+          <p class="menu-item-desc">Rich vanilla bean cheesecake layered with melted Biscoff cookie butter and crushed Biscoff bits.</p>
         </div>
 
         <div class="menu-item">
-          <img src="Kunafa.jpg" alt="Cheese Kunafa" class="menu-item-thumb" onclick="openLightbox('Kunafa.jpg')" onerror="this.style.display='none'">
-          <div class="menu-item-details">
-            <div class="menu-item-header">
-              <span class="menu-item-name">Golden Crisp Cheese Kunafa</span>
-              <div style="text-align: right;">
-                <span class="menu-item-price">$8.00 / 6" pan</span><br>
-                <button class="add-to-cart-btn" onclick="addDirectToCart('m_kun')">+ Add</button>
-              </div>
+          <div class="menu-item-header">
+            <span class="menu-item-name">Golden Crisp Cheese Kunafa</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$8.00 / 6" pan</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('m_kun')">+ Add</button>
             </div>
-            <p class="menu-item-desc">Sweet cheese layered with crispy shredded phyllo, soaked in fragrant syrup.</p>
           </div>
+          <p class="menu-item-desc">Sweet cheese layered with crispy shredded phyllo, soaked in fragrant syrup.</p>
         </div>
       </div>
     </div>
 
     <!-- CATERING & LARGE ORDERS SECTION -->
-    <section class="catering-section reveal-on-scroll">
+    <section class="catering-section" style="max-width: 1000px; margin: 3rem auto; background: var(--card-bg); border: 1px solid var(--soft-border); border-radius: 20px; padding: 3rem 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
       <div class="category-tag" style="margin-bottom: 0.5rem; text-align: center;">EVENT SERVICES</div>
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); text-align: center; margin-bottom: 0.5rem;">Catering &amp; Large Orders</h2>
       <p style="text-align: center; color: var(--text-muted); font-size: 0.95rem; max-width: 600px; margin: 0 auto;">Hosting an ASU student event, birthday party, or family gathering? Let Sally's Sweets sweeten your celebration with custom bulk platters and dessert spreads.</p>
       
-      <div class="catering-grid">
-        <div class="catering-card">
-          <h4>🍪 Cookie Spread Boxes</h4>
-          <p>Assorted boxes of our gourmet signature cookies (Brown Butter Espresso, Pumpkin Spice, Coffee Cake) baked fresh for your group.</p>
+      <div class="catering-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+        <div class="catering-card" style="background: var(--bg-main); border: 1px solid var(--soft-border); border-radius: 14px; padding: 1.5rem; text-align: left;">
+          <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin-bottom: 0.5rem;">🍪 Cookie Spread Boxes</h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Assorted boxes of our gourmet signature cookies (Brown Butter Espresso, Pumpkin Spice, Coffee Cake) baked fresh for your group.</p>
           <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Custom Pricing by Headcount</span>
         </div>
-        <div class="catering-card">
-          <h4>🧁 Artisan Cup Platters</h4>
-          <p>Multipacks of our famous Cloud Nine Tiramisu and Biscoff Dream Cheesecake cups, complete with individual spoons.</p>
+        <div class="catering-card" style="background: var(--bg-main); border: 1px solid var(--soft-border); border-radius: 14px; padding: 1.5rem; text-align: left;">
+          <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin-bottom: 0.5rem;">🧁 Artisan Cup Platters</h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Multipacks of our famous Cloud Nine Tiramisu and Biscoff Dream Cheesecake cups, complete with individual spoons.</p>
           <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Minimum 12 Cups</span>
         </div>
-        <div class="catering-card">
-          <h4>🎁 Macaron Gift Boxes</h4>
-          <p>Elegant half-dozen or full-dozen boxes featuring seasonal fall flavors like Pumpkin Spice and Maple Pecan.</p>
+        <div class="catering-card" style="background: var(--bg-main); border: 1px solid var(--soft-border); border-radius: 14px; padding: 1.5rem; text-align: left;">
+          <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin-bottom: 0.5rem;">🎁 Macaron Gift Boxes</h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Elegant half-dozen or full-dozen boxes featuring seasonal fall flavors like Pumpkin Spice and Maple Pecan.</p>
           <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Perfect for Party Favors</span>
         </div>
       </div>
@@ -1112,15 +1025,6 @@ Here is your complete, updated code with the Biscoff Cheesecake Cups restored ri
       window.showMainAuthView();
     };
     window.closeModal = function(modalId) { document.getElementById(modalId).style.display = 'none'; };
-
-    // --- Lightbox Preview Logic ---
-    window.openLightbox = function(imgSrc) {
-      document.getElementById('lightboxImg').src = imgSrc;
-      document.getElementById('lightboxModal').style.display = 'flex';
-    };
-    window.closeLightbox = function() {
-      document.getElementById('lightboxModal').style.display = 'none';
-    };
 
     // --- Reviews Carousel Script ---
     const clientReviews = [
@@ -1955,5 +1859,3 @@ Here is your complete, updated code with the Biscoff Cheesecake Cups restored ri
   </script>
 </body>
 </html>
-
-```
