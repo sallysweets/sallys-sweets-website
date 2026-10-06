@@ -1,3 +1,16 @@
+Adding a **Catering & Large Orders** section is a fantastic idea for a bakery business! It opens the door for higher-ticket sales—like birthdays, ASU student events, graduation parties, and family gatherings—where customers order in bulk rather than just single items.
+
+### What to Offer in a Catering & Large Orders Section:
+
+1. **The Dessert Grazing / Cookie Spread Box:** A curated assortment of your signature cookies (Brown Butter Espresso, Pumpkin Spice, Coffee Cake, and Cinnamon Sugar Pumpkin Butter Sugar Cookies) arranged nicely for sharing.
+2. **Macaron Towers & Gift Boxes:** Half-dozen or dozen boxes in custom flavor assortments (like Pumpkin Spice, Brown Sugar Cinnamon, Maple Pecan, and Salted Caramel) packaged securely for events.
+3. **Mini Artisan Cup Platters:** Multipacks of your popular artisan dessert cups (like the Cloud Nine Tiramisu Cups and Biscoff Cheesecake Cups) configured for party hosting.
+
+---
+
+Here is your complete, updated code with the Biscoff Cheesecake Cups restored right under the Tiramisu Cup, the Oreo Krispie thumbnail image linked, and the brand-new **Catering & Large Orders** section added right above the checkout form!
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -154,6 +167,41 @@
     .weekly-action:hover {
       transform: translateY(-2px);
       background: #a25120;
+    }
+
+    /* Catering Showcase Section */
+    .catering-section {
+      max-width: 1000px;
+      margin: 3rem auto;
+      background: var(--card-bg);
+      border: 1px solid var(--soft-border);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    }
+    .catering-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .catering-card {
+      background: var(--bg-main);
+      border: 1px solid var(--soft-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      text-align: left;
+    }
+    .catering-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--accent-brown);
+      margin-bottom: 0.5rem;
+    }
+    .catering-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
     }
 
     /* Menu Styles */
@@ -710,6 +758,20 @@
         </div>
 
         <div class="menu-item">
+          <img src="Biscoff Cheesecake Cup.jpg" alt="Biscoff Cheesecake Cup" class="menu-item-thumb" onclick="openLightbox('Biscoff Cheesecake Cup.jpg')" onerror="this.style.display='none'">
+          <div class="menu-item-details">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Biscoff Dream Cheesecake Cup</span>
+              <div style="text-align: right;">
+                <span class="menu-item-price">$7.50 / cup</span><br>
+                <button class="add-to-cart-btn" onclick="addDirectToCart('cup_bisc')">+ Add</button>
+              </div>
+            </div>
+            <p class="menu-item-desc">Rich vanilla bean cheesecake layered with melted Biscoff cookie butter and crushed Biscoff bits.</p>
+          </div>
+        </div>
+
+        <div class="menu-item">
           <img src="Kunafa.jpg" alt="Cheese Kunafa" class="menu-item-thumb" onclick="openLightbox('Kunafa.jpg')" onerror="this.style.display='none'">
           <div class="menu-item-details">
             <div class="menu-item-header">
@@ -724,6 +786,31 @@
         </div>
       </div>
     </div>
+
+    <!-- CATERING & LARGE ORDERS SECTION -->
+    <section class="catering-section reveal-on-scroll">
+      <div class="category-tag" style="margin-bottom: 0.5rem; text-align: center;">EVENT SERVICES</div>
+      <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); text-align: center; margin-bottom: 0.5rem;">Catering &amp; Large Orders</h2>
+      <p style="text-align: center; color: var(--text-muted); font-size: 0.95rem; max-width: 600px; margin: 0 auto;">Hosting an ASU student event, birthday party, or family gathering? Let Sally's Sweets sweeten your celebration with custom bulk platters and dessert spreads.</p>
+      
+      <div class="catering-grid">
+        <div class="catering-card">
+          <h4>🍪 Cookie Spread Boxes</h4>
+          <p>Assorted boxes of our gourmet signature cookies (Brown Butter Espresso, Pumpkin Spice, Coffee Cake) baked fresh for your group.</p>
+          <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Custom Pricing by Headcount</span>
+        </div>
+        <div class="catering-card">
+          <h4>🧁 Artisan Cup Platters</h4>
+          <p>Multipacks of our famous Cloud Nine Tiramisu and Biscoff Dream Cheesecake cups, complete with individual spoons.</p>
+          <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Minimum 12 Cups</span>
+        </div>
+        <div class="catering-card">
+          <h4>🎁 Macaron Gift Boxes</h4>
+          <p>Elegant half-dozen or full-dozen boxes featuring seasonal fall flavors like Pumpkin Spice and Maple Pecan.</p>
+          <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Perfect for Party Favors</span>
+        </div>
+      </div>
+    </section>
 
     <div class="preorder-btn-container">
       <button class="preorder-action-btn" onclick="openRequestModal()">Review Cart & Checkout</button>
@@ -1115,6 +1202,7 @@
       { id: 'p_cinn', name: "Fluffy Cinnamon Roll", price: 6.00, type: "pastry" },
       { id: 'p_brn', name: "Velvet Crinkle Brown Butter Brownie", price: 5.00, type: "pastry" },
       { id: 'cup_tir', name: "Cloud Nine Tiramisu Cup", price: 7.50, type: "cup" },
+      { id: 'cup_bisc', name: "Biscoff Dream Cheesecake Cup", price: 7.50, type: "cup" },
       { id: 'm_kun', name: "Golden Crisp Cheese Kunafa", price: 8.00, type: "pastry" }
     ];
     
@@ -1867,3 +1955,5 @@
   </script>
 </body>
 </html>
+
+```
