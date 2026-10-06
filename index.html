@@ -103,9 +103,62 @@
     .hero-img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.6s ease; }
     .hero-img-wrapper:hover img { transform: scale(1.02); }
 
+    /* Weekly Feature / Combo Banner */
+    .weekly-feature-banner {
+      max-width: 1000px;
+      margin: 3rem auto 1rem;
+      background: linear-gradient(135deg, var(--accent-brown), #3d2319);
+      color: #FAF7F2;
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(84, 51, 37, 0.2);
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .weekly-badge {
+      background: var(--accent-gold);
+      color: #FFF;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .weekly-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    .weekly-desc {
+      font-size: 0.95rem;
+      color: #D4C5BE;
+    }
+    .weekly-action {
+      background: var(--accent-gold);
+      color: #FFF;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .weekly-action:hover {
+      transform: translateY(-2px);
+      background: #a25120;
+    }
+
     /* Menu Styles */
-    .menu-section { background-color: var(--card-bg); padding: 5rem 1.5rem 2rem; margin-top: 2rem; }
-    .menu-header { text-align: center; margin-bottom: 4rem; }
+    .menu-section { background-color: var(--card-bg); padding: 4rem 1.5rem 2rem; margin-top: 2rem; }
+    .menu-header { text-align: center; margin-bottom: 3.5rem; }
     .menu-badge { background: var(--pill-bg); color: var(--accent-brown); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; margin-bottom: 1rem; }
     .menu-badge svg { margin-right: 6px; color: var(--accent-gold); }
     .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 3rem; max-width: 1100px; margin: 0 auto; }
@@ -376,6 +429,16 @@
     </div>
   </section>
 
+  <!-- WEEKLY FEATURE / COMBO OF THE WEEK BANNER -->
+  <div class="weekly-feature-banner reveal-on-scroll">
+    <div>
+      <span class="weekly-badge">⭐ Flavor of the Week Feature</span>
+      <h3 class="weekly-title">Pumpkin Spice Cookie &amp; Tiramisu Cup Combo</h3>
+      <p class="weekly-desc">Pair our cozy Pumpkin Spice Brown Butter Cookie with our signature Cloud Nine Tiramisu Cup for the ultimate fall treat experience!</p>
+    </div>
+    <button class="weekly-action" onclick="openRequestModal()">Order Weekly Combo</button>
+  </div>
+
   <!-- INTERACTIVE TEXT PRE-ORDER MENU -->
   <section id="menu" class="menu-section reveal-on-scroll">
     <div class="menu-header">
@@ -388,7 +451,7 @@
     </div>
 
     <div class="menu-grid">
-      <!-- Signature Cookies -->
+      <!-- Signature Cookies & Bars -->
       <div class="menu-category">
         <h3 class="menu-category-title">Signature Cookies & Bars</h3>
         
@@ -445,6 +508,17 @@
             </div>
           </div>
           <p class="menu-item-desc">Rich brown butter dough packed with warm autumn spices, blotted pumpkin puree, and semi-sweet chocolate.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Cinnamon Sugar Pumpkin Butter Sugar Cookies</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$4.50 / large</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('c_psug')">+ Add</button>
+            </div>
+          </div>
+          <p class="menu-item-desc">Tender sugar cookies centered with rich pumpkin butter and rolled in cinnamon sugar.</p>
         </div>
 
         <div class="menu-item">
@@ -565,28 +639,6 @@
             </div>
           </div>
           <p class="menu-item-desc">Classic Italian layers of bold espresso-soaked ladyfingers and airy whipped mascarpone.</p>
-        </div>
-
-        <div class="menu-item">
-          <div class="menu-item-header">
-            <span class="menu-item-name">Crispy Baklava Cheesecake Cup</span>
-            <div style="text-align: right;">
-              <span class="menu-item-price">$7.50 / cup</span><br>
-              <button class="add-to-cart-btn" onclick="addDirectToCart('cup_chk')">+ Add</button>
-            </div>
-          </div>
-          <p class="menu-item-desc">Creamy vanilla bean cheesecake topped with honey-soaked walnuts and crispy golden phyllo.</p>
-        </div>
-
-        <div class="menu-item">
-          <div class="menu-item-header">
-            <span class="menu-item-name">Caramel Spiced Apple Dessert Cup</span>
-            <div style="text-align: right;">
-              <span class="menu-item-price">$7.50 / cup</span><br>
-              <button class="add-to-cart-btn" onclick="addDirectToCart('cup_apple')">+ Add</button>
-            </div>
-          </div>
-          <p class="menu-item-desc">Whipped mascarpone layered with cinnamon-sugar apples, premium caramel, and buttery streusel.</p>
         </div>
 
         <div class="menu-item">
@@ -908,8 +960,8 @@
       { name: "Mister Calorie Consumer", stars: "★★★★★", rating: "4.7 / 5", text: "I would put pretty much everything at a 5 for the most part. Overall a solid 4.7, meaning it was all phenomenal with just a little bit of room for improvement as you grow your business!" },
       { name: "Justin", stars: "★★★★★", rating: "5 / 5", text: "The banana bread blew my mind thank you for everything 5/5." },
       { name: "Daniel A.", stars: "★★★★★", rating: "5 / 5", text: "5/5 the brown butter brownies and tiramisu were by far the best thing I've ever had, especially the Biscoff flavored tiramisu. If I was on an island that would be one of the things I would have to bring with me." },
-      { name: "Alex", stars: "★★★★★", rating: "5 / 5", text: "The kunafa was the best, it was perfectly sweet and the cheese pull was insane because of how fresh and crunchy it was." }
-      { name: "Patrick F.", stars: "★★★★★", rating: "5 / 5", text: "The cups were awesome, the kunafa was awesome, loved the Dubai cookies." },
+      { name: "Alex", stars: "★★★★★", rating: "5 / 5", text: "The kunafa was the best, it was perfectly sweet and the cheese pull was insane because of how fresh and crunchy it was." },
+      { name: "Patrick F.", stars: "★★★★★", rating: "5 / 5", text: "The cups were awesome, the kunafa was awesome, loved the Dubai cookies." }
     ];
 
     let currentReviewIndex = 0;
@@ -971,9 +1023,8 @@
       { id: 'rk_cnc', name: "Cookies & Cream Oreo Krispie", price: 4.50, type: "pastry" },
       { id: 'rk_bb', name: "Brown Butter Sea Salt Krispie", price: 4.00, type: "pastry" },
       { id: 'c_bbe', name: "Brown Butter Espresso Cookie", price: 4.50, type: "cookie" },
-      { id: 'c_card', name: "Spiced Cardamom Cookie", price: 4.50, type: "cookie" },
-      { id: 'c_dub', name: "Golden Dubai Cookie", price: 6.00, type: "cookie" },
       { id: 'c_ps', name: "Pumpkin Spice Brown Butter Cookie", price: 4.50, type: "cookie" },
+      { id: 'c_psug', name: "Cinnamon Sugar Pumpkin Butter Sugar Cookies", price: 4.50, type: "cookie" },
       { id: 'c_cc', name: "Coffee Cake Cookies", price: 4.50, type: "cookie" },
       { id: 'mac_ps', name: "Pumpkin Spice Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
       { id: 'mac_bsc', name: "Brown Sugar Cinnamon Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
@@ -983,10 +1034,7 @@
       { id: 'p_bb', name: "Thick-Cut Chocolate Chip Banana Bread", price: 5.00, type: "pastry" },
       { id: 'p_cinn', name: "Fluffy Cinnamon Roll", price: 6.00, type: "pastry" },
       { id: 'p_brn', name: "Velvet Crinkle Brown Butter Brownie", price: 5.00, type: "pastry" },
-      { id: 'p_brk', name: "Signature Fudgy Brookie", price: 5.00, type: "pastry" },
       { id: 'cup_tir', name: "Cloud Nine Tiramisu Cup", price: 7.50, type: "cup" },
-      { id: 'cup_chk', name: "Crispy Baklava Cheesecake Cup", price: 7.50, type: "cup" },
-      { id: 'cup_apple', name: "Caramel Spiced Apple Dessert Cup", price: 7.50, type: "cup" },
       { id: 'm_kun', name: "Golden Crisp Cheese Kunafa", price: 8.00, type: "pastry" }
     ];
     
