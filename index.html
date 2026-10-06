@@ -11,7 +11,6 @@
   
   <style>
     :root {
-      /* Warmed up for Autumn: Subtle oat, burnt orange, and deep maple */
       --bg-main: #FCF8F5;
       --card-bg: #FFFFFF;
       --text-main: #362622;
@@ -22,7 +21,6 @@
       --pill-bg: #F0E6DF;
     }
 
-    /* Dark Mode Theme Colors - Autumn Adjusted */
     html.dark-mode {
       --bg-main: #1F1A18;
       --card-bg: #2C2624;
@@ -35,7 +33,6 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
 
     .reveal-on-scroll {
@@ -62,7 +59,6 @@
       transition: background-color 0.3s, color 0.3s;
     }
 
-    /* Live Timer Widgets */
     .timer-widget { background: var(--accent-gold); color: #FFF; padding: 12px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; margin: 12px 0; box-shadow: 0 4px 12px rgba(188, 97, 41, 0.25); }
     .timer-label { font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
     .timer-time { font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
@@ -130,6 +126,97 @@
     .preorder-action-btn { background: var(--accent-brown); color: #FFF; border: none; padding: 16px 36px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; box-shadow: 0 8px 20px rgba(84, 51, 37, 0.2); }
     .preorder-action-btn:hover { transform: translateY(-3px); background: #3d2319; }
     .preorder-action-btn:disabled { background: var(--text-muted); cursor: not-allowed; box-shadow: none; transform: none; }
+
+    /* Aesthetic Reviews Carousel Section */
+    .reviews-section {
+      padding: 6rem 1.5rem;
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--soft-border);
+      border-bottom: 1px solid var(--soft-border);
+      text-align: center;
+      overflow: hidden;
+    }
+    .reviews-container {
+      max-width: 750px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .review-card-slider {
+      background: var(--bg-main);
+      border: 1px solid var(--soft-border);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .review-stars {
+      color: #E8A838;
+      font-size: 1.4rem;
+      letter-spacing: 4px;
+      margin-bottom: 1rem;
+    }
+    .review-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--text-main);
+      margin-bottom: 1.2rem;
+      line-height: 1.4;
+    }
+    .review-author {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--accent-gold);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .reviews-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .review-arrow-btn {
+      background: var(--pill-bg);
+      border: 1px solid var(--soft-border);
+      color: var(--accent-brown);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      transition: all 0.2s;
+    }
+    .review-arrow-btn:hover {
+      background: var(--accent-brown);
+      color: #FFF;
+      border-color: var(--accent-brown);
+    }
+    .review-dots {
+      display: flex;
+      gap: 8px;
+    }
+    .review-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--soft-border);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .review-dot.active {
+      background: var(--accent-gold);
+      transform: scale(1.2);
+    }
 
     /* Cart & Search Styles */
     .cart-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--soft-border); }
@@ -293,7 +380,6 @@
   <section id="menu" class="menu-section reveal-on-scroll">
     <div class="menu-header">
       <span class="menu-badge">
-        <!-- Static delicate fall leaf SVG icon -->
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
         This Week's Autumn Drop
       </span>
@@ -518,6 +604,26 @@
 
     <div class="preorder-btn-container">
       <button class="preorder-action-btn" onclick="openRequestModal()">Review Cart & Checkout</button>
+    </div>
+  </section>
+
+  <!-- Real Client Reviews Carousel Section -->
+  <section class="reviews-section reveal-on-scroll">
+    <div class="category-tag" style="margin-bottom: 0.5rem;">LOVED BY OUR CLIENTS</div>
+    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); margin-bottom: 2.5rem;">What People Are Saying</h2>
+    
+    <div class="reviews-container">
+      <div class="review-card-slider" id="reviewSliderCard">
+        <div class="review-stars" id="reviewStars">★★★★★</div>
+        <p class="review-text" id="reviewText">"Loading review..."</p>
+        <span class="review-author" id="reviewAuthor">- Author</span>
+      </div>
+
+      <div class="reviews-nav">
+        <button class="review-arrow-btn" onclick="prevReview()">&#10094;</button>
+        <div class="review-dots" id="reviewDots"></div>
+        <button class="review-arrow-btn" onclick="nextReview()">&#10095;</button>
+      </div>
     </div>
   </section>
 
@@ -796,6 +902,67 @@
       window.showMainAuthView();
     };
     window.closeModal = function(modalId) { document.getElementById(modalId).style.display = 'none'; };
+
+    // --- Reviews Carousel Script ---
+    const clientReviews = [
+      { name: "Mister Calorie Consumer", stars: "★★★★★", rating: "4.7 / 5", text: "I would put pretty much everything at a 5 for the most part. Overall a solid 4.7, meaning it was all phenomenal with just a little bit of room for improvement as you grow your business!" },
+      { name: "Justin", stars: "★★★★★", rating: "5 / 5", text: "The banana bread blew my mind thank you for everything 5/5." },
+      { name: "Daniel A.", stars: "★★★★★", rating: "5 / 5", text: "5/5 the brown butter brownies and tiramisu were by far the best thing I've ever had, especially the Biscoff flavored tiramisu. If I was on an island that would be one of the things I would have to bring with me." },
+      { name: "Alex", stars: "★★★★★", rating: "5 / 5", text: "The kunafa was the best, it was perfectly sweet and the cheese pull was insane because of how fresh and crunchy it was." }
+    ];
+
+    let currentReviewIndex = 0;
+    let reviewInterval;
+
+    function renderReview(index) {
+      const slider = document.getElementById('reviewSliderCard');
+      if (!slider) return;
+      
+      slider.style.opacity = 0;
+      slider.style.transform = 'translateY(10px)';
+
+      setTimeout(() => {
+        const rev = clientReviews[index];
+        document.getElementById('reviewStars').innerText = rev.stars;
+        document.getElementById('reviewText').innerText = `"${rev.text}"`;
+        document.getElementById('reviewAuthor').innerText = `- ${rev.name} (${rev.rating})`;
+
+        slider.style.opacity = 1;
+        slider.style.transform = 'translateY(0)';
+        updateReviewDots();
+      }, 250);
+    }
+
+    function updateReviewDots() {
+      const dotsContainer = document.getElementById('reviewDots');
+      if (!dotsContainer) return;
+      dotsContainer.innerHTML = clientReviews.map((_, i) => `
+        <div class="review-dot ${i === currentReviewIndex ? 'active' : ''}" onclick="jumpToReview(${i})"></div>
+      `).join('');
+    }
+
+    function nextReview() {
+      currentReviewIndex = (currentReviewIndex + 1) % clientReviews.length;
+      renderReview(currentReviewIndex);
+      resetReviewTimer();
+    }
+
+    function prevReview() {
+      currentReviewIndex = (currentReviewIndex - 1 + clientReviews.length) % clientReviews.length;
+      renderReview(currentReviewIndex);
+      resetReviewTimer();
+    }
+
+    function jumpToReview(index) {
+      currentReviewIndex = index;
+      renderReview(currentReviewIndex);
+      resetReviewTimer();
+    }
+
+    function resetReviewTimer() {
+      clearInterval(reviewInterval);
+      reviewInterval = setInterval(nextReview, 6000);
+    }
 
     // --- Interactive Cart System ---
     const cartProducts = [
@@ -1375,19 +1542,21 @@
     document.addEventListener("DOMContentLoaded", () => {
       window.renderRecipes(window.recipes);
       window.initScrollAnimations();
+      renderReview(0);
+      resetReviewTimer();
     });
   </script>
 
   <!-- Firebase Auth Script -->
   <script type="module">
-   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-   import {  
-  getAuth, onAuthStateChanged, GoogleAuthProvider, OAuthProvider,
-  signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber,
-  signInWithEmailAndPassword, createUserWithEmailAndPassword,
-  sendEmailVerification, updateProfile, signOut,
-  setPersistence, browserSessionPersistence
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import {  
+      getAuth, onAuthStateChanged, GoogleAuthProvider, OAuthProvider,
+      signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber,
+      signInWithEmailAndPassword, createUserWithEmailAndPassword,
+      sendEmailVerification, updateProfile, signOut,
+      setPersistence, browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC2NAV9FP1Ac8EizCyLZW8Oap-AxjdpYQo",
@@ -1398,10 +1567,11 @@
       appId: "1:294297383937:web:a66acf8031233517adfc00",
       measurementId: "G-5GK0F3D3MW"
     };
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
-// Auto-logout after 2 hours (7200000 milliseconds) of inactivity
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Auto-logout after 2 hours (7200000 milliseconds) of inactivity
     let inactivityTimer;
     function resetInactivityTimer() {
       clearTimeout(inactivityTimer);
@@ -1414,14 +1584,10 @@ const auth = getAuth(app);
       }, 7200000); 
     }
 
-    // Reset the timer whenever the user moves their mouse, types, or clicks
     window.addEventListener('mousemove', resetInactivityTimer);
     window.addEventListener('keypress', resetInactivityTimer);
     window.addEventListener('click', resetInactivityTimer);
-    
-    // Start the timer when they load the page
     resetInactivityTimer();
-    
 
     window.currentUser = null;
 
