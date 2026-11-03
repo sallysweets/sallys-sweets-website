@@ -11,19 +11,7 @@
   
   <style>
     :root {
-      /* Default Signature Autumn Theme */
-      --bg-main: #FCF8F5;
-      --card-bg: #FFFFFF;
-      --text-main: #362622;
-      --text-muted: #826E67;
-      --accent-brown: #543325;
-      --accent-gold: #BC6129; 
-      --soft-border: #E8DFDA;
-      --pill-bg: #F0E6DF;
-    }
-
-    /* Automatic November Holiday Theme (Active only during November) */
-    html.november-holiday-theme {
+      /* November Autumn & Warm Holiday Vibe */
       --bg-main: #FAF3EC;
       --card-bg: #FFFFFF;
       --text-main: #2C1E1A;
@@ -91,11 +79,11 @@
 
     header { background: var(--bg-main); border-bottom: 1px solid var(--soft-border); position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; transition: background-color 0.3s; }
     .brand-logo { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--accent-brown); text-decoration: none; }
-    nav { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+    nav { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
     nav a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: color 0.2s ease; }
     nav a:hover { color: var(--accent-gold); }
 
-    .social-links { display: flex; align-items: center; gap: 0.8rem; margin-left: 0.5rem; }
+    .social-links { display: flex; align-items: center; gap: 0.8rem; margin-left: 0.2rem; }
     .social-icon { color: var(--accent-brown); width: 20px; height: 20px; transition: transform 0.2s, color 0.2s; display: inline-flex; align-items: center; cursor: pointer; }
     .social-icon:hover { transform: scale(1.15); color: var(--accent-gold); }
 
@@ -106,14 +94,29 @@
     .cart-nav-btn:hover { transform: translateY(-2px); background: #a25120; }
     .cart-bump { animation: bump 0.3s ease-out; }
 
-    .mode-toggle-btn { background: var(--pill-bg); color: var(--text-main); border: 1px solid var(--soft-border); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+    .mode-toggle-btn { background: var(--pill-bg); color: var(--text-main); border: 1px solid var(--soft-border); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.82rem; cursor: pointer; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
     .mode-toggle-btn:hover { background: var(--soft-border); }
 
-    .hero { text-align: center; padding: 5rem 1.5rem 2rem; max-width: 900px; margin: 0 auto; }
+    /* Header Navbar Live Countdown Pill */
+    .nav-countdown-pill {
+      background: var(--pill-bg);
+      border: 1px solid var(--soft-border);
+      color: var(--accent-brown);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .hero { text-align: center; padding: 4rem 1.5rem 1.5rem; max-width: 900px; margin: 0 auto; }
     .hero-subtitle { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.75rem; }
     .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 400; color: var(--accent-brown); line-height: 1.15; margin-bottom: 1rem; }
 
-    .hero-img-wrapper { width: 100%; max-width: 550px; height: 550px; margin: 2.5rem auto 0; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; }
+    .hero-img-wrapper { width: 100%; max-width: 550px; height: 550px; margin: 2rem auto 0; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; }
     .hero-img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.6s ease; }
     .hero-img-wrapper:hover img { transform: scale(1.02); }
 
@@ -416,17 +419,9 @@
     .app-store-button { display: inline-flex; align-items: center; background: #000; color: #FFF; padding: 12px 24px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s; text-decoration: none; }
     .app-store-button:hover { transform: translateY(-2px); }
   </style>
-  
+
   <script>
-    // --- AUTOMATIC NOVEMBER HOLIDAY TIMER ---
-    // Automatically applies November holiday pie colors during November, and reverts on December 1st.
-    (function() {
-      const now = new Date();
-      // Month is 0-indexed: 10 = November
-      if (now.getMonth() === 10) {
-        document.documentElement.classList.add('november-holiday-theme');
-      }
-    })();
+    document.documentElement.classList.add('november-holiday-theme');
   </script>
 </head>
 <body>
@@ -454,10 +449,16 @@
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- Header with Live Navbar Countdowns -->
   <header>
     <a href="#" class="brand-logo">Sally's Sweets</a>
     <nav>
+      <div class="nav-countdown-pill" title="Countdown to Christmas Menu Drop">
+        🎄 X-Mas Menu: <strong id="daysToMenu">0</strong>d
+      </div>
+      <div class="nav-countdown-pill" title="Countdown to Christmas Day">
+        🎁 Christmas: <strong id="daysToChristmas">0</strong>d
+      </div>
       <a href="#recipes">Recipes</a>
       <a onclick="openAboutModal()">About Sally</a>
       <button id="mainCartBtn" class="cart-nav-btn" onclick="openRequestModal()">🛒 Cart (<span id="cartCount">0</span>)</button>
@@ -491,13 +492,13 @@
   </section>
 
   <!-- WEEKLY FEATURE / COMBO OF THE WEEK BANNER -->
-  <div class="weekly-feature-banner reveal-on-scroll" style="max-width: 1000px; margin: 3rem auto 1rem; background: linear-gradient(135deg, var(--accent-brown), #3d2319); color: #FAF7F2; border-radius: 20px; padding: 2rem 2.5rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(84, 51, 37, 0.2); flex-wrap: wrap; gap: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
+  <div class="weekly-feature-banner reveal-on-scroll">
     <div>
-      <span class="weekly-badge" style="background: var(--accent-gold); color: #FFF; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 0.5rem;">⭐ Flavor of the Week Feature</span>
-      <h3 class="weekly-title" style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 500; margin-bottom: 0.25rem;">Pumpkin Spice Cookie &amp; Tiramisu Cup Combo</h3>
-      <p class="weekly-desc" style="font-size: 0.95rem; color: #D4C5BE;">Pair our cozy Pumpkin Spice Brown Butter Cookie with our signature Cloud Nine Tiramisu Cup for the ultimate fall treat experience!</p>
+      <span class="weekly-badge">⭐ Flavor of the Week Feature</span>
+      <h3 class="weekly-title">Pumpkin Spice Cookie &amp; Tiramisu Cup Combo</h3>
+      <p class="weekly-desc">Pair our cozy Pumpkin Spice Brown Butter Cookie with our signature Cloud Nine Tiramisu Cup for the ultimate fall treat experience!</p>
     </div>
-    <button class="weekly-action" onclick="openRequestModal()" style="background: var(--accent-gold); color: #FFF; border: none; padding: 12px 24px; border-radius: 30px; font-weight: 700; cursor: pointer;">Order Weekly Combo</button>
+    <button class="weekly-action" onclick="openRequestModal()">Order Weekly Combo</button>
   </div>
 
   <!-- INTERACTIVE TEXT PRE-ORDER MENU -->
@@ -771,25 +772,25 @@
     </div>
 
     <!-- CATERING & LARGE ORDERS SECTION -->
-    <section class="catering-section" style="max-width: 1000px; margin: 3rem auto; background: var(--card-bg); border: 1px solid var(--soft-border); border-radius: 20px; padding: 3rem 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
+    <section class="catering-section">
       <div class="category-tag" style="margin-bottom: 0.5rem; text-align: center;">EVENT SERVICES</div>
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--accent-brown); text-align: center; margin-bottom: 0.5rem;">Catering &amp; Large Orders</h2>
       <p style="text-align: center; color: var(--text-muted); font-size: 0.95rem; max-width: 600px; margin: 0 auto;">Hosting an ASU student event, birthday party, or family gathering? Let Sally's Sweets sweeten your celebration with custom bulk platters and dessert spreads.</p>
       
-      <div class="catering-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-        <div class="catering-card" style="background: var(--bg-main); border: 1px solid var(--soft-border); border-radius: 14px; padding: 1.5rem; text-align: left;">
-          <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin-bottom: 0.5rem;">🍪 Cookie Spread Boxes</h4>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Assorted boxes of our gourmet signature cookies (Brown Butter Espresso, Pumpkin Spice, Coffee Cake) baked fresh for your group.</p>
+      <div class="catering-grid">
+        <div class="catering-card">
+          <h4>🍪 Cookie Spread Boxes</h4>
+          <p>Assorted boxes of our gourmet signature cookies (Brown Butter Espresso, Pumpkin Spice, Coffee Cake) baked fresh for your group.</p>
           <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Custom Pricing by Headcount</span>
         </div>
-        <div class="catering-card" style="background: var(--bg-main); border: 1px solid var(--soft-border); border-radius: 14px; padding: 1.5rem; text-align: left;">
-          <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin-bottom: 0.5rem;">🧁 Artisan Cup Platters</h4>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Multipacks of our famous Cloud Nine Tiramisu and Biscoff Dream Cheesecake cups, complete with individual spoons.</p>
+        <div class="catering-card">
+          <h4>🧁 Artisan Cup Platters</h4>
+          <p>Multipacks of our famous Cloud Nine Tiramisu and Biscoff Dream Cheesecake cups, complete with individual spoons.</p>
           <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Minimum 12 Cups</span>
         </div>
-        <div class="catering-card" style="background: var(--bg-main); border: 1px solid var(--soft-border); border-radius: 14px; padding: 1.5rem; text-align: left;">
-          <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin-bottom: 0.5rem;">🎁 Macaron Gift Boxes</h4>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Elegant half-dozen or full-dozen boxes featuring seasonal fall flavors like Pumpkin Spice and Maple Pecan.</p>
+        <div class="catering-card">
+          <h4>🎁 Macaron Gift Boxes</h4>
+          <p>Elegant half-dozen or full-dozen boxes featuring seasonal fall flavors like Pumpkin Spice and Maple Pecan.</p>
           <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Perfect for Party Favors</span>
         </div>
       </div>
@@ -1095,6 +1096,27 @@
       window.showMainAuthView();
     };
     window.closeModal = function(modalId) { document.getElementById(modalId).style.display = 'none'; };
+
+    // --- Live Header Countdowns ---
+    function updateNavCountdowns() {
+      const now = new Date();
+      const menuDate = new Date('2026-12-01T00:00:00');
+      const christmasDate = new Date('2026-12-25T00:00:00');
+
+      const diffMenu = menuDate - now;
+      const diffXmas = christmasDate - now;
+
+      const daysMenu = Math.max(0, Math.floor(diffMenu / (1000 * 60 * 60 * 24)));
+      const daysXmas = Math.max(0, Math.floor(diffXmas / (1000 * 60 * 60 * 24)));
+
+      const elMenu = document.getElementById('daysToMenu');
+      const elXmas = document.getElementById('daysToChristmas');
+
+      if (elMenu) elMenu.innerText = daysMenu;
+      if (elXmas) elXmas.innerText = daysXmas;
+    }
+
+    setInterval(updateNavCountdowns, 1000);
 
     // --- Reviews Carousel Script ---
     const clientReviews = [
@@ -1739,6 +1761,7 @@
       window.initScrollAnimations();
       renderReview(0);
       resetReviewTimer();
+      updateNavCountdowns();
     });
   </script>
 
@@ -1854,7 +1877,7 @@
       }
 
       if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptchan-container', { 'size': 'invisible' });
       }
 
       try {
