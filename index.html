@@ -11,6 +11,7 @@
   
   <style>
     :root {
+      /* Default Signature Autumn Theme */
       --bg-main: #FCF8F5;
       --card-bg: #FFFFFF;
       --text-main: #362622;
@@ -21,6 +22,19 @@
       --pill-bg: #F0E6DF;
     }
 
+    /* Automatic November Holiday Theme (Active only during November) */
+    html.november-holiday-theme {
+      --bg-main: #FAF3EC;
+      --card-bg: #FFFFFF;
+      --text-main: #2C1E1A;
+      --text-muted: #7E655D;
+      --accent-brown: #4A2E23;
+      --accent-gold: #A84E1B; 
+      --soft-border: #E6D4CC;
+      --pill-bg: #F7E8E1;
+    }
+
+    /* Dark Mode Theme Colors */
     html.dark-mode {
       --bg-main: #1F1A18;
       --card-bg: #2C2624;
@@ -402,6 +416,18 @@
     .app-store-button { display: inline-flex; align-items: center; background: #000; color: #FFF; padding: 12px 24px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s; text-decoration: none; }
     .app-store-button:hover { transform: translateY(-2px); }
   </style>
+  
+  <script>
+    // --- AUTOMATIC NOVEMBER HOLIDAY TIMER ---
+    // Automatically applies November holiday pie colors during November, and reverts on December 1st.
+    (function() {
+      const now = new Date();
+      // Month is 0-indexed: 10 = November
+      if (now.getMonth() === 10) {
+        document.documentElement.classList.add('november-holiday-theme');
+      }
+    })();
+  </script>
 </head>
 <body>
 
@@ -479,7 +505,7 @@
     <div class="menu-header">
       <span class="menu-badge">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
-        This Week's Autumn Drop
+        This Week's Autumn Drop &amp; November Pies
       </span>
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Order Form Details</h2>
       <p style="color: var(--text-muted); font-size: 0.95rem;">Delivery ($2 in Gilbert, other areas negotiable by distance) or free pickup strictly Saturday/Sunday. Add items directly to your cart below!</p>
@@ -568,10 +594,54 @@
         </div>
       </div>
 
-      <!-- Pastries & Macarons -->
+      <!-- Pastries & November Pie Shop -->
       <div class="menu-category">
-        <h3 class="menu-category-title">Pastries & Macarons</h3>
+        <h3 class="menu-category-title">Pastries & November Pie Shop</h3>
         
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Milk Bar Pumpkin Pie</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$38.00 / 9" pie</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('pie_milkbar')">+ Add</button>
+            </div>
+          </div>
+          <p class="menu-item-desc">Silky spiced pumpkin filling baked inside a signature rich and buttery crust.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Brown Butter Salted Caramel Apple Pie</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$42.00 / 9" pie</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('pie_apple')">+ Add</button>
+            </div>
+          </div>
+          <p class="menu-item-desc">Crisp autumn apples tossed in deeply browned butter and homemade gourmet salted caramel.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Spiced Pumpkin Praline Pie</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$42.00 / 9" pie</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('pie_praline')">+ Add</button>
+            </div>
+          </div>
+          <p class="menu-item-desc">Rich spiced pumpkin filling topped with a crunchy, buttery toasted pecan praline crust.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Classic Dutch Apple Crumble Pie</span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$36.00 / 9" pie</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('pie_dutch')">+ Add</button>
+            </div>
+          </div>
+          <p class="menu-item-desc">Tender spiced apples piled high under a thick, buttery brown sugar streusel crumble.</p>
+        </div>
+
         <div class="menu-item">
           <div class="menu-item-header">
             <span class="menu-item-name">Pumpkin Spice Macarons</span>
@@ -1097,6 +1167,10 @@
       { id: 'c_ps', name: "Pumpkin Spice Brown Butter Cookie", price: 4.50, type: "cookie" },
       { id: 'c_psug', name: "Cinnamon Sugar Pumpkin Butter Sugar Cookies", price: 4.50, type: "cookie" },
       { id: 'c_cc', name: "Coffee Cake Cookies", price: 4.50, type: "cookie" },
+      { id: 'pie_milkbar', name: "Milk Bar Pumpkin Pie (9\")", price: 38.00, type: "pie" },
+      { id: 'pie_apple', name: "Brown Butter Salted Caramel Apple Pie (9\")", price: 42.00, type: "pie" },
+      { id: 'pie_praline', name: "Spiced Pumpkin Praline Pie (9\")", price: 42.00, type: "pie" },
+      { id: 'pie_dutch', name: "Classic Dutch Apple Crumble Pie (9\")", price: 36.00, type: "pie" },
       { id: 'mac_ps', name: "Pumpkin Spice Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
       { id: 'mac_bsc', name: "Brown Sugar Cinnamon Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
       { id: 'mac_maple', name: "Maple Pecan Macarons (Half-Dozen Box)", price: 16.00, type: "macaron" },
