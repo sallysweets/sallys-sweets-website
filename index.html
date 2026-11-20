@@ -37,13 +37,25 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
 
+    /* Top Scroll Progress Bar */
+    #scrollProgressBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-gold), var(--accent-brown));
+      z-index: 4000;
+      transition: width 0.12s ease-out;
+    }
+
     .reveal-on-scroll {
       opacity: 0;
       filter: blur(3px);
       transform: scale(0.97);
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                  transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                  filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 1.1s cubic-bezier(0.16, 1, 0.3, 1), 
+                  filter 1.1s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform, filter;
     }
 
@@ -70,11 +82,38 @@
     #globalTimer { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--accent-gold); color: #FFF; padding: 12px 24px; border-radius: 30px; box-shadow: 0 10px 25px rgba(188, 97, 41, 0.35); z-index: 3000; font-weight: 700; align-items: center; gap: 15px; display: none; }
     #customToast { position: fixed; top: 20px; right: 20px; background: var(--accent-brown); color: #FFF; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 2000; display: none; align-items: center; gap: 12px; font-weight: 500; animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     
+    /* Back to Top Floating Button */
+    #backToTopBtn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--accent-brown);
+      color: #FFF;
+      border: 1px solid rgba(255,255,255,0.15);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+      z-index: 1500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s ease, opacity 0.25s ease, background 0.2s ease;
+    }
+    #backToTopBtn:hover {
+      transform: translateY(-3px);
+      background: var(--accent-gold);
+    }
+
     @keyframes slideIn { from { transform: translateY(-20px) scale(0.95); opacity: 0; filter: blur(4px); } to { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); } }
     @keyframes bump { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+    @keyframes modalPop { from { opacity: 0; transform: translateY(12px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
     #customConfirmModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 2500; }
-    .confirm-card { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; }
+    .confirm-card { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .confirm-btns { display: flex; gap: 10px; margin-top: 1.5rem; }
 
     header { background: var(--bg-main); border-bottom: 1px solid var(--soft-border); position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; transition: background-color 0.3s; }
@@ -158,11 +197,17 @@
       font-size: 0.95rem;
       color: #D4C5BE;
     }
+    .weekly-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
     .weekly-action {
       background: var(--accent-gold);
       color: #FFF;
       border: none;
-      padding: 12px 24px;
+      padding: 12px 22px;
       border-radius: 30px;
       font-weight: 700;
       cursor: pointer;
@@ -171,6 +216,20 @@
     .weekly-action:hover {
       transform: translateY(-2px);
       background: #a25120;
+    }
+    .weekly-secondary-btn {
+      background: rgba(255, 255, 255, 0.14);
+      color: #FAF7F2;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .weekly-secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.24);
+      transform: translateY(-2px);
     }
 
     /* Catering Showcase Section */
@@ -195,6 +254,14 @@
       border-radius: 14px;
       padding: 1.5rem;
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .catering-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     }
     .catering-card h4 {
       font-family: 'Cormorant Garamond', serif;
@@ -207,18 +274,82 @@
       color: var(--text-muted);
       margin-bottom: 1rem;
     }
+    .catering-inquire-btn {
+      margin-top: 12px;
+      align-self: flex-start;
+      background: var(--pill-bg);
+      color: var(--accent-brown);
+      border: 1px solid var(--soft-border);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .catering-inquire-btn:hover {
+      background: var(--accent-brown);
+      color: #FFF;
+    }
 
     /* Menu Styles */
     .menu-section { background-color: var(--card-bg); padding: 5rem 1.5rem 2rem; margin-top: 2rem; }
-    .menu-header { text-align: center; margin-bottom: 4rem; }
+    .menu-header { text-align: center; margin-bottom: 2.5rem; }
     .menu-badge { background: var(--pill-bg); color: var(--accent-brown); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; margin-bottom: 1rem; }
     .menu-badge svg { margin-right: 6px; color: var(--accent-gold); }
+    .menu-status-pill {
+      display: inline-block;
+      margin-top: 0.75rem;
+      background: rgba(168, 78, 27, 0.12);
+      color: var(--accent-gold);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .menu-category-filters {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .menu-cat-btn {
+      background: var(--pill-bg);
+      color: var(--text-main);
+      border: 1px solid var(--soft-border);
+      padding: 0.45rem 1.15rem;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .menu-cat-btn.active, .menu-cat-btn:hover {
+      background: var(--accent-brown);
+      color: #FFF;
+      border-color: var(--accent-brown);
+    }
+
     .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 3rem; max-width: 1100px; margin: 0 auto; }
     .menu-category { margin-bottom: 1rem; }
     .menu-category-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--accent-brown); border-bottom: 1px solid var(--soft-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;}
-    .menu-item { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .menu-item { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); transition: transform 0.2s ease; }
+    .menu-item:hover { transform: translateX(3px); }
     .menu-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem; }
     .menu-item-name { font-weight: 600; color: var(--text-main); font-size: 1.05rem; flex: 1; padding-right: 10px; }
+    .gf-badge {
+      background: rgba(168, 78, 27, 0.14);
+      color: var(--accent-gold);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 7px;
+      border-radius: 8px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
     .menu-item-price { font-weight: 700; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap; }
     .menu-item-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-top: 5px; }
     
@@ -336,17 +467,33 @@
     .search-container { margin: 3rem auto 1.5rem; max-width: 500px; }
     .search-input { width: 100%; padding: 0.85rem 1.25rem; border-radius: 30px; border: 1px solid var(--soft-border); background: var(--card-bg); color: var(--text-main); font-size: 0.95rem; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
     .search-input:focus { border-color: var(--accent-gold); }
-    .filters { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 3rem; flex-wrap: wrap; }
+    .filters { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 3rem; flex-wrap: wrap; align-items: center; }
     .filter-btn { background: var(--pill-bg); border: 1px solid transparent; color: var(--text-main); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; }
     .filter-btn.active, .filter-btn:hover { background: var(--accent-brown); color: #FFF; }
+    .surprise-btn {
+      background: var(--accent-gold);
+      color: #FFF;
+      border: none;
+      padding: 0.5rem 1.3rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .surprise-btn:hover {
+      transform: translateY(-2px);
+      background: #8f4115;
+    }
 
     /* Recipe Grid */
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 5rem; }
     .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
-    .recipe-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); cursor: pointer; position: relative; transition: transform 0.3s ease; }
+    .recipe-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--soft-border); cursor: pointer; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
     .card-img-wrapper { height: 260px; position: relative; width: 100%; overflow: hidden; }
-    .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+    .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.45s ease; }
+    .recipe-card:hover .card-img-wrapper img { transform: scale(1.03); }
     .card-tag { position: absolute; top: 1rem; left: 1rem; background: rgba(255,255,255,0.92); color: var(--accent-brown); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
     .card-content { padding: 1.5rem; }
     .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--accent-brown); margin-bottom: 0.5rem; }
@@ -357,7 +504,7 @@
 
     /* Modals */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; overflow-y: auto;}
-    .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; margin: auto; }
+    .modal-content { background: var(--card-bg); border-radius: 20px; max-width: 750px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; position: relative; margin: auto; animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--pill-bg); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; color: var(--text-main); }
     .controls-row { display: flex; justify-content: space-between; align-items: center; margin: 1rem 0; padding: 0.8rem 1rem; background: var(--pill-bg); border-radius: 12px; }
     .unit-switcher { display: flex; align-items: center; gap: 0.4rem; }
@@ -399,7 +546,8 @@
     .category-tag { font-size: 0.8rem; font-weight: 700; color: #8C5A47; letter-spacing: 2px; margin-bottom: 0.75rem; text-transform: uppercase; }
     .main-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--text-main); margin-bottom: 3rem; font-weight: 500; }
     .cards-row { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
-    .basics-card { background: var(--card-bg); border-radius: 16px; padding: 2rem; width: 320px; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--soft-border); }
+    .basics-card { background: var(--card-bg); border-radius: 16px; padding: 2rem; width: 320px; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--soft-border); transition: transform 0.25s ease; }
+    .basics-card:hover { transform: translateY(-4px); }
     .basics-card .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--accent-brown); margin-bottom: 0.5rem; }
     .basics-card .card-body { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
@@ -428,6 +576,13 @@
       .nav-countdown-pill {
         display: none;
       }
+
+      #backToTopBtn {
+        bottom: 18px;
+        right: 18px;
+        width: 42px;
+        height: 42px;
+      }
     }
   </style>
 
@@ -437,11 +592,17 @@
 </head>
 <body>
 
+  <!-- Scroll Progress Bar -->
+  <div id="scrollProgressBar"></div>
+
   <!-- Floating Global Timer Banner -->
   <div id="globalTimer">
     <span id="globalTimerText">Whip Eggs - 05:00</span>
     <button onclick="stopTimer()" style="background: rgba(0,0,0,0.2); border: none; color: white; padding: 6px 12px; border-radius: 10px; cursor: pointer; font-weight: bold;">Stop</button>
   </div>
+
+  <!-- Floating Back to Top Button -->
+  <button id="backToTopBtn" onclick="scrollToTop()" title="Back to top">↑</button>
 
   <!-- Custom Toast Notification Banner -->
   <div id="customToast">
@@ -509,7 +670,10 @@
       <h3 class="weekly-title">Pumpkin Spice Cookie &amp; Tiramisu Cup Combo</h3>
       <p class="weekly-desc">Pair our cozy Pumpkin Spice Brown Butter Cookie with our signature Cloud Nine Tiramisu Cup for the ultimate fall treat experience!</p>
     </div>
-    <button class="weekly-action" onclick="openRequestModal()">Order Weekly Combo</button>
+    <div class="weekly-actions">
+      <button class="weekly-action" onclick="addWeeklyComboToCart()">+ Add Combo to Cart</button>
+      <button class="weekly-secondary-btn" onclick="openRequestModal()">Open Checkout</button>
+    </div>
   </div>
 
   <!-- INTERACTIVE TEXT PRE-ORDER MENU -->
@@ -521,11 +685,19 @@
       </span>
       <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--accent-brown); margin-bottom: 0.5rem;">Order Form Details</h2>
       <p style="color: var(--text-muted); font-size: 0.95rem;">Delivery ($2 in Gilbert, other areas negotiable by distance) or free pickup strictly Saturday/Sunday. Add items directly to your cart below!</p>
+      <div class="menu-status-pill">✨ Pre-Orders Open • Sat/Sun Pickup &amp; Gilbert Delivery</div>
+    </div>
+
+    <div class="menu-category-filters">
+      <button class="menu-cat-btn active" onclick="filterMenuSection('all', this)">All Menu Items</button>
+      <button class="menu-cat-btn" onclick="filterMenuSection('cookies-bars', this)">Cookies &amp; Bars</button>
+      <button class="menu-cat-btn" onclick="filterMenuSection('pies-pastries', this)">November Pies &amp; Pastries</button>
+      <button class="menu-cat-btn" onclick="filterMenuSection('cups-med', this)">Cups &amp; Kunafa</button>
     </div>
 
     <div class="menu-grid">
       <!-- Signature Cookies & Bars -->
-      <div class="menu-category">
+      <div class="menu-category" data-menu-cat="cookies-bars">
         <h3 class="menu-category-title">Signature Cookies & Bars</h3>
         
         <div class="menu-item">
@@ -574,6 +746,17 @@
 
         <div class="menu-item">
           <div class="menu-item-header">
+            <span class="menu-item-name">Gluten-Free Brown Butter Chocolate Chip Cookie<span class="gf-badge">Gluten-Free</span></span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$4.50 / large</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('gf_cookie')">+ Add</button>
+            </div>
+          </div>
+          <p class="menu-item-desc">Nutty brown butter and chocolate chunks with the exact chewy, bakery-style texture you love—100% gluten-free.</p>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
             <span class="menu-item-name">Pumpkin Spice Brown Butter Cookie</span>
             <div style="text-align: right;">
               <span class="menu-item-price">$4.50 / large</span><br>
@@ -607,7 +790,7 @@
       </div>
 
       <!-- Pastries & November Pie Shop -->
-      <div class="menu-category">
+      <div class="menu-category" data-menu-cat="pies-pastries">
         <h3 class="menu-category-title">Pastries & November Pie Shop</h3>
         
         <div class="menu-item">
@@ -741,10 +924,21 @@
           </div>
           <p class="menu-item-desc">Ultra-fudgy, dark Dutch-processed cocoa brownies finished with a flawless glossy crinkle top.</p>
         </div>
+
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <span class="menu-item-name">Gluten-Free Velvet Crinkle Brown Butter Brownie<span class="gf-badge">Gluten-Free</span></span>
+            <div style="text-align: right;">
+              <span class="menu-item-price">$5.00 / large</span><br>
+              <button class="add-to-cart-btn" onclick="addDirectToCart('gf_brownie')">+ Add</button>
+            </div>
+          </div>
+          <p class="menu-item-desc">Fudgy dark cocoa and browned butter with a glossy crinkle top that tastes just like the classic—100% gluten-free.</p>
+        </div>
       </div>
 
       <!-- Dessert Cups & Mediterranean -->
-      <div class="menu-category">
+      <div class="menu-category" data-menu-cat="cups-med">
         <h3 class="menu-category-title">Artisan Cups & Mediterranean</h3>
         
         <div class="menu-item">
@@ -790,19 +984,34 @@
       
       <div class="catering-grid">
         <div class="catering-card">
-          <h4>🍪 Cookie Spread Boxes</h4>
-          <p>Assorted boxes of our gourmet signature cookies (Brown Butter Espresso, Pumpkin Spice, Coffee Cake) baked fresh for your group.</p>
-          <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Custom Pricing by Headcount</span>
+          <div>
+            <h4>🍪 Cookie Spread Boxes</h4>
+            <p>Assorted boxes of our gourmet signature cookies (Brown Butter Espresso, Pumpkin Spice, Coffee Cake, plus Gluten-Free options) baked fresh for your group.</p>
+          </div>
+          <div>
+            <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem; display: block;">Custom Pricing by Headcount</span>
+            <button class="catering-inquire-btn" onclick="openCateringInquiry('Cookie Spread Box')">Inquire About Box →</button>
+          </div>
         </div>
         <div class="catering-card">
-          <h4>🧁 Artisan Cup Platters</h4>
-          <p>Multipacks of our famous Cloud Nine Tiramisu and Biscoff Dream Cheesecake cups, complete with individual spoons.</p>
-          <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Minimum 12 Cups</span>
+          <div>
+            <h4>🧁 Artisan Cup Platters</h4>
+            <p>Multipacks of our famous Cloud Nine Tiramisu and Biscoff Dream Cheesecake cups, complete with individual spoons.</p>
+          </div>
+          <div>
+            <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem; display: block;">Minimum 12 Cups</span>
+            <button class="catering-inquire-btn" onclick="openCateringInquiry('Artisan Cup Platter')">Inquire About Platter →</button>
+          </div>
         </div>
         <div class="catering-card">
-          <h4>🎁 Macaron Gift Boxes</h4>
-          <p>Elegant half-dozen or full-dozen boxes featuring seasonal fall flavors like Pumpkin Spice and Maple Pecan.</p>
-          <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">Perfect for Party Favors</span>
+          <div>
+            <h4>🎁 Macaron Gift Boxes</h4>
+            <p>Elegant half-dozen or full-dozen boxes featuring seasonal fall flavors like Pumpkin Spice and Maple Pecan.</p>
+          </div>
+          <div>
+            <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem; display: block;">Perfect for Party Favors</span>
+            <button class="catering-inquire-btn" onclick="openCateringInquiry('Macaron Gift Box')">Inquire About Boxes →</button>
+          </div>
         </div>
       </div>
     </section>
@@ -843,11 +1052,12 @@
   </div>
 
   <div class="filters reveal-on-scroll">
-    <button class="filter-btn active" onclick="filterRecipes('all')">All Recipes</button>
-    <button class="filter-btn" onclick="filterRecipes('creami')">Ninja Creami</button>
-    <button class="filter-btn" onclick="filterRecipes('cookies')">Cookies</button>
-    <button class="filter-btn" onclick="filterRecipes('brownies')">Brownies &amp; Bars</button>
-    <button class="filter-btn" onclick="filterRecipes('macarons')">Macarons</button>
+    <button class="filter-btn active" onclick="filterRecipes('all', this)">All Recipes</button>
+    <button class="filter-btn" onclick="filterRecipes('creami', this)">Ninja Creami</button>
+    <button class="filter-btn" onclick="filterRecipes('cookies', this)">Cookies</button>
+    <button class="filter-btn" onclick="filterRecipes('brownies', this)">Brownies &amp; Bars</button>
+    <button class="filter-btn" onclick="filterRecipes('macarons', this)">Macarons</button>
+    <button class="surprise-btn" onclick="openRandomRecipe()">🎲 Surprise Me!</button>
   </div>
 
   <!-- Main Recipe Grid -->
@@ -1008,7 +1218,10 @@
           <input type="email" name="Email" class="vip-input" style="margin-bottom: 1rem;" required>
 
           <label style="font-weight: 600; font-size: 0.9rem;">Your Phone Number</label>
-          <input type="tel" name="Phone" class="vip-input" style="margin-bottom: 1.5rem;" placeholder="(555) 555-5555" required>
+          <input type="tel" name="Phone" class="vip-input" style="margin-bottom: 1rem;" placeholder="(555) 555-5555" required>
+
+          <label style="font-weight: 600; font-size: 0.9rem;">Catering / Special Notes (Optional)</label>
+          <input type="text" id="cateringNotesInput" name="Catering_Notes" class="vip-input" style="margin-bottom: 1.5rem;" placeholder="Event date, headcount, or flavor requests...">
 
           <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--accent-brown); border-bottom: 1px solid var(--soft-border); padding-bottom: 5px; margin-bottom: 10px;">Your Cart</h3>
           
@@ -1070,6 +1283,24 @@
   </footer>
 
   <script>
+    // --- Scroll Progress & Back to Top ---
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      const bar = document.getElementById('scrollProgressBar');
+      if (bar) bar.style.width = `${progress}%`;
+
+      const topBtn = document.getElementById('backToTopBtn');
+      if (topBtn) {
+        topBtn.style.display = scrollTop > 450 ? 'flex' : 'none';
+      }
+    });
+
+    window.scrollToTop = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     // --- Dark Mode Logic ---
     window.toggleDarkMode = function() {
       document.documentElement.classList.toggle('dark-mode');
@@ -1128,6 +1359,20 @@
     }
 
     setInterval(updateNavCountdowns, 1000);
+
+    // --- Menu Category Filter ---
+    window.filterMenuSection = function(categoryKey, btnElement) {
+      document.querySelectorAll('.menu-cat-btn').forEach(b => b.classList.remove('active'));
+      if (btnElement) btnElement.classList.add('active');
+
+      document.querySelectorAll('.menu-category[data-menu-cat]').forEach(catBox => {
+        if (categoryKey === 'all' || catBox.getAttribute('data-menu-cat') === categoryKey) {
+          catBox.style.display = 'block';
+        } else {
+          catBox.style.display = 'none';
+        }
+      });
+    };
 
     // --- Reviews Carousel Script ---
     const clientReviews = [
@@ -1198,6 +1443,7 @@
       { id: 'rk_cnc', name: "Cookies & Cream Oreo Krispie", price: 4.50, type: "pastry" },
       { id: 'rk_bb', name: "Brown Butter Sea Salt Krispie", price: 4.00, type: "pastry" },
       { id: 'c_bbe', name: "Brown Butter Espresso Cookie", price: 4.50, type: "cookie" },
+      { id: 'gf_cookie', name: "Gluten-Free Brown Butter Chocolate Chip Cookie", price: 4.50, type: "cookie" },
       { id: 'c_ps', name: "Pumpkin Spice Brown Butter Cookie", price: 4.50, type: "cookie" },
       { id: 'c_psug', name: "Cinnamon Sugar Pumpkin Butter Sugar Cookies", price: 4.50, type: "cookie" },
       { id: 'c_cc', name: "Coffee Cake Cookies", price: 4.50, type: "cookie" },
@@ -1213,6 +1459,7 @@
       { id: 'p_bb', name: "Thick-Cut Chocolate Chip Banana Bread", price: 5.00, type: "pastry" },
       { id: 'p_cinn', name: "Fluffy Cinnamon Roll", price: 6.00, type: "pastry" },
       { id: 'p_brn', name: "Velvet Crinkle Brown Butter Brownie", price: 5.00, type: "pastry" },
+      { id: 'gf_brownie', name: "Gluten-Free Velvet Crinkle Brown Butter Brownie", price: 5.00, type: "pastry" },
       { id: 'cup_tir', name: "Cloud Nine Tiramisu Cup", price: 7.50, type: "cup" },
       { id: 'cup_bisc', name: "Biscoff Dream Cheesecake Cup", price: 7.50, type: "cup" },
       { id: 'm_kun', name: "Golden Crisp Cheese Kunafa", price: 8.00, type: "pastry" }
@@ -1220,16 +1467,30 @@
     
     let userCart = {};
 
-    window.addDirectToCart = function(id) {
+    window.addDirectToCart = function(id, silentToast) {
       if (!userCart[id]) userCart[id] = 0;
       userCart[id] += 1;
       window.renderCartUI();
-      window.showToast("Added to your cart! 🛒");
+      if (!silentToast) window.showToast("Added to your cart! 🛒");
       
       const cartBtn = document.getElementById('mainCartBtn');
       cartBtn.classList.remove('cart-bump');
       void cartBtn.offsetWidth; 
       cartBtn.classList.add('cart-bump');
+    };
+
+    window.addWeeklyComboToCart = function() {
+      window.addDirectToCart('c_ps', true);
+      window.addDirectToCart('cup_tir', true);
+      window.showToast("Weekly Combo added to cart! 🍂");
+    };
+
+    window.openCateringInquiry = function(packageName) {
+      const notesField = document.getElementById('cateringNotesInput');
+      if (notesField) {
+        notesField.value = `Catering Inquiry: ${packageName} - `;
+      }
+      window.openRequestModal();
     };
 
     window.removeFromCart = function(id) {
@@ -1682,11 +1943,19 @@
       window.renderRecipes(filtered);
     };
 
-    window.filterRecipes = function(cat) {
+    window.filterRecipes = function(cat, btnEl) {
       window.currentCategory = cat;
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+      if (btnEl) btnEl.classList.add('active');
       window.handleSearch();
+    };
+
+    window.openRandomRecipe = function() {
+      if (!window.recipes || window.recipes.length === 0) return;
+      const randomIndex = Math.floor(Math.random() * window.recipes.length);
+      const chosen = window.recipes[randomIndex];
+      window.openRecipeModal(chosen.id);
+      window.showToast(`🎲 Surprise pick: ${chosen.title}`);
     };
 
     window.openRecipeModal = function(id) {
